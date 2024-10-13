@@ -3,10 +3,78 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFApp"
+        xmlns:local="clr-namespace:WPFApp" xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="832" Width="1280">
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="435"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="140"/>
+        </Grid.ColumnDefinitions>
+        <!--Nav pane-->
+        <Rectangle Fill="{StaticResource AccentDark}"/>
+        <!--Task List Background-->
+        <Rectangle Fill="{StaticResource TaskListBackground}"
+                   Grid.Column="1"/>
+        <!--Task List Grid-->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <!--Task Label-->
+            <Label Style="{StaticResource Heading1}" 
+                   Content="Tasks" 
+                   VerticalAlignment="Center"
+                   Padding="20 0 0 0"
+                   IsHitTestVisible="False"/>
+            <!--Add new Task Button-->
+            <Button Style="{StaticResource RoundAccentButton}"
+                HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Height="40"
+                    Width="40"
+                    Margin="0 0 20 0">
+                <!--Icon-->
+                <Viewbox Width="16" Height="16">
+                    <fa:ImageAwesome Style="{StaticResource NewTaskIcon}"/>
+                </Viewbox>
+            </Button>
+                    <!--Search Task Bar>-->
+            <TextBox x:Name="TaskSearchBox"
+                Style="{StaticResource TaskListSearchBox}"
+                Grid.Row="1"
+                     Margin="20 0"
+                     />
+            <Label IsHitTestVisible="False"
+                   Content="Search Tasks..."
+                   Grid.Row="1"
+                   VerticalAlignment="Center"
+                   Margin="40 0 0 0"
+                   Foreground="{StaticResource Borders}"
+                   Visibility="{Binding Text.IsEmpty, ElementName=TaskSearchBox, Converter={StaticResource BooleanToVisibilityConverter}}"
+                   />
+            <Button Style="{StaticResource SearchButton}"
+                Grid.Row="1"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="0 0 30 0"
+                    Padding="10"
+                    Background="White"
+                    BorderBrush="Transparent"
+                    Height="30"
+                    Width="30"
+                    >
+                <Viewbox Width="16" Height="16">
+                    <fa:ImageAwesome Style="{StaticResource SearchIcon}"/>
+                </Viewbox>
+            </Button>
+        </Grid>
+        <!--Task Status Bar-->
+        <Rectangle Fill="{StaticResource TaskStatusBackground}"
+                   Grid.Column="3"/>
     </Grid>
 </Window>

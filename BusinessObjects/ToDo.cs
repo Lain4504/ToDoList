@@ -10,8 +10,27 @@ namespace BusinessObjects
         public string Description { get; set; }
         public int TeamId { get; set; }
         public Team Team { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime DueDate { get; set; }
+        public DateTime StartDate {  get; set; }
+        public bool IsComplete {  get; set; }
         public DateTime? DeletedAt { get; set; } // Thời gian xóa task
         public ICollection<User> AssignedUsers { get; set; } = new List<User>();
+        public TodoState TodoState { get; set; }
+        public TodoImportance TodoImportance { get; set; }
+    }
+    public enum TodoState
+    {
+        InProgress,
+        Complete,
+        NotStarted,
+        Late,
+        Archived,
+        Deleted
+    }
+    public enum TodoImportance
+    {
+        Low,
+        Medium,
+        Hight
     }
 }

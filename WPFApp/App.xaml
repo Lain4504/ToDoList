@@ -4,6 +4,14 @@
              xmlns:local="clr-namespace:WPFApp"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <FontFamily x:Key="FontAwesome">/Fonts/fontawesome-webfont.ttf#FontAwesome</FontFamily>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Dictionaries/Colors.xaml"/>
+                <ResourceDictionary Source="Dictionaries/Icons.xaml"/>
+                <ResourceDictionary Source="Dictionaries/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

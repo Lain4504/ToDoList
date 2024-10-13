@@ -27,11 +27,7 @@ namespace WPFApp
             var serviceProvider = services.BuildServiceProvider();
 
             // Optional: Ensure database is created or updated
-            using (var scope = serviceProvider.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetRequiredService<ToDoListContext>();
-                context.Database.Migrate(); // Apply any pending migrations
-            }
+           
         }
     }
 }
