@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-namespace DataAccessLayer.ViewModel
+namespace WPFApp.ViewModel
 {
     public class RelayCommand : ICommand
     {

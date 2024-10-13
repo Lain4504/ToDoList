@@ -26,7 +26,7 @@ namespace DataAccessLayer
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ToDo>()
-         .HasKey(t => t.ToDoId);
+         .HasKey(t => t.Id);
 
             // Other relationships
             modelBuilder.Entity<User>()
