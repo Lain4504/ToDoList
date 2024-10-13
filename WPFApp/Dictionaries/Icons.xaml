@@ -8,4 +8,17 @@
     <Style x:Key="SearchIcon" TargetType="fa:ImageAwesome">
         <Setter Property="Icon" Value="Search"/>
     </Style>
+    <!--List Icon-->
+    <Style x:Key="ListIcon" TargetType="fa:ImageAwesome">
+        <Setter Property="Icon" Value="List"/>
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style x:Key="TickIcon" TargetType="fa:ImageAwesome">
+        <Setter Property="Icon" Value="Check"/>
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style x:Key="TimerIcon" TargetType="fa:ImageAwesome">
+        <Setter Property="Icon" Value="Times"/>
+        <Setter Property="Foreground" Value="White" />
+    </Style>
 </ResourceDictionary>

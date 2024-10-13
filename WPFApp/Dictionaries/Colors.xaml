@@ -18,6 +18,19 @@
     <SolidColorBrush x:Key="DefaultText" Color="#FF474747" />
     <!-- On Accent -->
     <SolidColorBrush x:Key="OnAccent" Color="#FFFFFFFF" />
+    <!--Placeholder Text Color-->
+    <SolidColorBrush x:Key="PlaceholderText" Color="#FF868686"/>
+
+    <SolidColorBrush x:Key="Button.Complete" Color="#FF57B186" />
+    <SolidColorBrush x:Key="Button.Complete.Over" Color="#FF4B886B" />
+    <SolidColorBrush x:Key="Button.Complete.Click" Color="#FF9FD4BB" />
+    <SolidColorBrush x:Key="Button.Edit" Color="#FF676767" />
+    <SolidColorBrush x:Key="Button.Edit.Over" Color="#FFBDBDBD" />
+    <SolidColorBrush x:Key="Button.Edit.Click" Color="#FFBDBDBD" />
+    <SolidColorBrush x:Key="Button.Delete" Color="#FFA94949" />
+    <SolidColorBrush x:Key="Button.Delete.Over" Color="#FF863636" />
+    <SolidColorBrush x:Key="Button.Delete.Click" Color="#FF848484" />
+
     <!-- Borders -->
     <SolidColorBrush x:Key="Borders" Color="#FFCCCCCC" />
 
@@ -41,5 +54,8 @@
     <SolidColorBrush x:Key="Progress-Late" Color = "#FFB46161" />
     <SolidColorBrush x:Key="Progress-Archived" Color="#FFC8A36C" />
     <SolidColorBrush x:Key="Progress-Deleted" Color="#FF606060" />
-    
+    <SolidColorBrush x:Key="Nav.Default" Color="Transparent" />
+    <SolidColorBrush x:Key="Nav.Over" Color="#FF396A84" />
+    <SolidColorBrush x:Key="Nav.Click" Color="#FF396A84" />
+
 </ResourceDictionary>
