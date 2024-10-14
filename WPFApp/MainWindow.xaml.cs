@@ -23,7 +23,7 @@ namespace WPFApp
         {
             InitializeComponent();
             _toDoService = toDoService ?? throw new ArgumentNullException(nameof(toDoService));
-            LoadTeamTasks(3); // Ví dụ ID đội, nên thay thế nó bằng cách chọn của người dùng hoặc logic khác
+            LoadTeamTasks(1); // Ví dụ ID đội, nên thay thế nó bằng cách chọn của người dùng hoặc logic khác
         }
 
         public void LoadTeamTasks(int teamID)
@@ -37,6 +37,13 @@ namespace WPFApp
             {
                 MessageBox.Show($"Error loading tasks: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+        private void TaskListItem_TaskSelected(object sender, TaskSelectedEventArgs e)
+        {
+            // Cập nhật dữ liệu cho Task Viewer
+            TaskTitleTextBlock.Text = e.Title; // TextBlock cho tiêu đề task
+            TaskDescriptionScrollViewer.Content = e.Description; // ScrollViewer cho mô tả task
+            DueDateTextBlock.Text = $"Due: {e.DueDate}"; // TextBlock cho ngày hết hạn
         }
     }
 }

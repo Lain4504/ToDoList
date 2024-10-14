@@ -18,7 +18,6 @@ namespace BusinessObjects
         public ICollection<User> AssignedUsers { get; set; } = new List<User>();
         public TodoState TodoState { get; set; }
         public TodoImportance TodoImportance { get; set; }
-
     }
     public enum TodoState
     {

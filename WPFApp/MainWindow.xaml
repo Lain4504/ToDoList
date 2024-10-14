@@ -117,18 +117,20 @@
                 </Viewbox>
             </Button>
             <!--List View For Task Items-->
-            <ListView x:Name="TaskListView"
-          Grid.Row="2"
-          Background="Transparent"
-          Margin="0 20"
-          BorderBrush="Transparent">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="200"/>
-                        <GridViewColumn Header="Due Date" DisplayMemberBinding="{Binding DueDate}" Width="150"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
+            <ItemsControl x:Name="TaskListView" 
+              Grid.Row="2"
+              Margin="0 20"
+             >
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:TaskListItem Title="{Binding Title}" 
+                                Description="{Binding Description}"
+                                DueDate="{Binding DueDate}" 
+                                TaskSelected="TaskListItem_TaskSelected"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
         </Grid>
         <!--Task Viewer-->
         <Grid Grid.Column="2">
@@ -137,50 +139,36 @@
                 <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
             <!--Task Details-->
-            <Grid Margin="20 0">
+            <Grid Margin="20,0,20,41">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"/>
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Task Title"
-                           Style="{StaticResource Title}"
-                           VerticalAlignment="Center"/>
-                <!--Importance Badge-->
-                <Border HorizontalAlignment="Right"
-                        VerticalAlignment="Center"
-                        Padding="20 5"
-                        CornerRadius="5"
-                        Background="{StaticResource Importance-High}">
-                    <TextBlock Text="Critical"
-                               Foreground="Black"
-                               FontSize="10">
-                        
-                    </TextBlock>
-                </Border>
-                <!--Description ScrollBar Viewer-->
-                <ScrollViewer Grid.Row="1"
-                              VerticalScrollBarVisibility="Auto"
-                              HorizontalScrollBarVisibility="Disabled">
-                    <!--Description-->
-                    <TextBlock Text="This is a short description test."
-                           Grid.Row="1"
-                           FontSize="16"
-                           Foreground="{StaticResource PlaceholderText}"
-                           Margin="0 20"/>
+                <TextBlock x:Name="TaskTitleTextBlock" 
+           Text="Task Title" 
+           Style="{StaticResource Title}" 
+           VerticalAlignment="Center"/>
+
+                <ScrollViewer x:Name="TaskDescriptionScrollViewer"
+               Grid.Row="1"
+               VerticalScrollBarVisibility="Auto"
+               HorizontalScrollBarVisibility="Disabled">
+                    <TextBlock Text="{Binding Description}" />
                 </ScrollViewer>
-                <!--Due Date-->
-                <TextBlock Text="Due: 17/12/2024"
-                           Background="{StaticResource AccentDark}"
-                           Padding="20 3"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Left"
-                           Grid.Row="2"
-                           Foreground="White"
-                           />
+
+                <TextBlock x:Name="DueDateTextBlock" 
+           Text="Due: 17/12/2024" 
+           Background="{StaticResource AccentDark}" 
+           Padding="20 3" 
+           VerticalAlignment="Center" 
+           HorizontalAlignment="Left" 
+           Grid.Row="2" 
+           Foreground="White" />
+
             </Grid>
             <!--Task View Button-->
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="3">
                <Button Style="{StaticResource TaskViewDeleteButton}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
