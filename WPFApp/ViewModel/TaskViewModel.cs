@@ -1,10 +1,26 @@
 ﻿using BusinessObjects;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows.Input;
 
 namespace WPFApp.ViewModel;
 public class TaskViewModel : INotifyPropertyChanged
 {
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public int TeamId { get; set; }
+    public Team Team { get; set; }
+    public DateTime DueDate { get; set; }
+    public DateTime StartDate { get; set; }
+    public bool IsCompleted { get; set; }
+    public DateTime? DeletedAt { get; set; } // Thời gian xóa task
+    public ICollection<User> AssignedUsers { get; set; } = new List<User>();
+    public TodoState TodoState { get; set; }
+    public TodoImportance TodoImportance { get; set; }
+    public ObservableCollection<TaskCheckList> TaskCheckLists { get; set; }
+
+    public ICommand IAddNewTask => new RelayCommand(AddNewTask);
+
     // This is used to interact with the underlying data storage.
     private readonly TaskDataService _taskDataService;
 
@@ -46,8 +62,21 @@ public class TaskViewModel : INotifyPropertyChanged
 
     // AddNewTask: This method is responsible for adding a new task.
     // It calls the AddTask method of TaskDataService to save the new task and then reloads the task list to update the UI.
-    public void AddNewTask(ToDo newTask)
+    public void AddNewTask()
     {
+        ToDo newTask = new ToDo()
+        {
+            Title = this.Title,
+            Description = this.Description,
+            Id = _taskDataService.GenerateNewTaskId(),
+            DueDate = this.DueDate,
+            IsCompleted = false,
+            StartDate = DateTime.Now,
+            TodoImportance = TodoImportance.Low,
+            TaskCheckLists = this.TaskCheckLists,
+            TodoState = TodoState.Late,
+
+        };
         _taskDataService.AddTask(newTask);
         LoadTasks(); // Reload tasks to reflect the new addition.
     }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessObjects
 {
@@ -17,6 +18,7 @@ namespace BusinessObjects
         public ICollection<User> AssignedUsers { get; set; } = new List<User>();
         public TodoState TodoState { get; set; }
         public TodoImportance TodoImportance { get; set; }
+        public ObservableCollection<TaskCheckList> TaskCheckLists { get; set; }
     }
     public enum TodoState
     {
