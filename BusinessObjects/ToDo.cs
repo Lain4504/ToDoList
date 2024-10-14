@@ -19,6 +19,7 @@ namespace BusinessObjects
         public TodoState TodoState { get; set; }
         public TodoImportance TodoImportance { get; set; }
         public ObservableCollection<TaskCheckList> TaskCheckLists { get; set; }
+
     }
     public enum TodoState
     {
@@ -33,6 +34,6 @@ namespace BusinessObjects
     {
         Low,
         Medium,
-        Hight
+        High
     }
 }

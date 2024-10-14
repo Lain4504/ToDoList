@@ -26,13 +26,14 @@
         </Style>
     </Window.Resources>
 
-    <Grid Loaded="Grid_Loaded">
+    <Grid 
+       >
         <Label x:Name="TaskDetailTitleLabel" Content="Create a task" HorizontalAlignment="Left" Margin="29,10,0,0" VerticalAlignment="Top" Width="279" FontSize="30" Foreground="#0D47A1" FontWeight="Bold"/>
 
         <Rectangle HorizontalAlignment="Left" Height="369" Width="578" Margin="20,65,0,0" Stroke="Black" VerticalAlignment="Top" Fill="#E3F2FD"/>
 
         <Label x:Name="TitleLabel" Content="Title" HorizontalAlignment="Left" Margin="29,79,0,0" VerticalAlignment="Top" Width="102" Height="32" Style="{StaticResource LabelStyle}"/>
-        <TextBox x:Name="TitleTextBox" HorizontalAlignment="Left" Margin="139,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="340" Height="32" BorderBrush="#333333" FontSize="16" TextChanged="TitleTextBox_TextChanged_1"/>
+        <TextBox x:Name="TitleTextBox" HorizontalAlignment="Left" Margin="139,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="340" Height="32" BorderBrush="#333333" FontSize="16" />
 
         <Label x:Name="DescriptionLabel" Content="Description" HorizontalAlignment="Left" Margin="29,131,0,0" VerticalAlignment="Top" Width="102" Height="32" Style="{StaticResource LabelStyle}"/>
         <TextBox x:Name="DescriptionTextbox" HorizontalAlignment="Left" Margin="139,131,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="446" Height="97" BorderBrush="#333333" FontSize="14"/>
@@ -49,10 +50,10 @@
         <ComboBox x:Name="StatusComboBox" HorizontalAlignment="Left" Margin="139,389,0,0" VerticalAlignment="Top" Width="131" Height="32" FontSize="14"/>
 
         <Label x:Name="InviteLabel" Content="Invite" HorizontalAlignment="Left" Margin="29,346,0,0" VerticalAlignment="Top" Width="102" Height="32" Style="{StaticResource LabelStyle}"/>
-        <TextBox x:Name="InviteTextBox" HorizontalAlignment="Left" Margin="139,346,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="340" Height="32" BorderBrush="#333333" FontSize="16" TextChanged="TitleTextBox_TextChanged_1"/>
+        <TextBox x:Name="InviteTextBox" HorizontalAlignment="Left" Margin="139,346,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="340" Height="32" BorderBrush="#333333" FontSize="16"/>
 
-        <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="701,389,0,0" VerticalAlignment="Top" Style="{StaticResource ButtonStyle}" Click="SaveButton_Click"/>
-        <Button x:Name="BackButton" Content="Back" HorizontalAlignment="Left" Margin="607,389,0,0" VerticalAlignment="Top" Style="{StaticResource ButtonStyle}" Click="BackButton_Click"/>
+        <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="701,389,0,0" VerticalAlignment="Top" Style="{StaticResource ButtonStyle}"/>
+        <Button x:Name="BackButton" Content="Back" HorizontalAlignment="Left" Margin="607,389,0,0" VerticalAlignment="Top" Style="{StaticResource ButtonStyle}" />
 
         <Label x:Name="NoteIdLabel" Content="" HorizontalAlignment="Left" Margin="746,23,0,0" VerticalAlignment="Top" Width="10" Background="White" Height="12"/>
         <Label x:Name="UserIdLabel" Content="" HorizontalAlignment="Left" Margin="765,23,0,0" VerticalAlignment="Top" Background="White" Height="12"/>
