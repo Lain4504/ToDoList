@@ -1,24 +1,30 @@
 ﻿using BusinessObjects;
+using DataAccessLayer;
+using Repositories;
 using Services;
-using System.Text;
+using System;
+using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WPFApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private readonly IToDoService _toDoService;
+
+        // Constructor không tham số
+        public MainWindow() : this(new ToDoService(new ToDoRepository(new ToDoListContext())))
+        {
+            InitializeComponent();
+        }
+
+        // Constructor với tham số
+        public MainWindow(IToDoService toDoService)
+        {
+            InitializeComponent();
+            _toDoService = toDoService ?? throw new ArgumentNullException(nameof(toDoService));
+            LoadTeamTasks(3); // Ví dụ ID đội, nên thay thế nó bằng cách chọn của người dùng hoặc logic khác
+        }
 
         public void LoadTeamTasks(int teamID)
         {

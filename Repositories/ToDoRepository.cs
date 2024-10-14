@@ -15,8 +15,13 @@ namespace Repositories
 
         public ToDoRepository(ToDoListContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+
+        public ToDoRepository()
+        {
+        }
+
         public Team GetTeamById(int teamId)
         {
             return _context.Teams.FirstOrDefault(t => t.TeamId == teamId);
