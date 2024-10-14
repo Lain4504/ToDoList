@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using BusinessObjects;
+using Services;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -8,7 +10,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WPFApp.ViewModel;
 
 namespace WPFApp
 {
@@ -17,10 +18,19 @@ namespace WPFApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly IToDoService _toDoService;
+
+        public void LoadTeamTasks(int teamID)
         {
-            InitializeComponent();
-            this.DataContext = new TaskViewModel();
+            try
+            {
+                IEnumerable<ToDo> tasks = _toDoService.GetToDosForTeam(teamID);
+                TaskListView.ItemsSource = tasks;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading tasks: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

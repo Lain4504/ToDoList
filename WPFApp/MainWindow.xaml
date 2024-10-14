@@ -3,15 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="clr-namespace:WPFApp.ViewModel"
         xmlns:local="clr-namespace:WPFApp" xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
         Title="MainWindow" Height="832" Width="1250"
         MinWidth="1150" MinHeight="450"
         WindowStartupLocation="CenterScreen">
-    <Window.DataContext>
-        <vm:MainWindowViewModel/>
-    </Window.DataContext>
+
     <Window.Resources>
         <Storyboard x:Key="SliderOnload">
             <DoubleAnimation Storyboard.TargetProperty="Opacity"
@@ -85,9 +82,6 @@
                     Width="40"
                     Margin="0 0 20 0"
                    Command="{Binding IOpenNewWindow}">
-                <Button.DataContext>
-                    <vm:MainWindowViewModel/>
-                </Button.DataContext>
                 <!--Icon-->
                 <Viewbox Width="16" Height="16">
                     <fa:ImageAwesome Style="{StaticResource NewTaskIcon}"/>
@@ -123,19 +117,23 @@
                 </Viewbox>
             </Button>
             <!--List View For Task Items-->
-            <ListView Grid.Row="2"
-                      Background="Transparent"
-                      Margin="0 20"
-                      BorderBrush="Transparent"
-                      >
-                
+            <ListView x:Name="TaskListView"
+          Grid.Row="2"
+          Background="Transparent"
+          Margin="0 20"
+          BorderBrush="Transparent">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="200"/>
+                        <GridViewColumn Header="Due Date" DisplayMemberBinding="{Binding DueDate}" Width="150"/>
+                    </GridView>
+                </ListView.View>
             </ListView>
         </Grid>
         <!--Task Viewer-->
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="230"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="450"/>
                 <RowDefinition Height="60"/>
             </Grid.RowDefinitions>
             <!--Task Details-->
@@ -181,29 +179,9 @@
                            Foreground="White"
                            />
             </Grid>
-            <Grid Grid.Row="1"
-                   Margin="0 20 0 0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="1*"/>
-                </Grid.RowDefinitions>
-                <!--List Title -->
-                <TextBlock Style="{StaticResource Title}"
-                           Text="Task Check List"
-                           VerticalAlignment="Center"
-                           Margin="20 0 0 0"/>
-                <!--Check Lists-->
-                <ListView
-                      Background="Transparent"
-                      BorderThickness="0"
-                      Grid.Row="1"
-                     >
-
-                </ListView>
-            </Grid>
             <!--Task View Button-->
             <Grid Grid.Row="2">
-                <Button Style="{StaticResource TaskViewDeleteButton}"
+               <Button Style="{StaticResource TaskViewDeleteButton}"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         Content="Delete"

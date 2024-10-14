@@ -1,13 +1,61 @@
 ﻿<Window x:Class="WPFApp.NewTaskWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFApp"
         mc:Ignorable="d"
-        Title="NewTaskWindow" Height="450" Width="800"
-        WindowStartupLocation="CenterScreen">
-    <Grid>
-        
+        Title="NewTaskWindow" Height="490" Width="830"
+        Background="#BBDEFB" ResizeMode="NoResize">
+
+    <Window.Resources>
+        <Style x:Key="LabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="Foreground" Value="#0D47A1"/>
+            <Setter Property="Background" Value="#B6D4F5"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#0D47A1"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Width" Value="89"/>
+            <Setter Property="Height" Value="35"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid 
+       >
+        <Label x:Name="TaskDetailTitleLabel" Content="Create a task" HorizontalAlignment="Left" Margin="29,10,0,0" VerticalAlignment="Top" Width="279" FontSize="30" Foreground="#0D47A1" FontWeight="Bold"/>
+
+        <Rectangle HorizontalAlignment="Left" Height="369" Width="578" Margin="20,65,0,0" Stroke="Black" VerticalAlignment="Top" Fill="#E3F2FD"/>
+
+        <Label x:Name="TitleLabel" Content="Title" HorizontalAlignment="Left" Margin="29,79,0,0" VerticalAlignment="Top" Width="102" Height="32" Style="{StaticResource LabelStyle}"/>
+        <TextBox x:Name="TitleTextBox" HorizontalAlignment="Left" Margin="139,79,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="340" Height="32" BorderBrush="#333333" FontSize="16" />
+
+        <Label x:Name="DescriptionLabel" Content="Description" HorizontalAlignment="Left" Margin="29,131,0,0" VerticalAlignment="Top" Width="102" Height="32" Style="{StaticResource LabelStyle}"/>
+        <TextBox x:Name="DescriptionTextbox" HorizontalAlignment="Left" Margin="139,131,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="446" Height="97" BorderBrush="#333333" FontSize="14"/>
+
+        <Label x:Name="DateLabel" Content="Date" HorizontalAlignment="Left" Margin="29,250,0,0" VerticalAlignment="Top" Width="102" Height="32" Style="{StaticResource LabelStyle}"/>
+        <DatePicker x:Name="PeriodDatePicker" HorizontalAlignment="Left" Margin="139,250,0,0" VerticalAlignment="Top" Width="165" Height="32" BorderBrush="#333333" FontSize="14"/>
+
+        <Label x:Name="PeriodLabel" Content="Period" HorizontalAlignment="Left" Margin="29,301,0,0" VerticalAlignment="Top" Width="102" Height="32" Style="{StaticResource LabelStyle}"/>
+        <ComboBox x:Name="HourComboBox" HorizontalAlignment="Left" Margin="139,301,0,0" VerticalAlignment="Top" Width="79" Height="32" FontSize="14"/>
+        <ComboBox x:Name="MinuteComboBox" HorizontalAlignment="Left" Margin="225,301,0,0" VerticalAlignment="Top" Width="79" Height="32" FontSize="14"/>
+        <TextBlock HorizontalAlignment="Left" Margin="219,302,0,0" TextWrapping="Wrap" Text=":" VerticalAlignment="Top" Width="6" Height="27" IsEnabled="False" FontSize="20" Foreground="#31473A"/>
+
+        <Label x:Name="StatusLabel" Content="Status" HorizontalAlignment="Left" Margin="29,389,0,0" VerticalAlignment="Top" Width="102" Height="32" Style="{StaticResource LabelStyle}"/>
+        <ComboBox x:Name="StatusComboBox" HorizontalAlignment="Left" Margin="139,389,0,0" VerticalAlignment="Top" Width="131" Height="32" FontSize="14"/>
+
+        <Label x:Name="InviteLabel" Content="Invite" HorizontalAlignment="Left" Margin="29,346,0,0" VerticalAlignment="Top" Width="102" Height="32" Style="{StaticResource LabelStyle}"/>
+        <TextBox x:Name="InviteTextBox" HorizontalAlignment="Left" Margin="139,346,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="340" Height="32" BorderBrush="#333333" FontSize="16"/>
+
+        <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="701,389,0,0" VerticalAlignment="Top" Style="{StaticResource ButtonStyle}"/>
+        <Button x:Name="BackButton" Content="Back" HorizontalAlignment="Left" Margin="607,389,0,0" VerticalAlignment="Top" Style="{StaticResource ButtonStyle}" />
+
+        <Label x:Name="NoteIdLabel" Content="" HorizontalAlignment="Left" Margin="746,23,0,0" VerticalAlignment="Top" Width="10" Background="White" Height="12"/>
+        <Label x:Name="UserIdLabel" Content="" HorizontalAlignment="Left" Margin="765,23,0,0" VerticalAlignment="Top" Background="White" Height="12"/>
     </Grid>
 </Window>
