@@ -15,8 +15,13 @@ namespace Repositories
 
         public ToDoRepository(ToDoListContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
+
+        public ToDoRepository()
+        {
+        }
+
         public Team GetTeamById(int teamId)
         {
             return _context.Teams.FirstOrDefault(t => t.TeamId == teamId);
@@ -49,6 +54,12 @@ namespace Repositories
         public ToDo GetToDoById(int teamId, int todoId)
         {
             return _context.ToDos.FirstOrDefault(t => t.TeamId == teamId && t.Id == todoId && t.DeletedAt == null);
+        }
+        public async Task<IEnumerable<ToDo>> GetToDoByTitleAsync(string title, int teamId)
+        {
+            return await _context.ToDos
+                .Where(t => t.Title.Contains(title) && t.TeamId == teamId)
+                .ToListAsync();
         }
     }
 }

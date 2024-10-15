@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- App Accent Dark -->
-    <SolidColorBrush x:Key="AccentDark" Color="#FF164863" />
+    <SolidColorBrush x:Key="AccentDark" Color="#5e7b6f" />
+    <SolidColorBrush x:Key="AccentLight" Color="#FF396A84" />
     <SolidColorBrush x:Key="AccentDarkOver" Color="#FF396A84" />
     <SolidColorBrush x:Key="AccentDarkClick" Color="#FF66A3C5" />
 

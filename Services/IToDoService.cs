@@ -14,5 +14,7 @@ namespace Services
         void UpdateToDoForTeam(int teamId, ToDo todo);
         void DeleteToDoForTeam(int teamId, int todoId);
         ToDo GetToDoDetails(int teamId, int todoId);
+        Task<IEnumerable<ToDo>> GetToDoByTitleAsync(string title, int teamId);
+
     }
 }
