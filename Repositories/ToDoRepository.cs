@@ -55,5 +55,11 @@ namespace Repositories
         {
             return _context.ToDos.FirstOrDefault(t => t.TeamId == teamId && t.Id == todoId && t.DeletedAt == null);
         }
+        public async Task<IEnumerable<ToDo>> GetToDoByTitleAsync(string title, int teamId)
+        {
+            return await _context.ToDos
+                .Where(t => t.Title.Contains(title) && t.TeamId == teamId)
+                .ToListAsync();
+        }
     }
 }

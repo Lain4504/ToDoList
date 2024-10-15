@@ -10,5 +10,7 @@ namespace Repositories
         void UpdateToDo(ToDo todo);
         void DeleteToDo(int todoId);
         ToDo GetToDoById(int teamId, int todoId);
+        Task<IEnumerable<ToDo>> GetToDoByTitleAsync(string title, int teamId);
+
     }
 }

@@ -72,5 +72,9 @@ namespace Services
             }
             return todo;
         }
+        public async Task<IEnumerable<ToDo>> GetToDoByTitleAsync(string title, int teamId)
+        {
+            return await _toDoRepository.GetToDoByTitleAsync(title, teamId);
+        }
     }
 }

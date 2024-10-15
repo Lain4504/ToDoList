@@ -10,15 +10,15 @@
     </Style>
     <!--List Icon-->
     <Style x:Key="ListIcon" TargetType="fa:ImageAwesome">
-        <Setter Property="Icon" Value="List"/>
+        <Setter Property="Icon" Value="Tasks"/>
         <Setter Property="Foreground" Value="White" />
     </Style>
     <Style x:Key="TickIcon" TargetType="fa:ImageAwesome">
-        <Setter Property="Icon" Value="Check"/>
+        <Setter Property="Icon" Value="Group"/>
         <Setter Property="Foreground" Value="White" />
     </Style>
     <Style x:Key="TimerIcon" TargetType="fa:ImageAwesome">
-        <Setter Property="Icon" Value="Times"/>
+        <Setter Property="Icon" Value="Recycle"/>
         <Setter Property="Foreground" Value="White" />
     </Style>
 </ResourceDictionary>
