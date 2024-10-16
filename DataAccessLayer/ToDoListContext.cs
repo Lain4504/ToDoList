@@ -1,4 +1,5 @@
-﻿using BusinessObjects;
+﻿using BusinessObject;
+using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
@@ -12,9 +13,11 @@ namespace DataAccessLayer
            : base(options)
         {
         }
+
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Team> Teams { get; set; }
         public virtual DbSet<ToDo> ToDos { get; set; }
+        public virtual DbSet<TrashItem> DeletedTasks { get; set; } // Thêm DbSet cho DeletedTasks
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -23,12 +26,13 @@ namespace DataAccessLayer
                     .AddJsonFile("appsettings.json", true, true).Build();
             optionsBuilder.UseSqlServer(configuration["ConnectionStrings:DefaultConnection"]);
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ToDo>()
-         .HasKey(t => t.Id);
+                .HasKey(t => t.Id);
 
-            // Other relationships
+            // Các quan hệ khác
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Teams)
                 .WithMany(t => t.Members)
