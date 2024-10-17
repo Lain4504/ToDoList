@@ -5,7 +5,7 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
-            <FontFamily x:Key="FontAwesome">/Fonts/fontawesome-webfont.ttf#FontAwesome</FontFamily>
+            <FontFamily x:Key="Comic Sans MS 400">pack://application:,,,/Font/Comic Sans MS 400.ttf#Comic Sans MS 400</FontFamily>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Dictionaries/Colors.xaml"/>

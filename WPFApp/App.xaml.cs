@@ -9,7 +9,7 @@ namespace WPFApp
 {
     public partial class App : Application
     {
-        public IConfiguration configuration { get; private set; }
+        public IConfiguration Configuration { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -17,12 +17,12 @@ namespace WPFApp
             var builder = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            configuration = builder.Build();
+            Configuration = builder.Build();
 
             // Setup dependency injection
             var services = new ServiceCollection();
             services.AddDbContext<ToDoListContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             var serviceProvider = services.BuildServiceProvider();
 

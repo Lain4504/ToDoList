@@ -6,9 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace WPFApp
 {
+   
     public partial class MainWindow : Window
     {
         private readonly IToDoService _toDoService;
@@ -25,6 +27,30 @@ namespace WPFApp
             InitializeComponent();
             _toDoService = toDoService ?? throw new ArgumentNullException(nameof(toDoService));
             LoadTeamTasks(1); // Ví dụ ID đội, nên thay thế nó bằng cách chọn của người dùng hoặc logic khác
+        }
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
+        }
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized; // Giảm cửa sổ
+        }
+
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Normal)
+                this.WindowState = WindowState.Maximized; // Tối đa hóa cửa sổ
+            else
+                this.WindowState = WindowState.Normal; // Trở lại trạng thái bình thường
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close(); // Đóng cửa sổ
         }
 
         public void LoadTeamTasks(int teamID)
@@ -62,34 +88,42 @@ namespace WPFApp
         // Sự kiện xóa task
         private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine($"Attempting to delete task with TeamID = {_currentTeamID}, TaskID = {_currentTaskID}");
-
-
             if (_currentTaskID > 0)
             {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this task?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Yes)
+                // Hiển thị cửa sổ xác nhận xóa
+                ConfirmationWindow confirmationWindow = new ConfirmationWindow();
+                confirmationWindow.Owner = this; // Thiết lập chủ sở hữu của cửa sổ xác nhận là MainWindow
+                confirmationWindow.ShowDialog(); // Hiển thị cửa sổ dưới dạng dialog
+
+                // Kiểm tra nếu người dùng xác nhận xóa
+                if (confirmationWindow.IsConfirmed)
                 {
                     try
                     {
                         _toDoService.DeleteToDoForTeam(_currentTeamID, _currentTaskID); // Gọi service để xóa task
-                        MessageBox.Show("Task deleted successfully", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        // Hiển thị thông báo thành công qua NotificationWindow
+                        NotificationWindow notification = new NotificationWindow("Task deleted successfully!");
+                        notification.ShowDialog();
 
                         // Cập nhật danh sách tasks sau khi xóa
                         LoadTeamTasks(_currentTeamID);
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Error deleting task: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        // Hiển thị thông báo lỗi qua NotificationWindow
+                        NotificationWindow notification = new NotificationWindow($"Error deleting task: {ex.Message}");
+                        notification.ShowDialog();
                     }
                 }
             }
             else
             {
-                MessageBox.Show("No task selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                // Hiển thị thông báo khi không có task được chọn
+                NotificationWindow notification = new NotificationWindow("No task selected for deletion.");
+                notification.ShowDialog();
             }
         }
-        // MainWindow.xaml.cs
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
@@ -116,18 +150,23 @@ namespace WPFApp
 
         private void NewTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            // Create an instance of IToDoService
-            IToDoService toDoService = new ToDoService(new ToDoRepository(new ToDoListContext()));
 
-            // Set the appropriate team ID (for example, 1)
             int teamId = 1; // Replace with the actual team ID as necessary
-
             // Create and show the NewTaskWindow with the necessary parameters
-            NewTaskWindow newTaskWindow = new NewTaskWindow(toDoService, teamId);
+            NewTaskWindow newTaskWindow = new NewTaskWindow(_toDoService, teamId);
+            newTaskWindow.TaskAdded += (s, args) =>
+            {
+                LoadTeamTasks(teamId);
+            };
             newTaskWindow.ShowDialog(); // Open the window as a dialog
         }
-
-
-
+        private void TaskSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string searchTitle = TaskSearchBox.Text.Trim();
+            if (string.IsNullOrEmpty(searchTitle))
+            {
+                LoadTeamTasks(1);
+            }
+        }
     }
 }
