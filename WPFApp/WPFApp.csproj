@@ -26,7 +26,10 @@
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj" />
 	  <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
-
+	<ItemGroup>
+		<Resource Include="Font\Comic Sans MS 400.ttf">
+		</Resource>
+	</ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

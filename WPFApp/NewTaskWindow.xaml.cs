@@ -4,6 +4,7 @@ using Repositories;
 using Services;
 using System;
 using System.Windows;
+using System.Windows.Input;
 
 namespace WPFApp
 {
@@ -11,11 +12,13 @@ namespace WPFApp
     {
         private readonly IToDoService _toDoService;
         private readonly int _teamId;
-
+        public delegate void TaskAddedEventHandler(object sender, EventArgs e);
+        public event TaskAddedEventHandler TaskAdded;
         // Parameterized constructor
         public NewTaskWindow(IToDoService toDoService, int teamId)
         {
             InitializeComponent();
+            this.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseLeftButtonDown);
             _toDoService = toDoService ?? throw new ArgumentNullException(nameof(toDoService));
             _teamId = teamId; // Store the team ID
         }
@@ -38,12 +41,13 @@ namespace WPFApp
                     Title = TitleTextBox.Text,
                     Description = DescriptionTextbox.Text,
                     DueDate = PeriodDatePicker.SelectedDate ?? DateTime.Now,
-                    IsCompleted = false // You can set this based on your logic
+                    IsCompleted = false 
                 };
 
                 // Call the service to add the ToDo for the specified team
                 _toDoService.AddToDoForTeam(1, newToDo);
 
+                TaskAdded?.Invoke(this, EventArgs.Empty);
                 // Optionally show a success message or close the window
                 MessageBox.Show("Task added successfully.");
                 Close();
@@ -56,9 +60,18 @@ namespace WPFApp
         }
 
         // Optionally handle the Back button to close the window
-        private void BackButton_Click(object sender, RoutedEventArgs e)
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            // Quay về trang chủ hoặc đóng cửa sổ
+            this.Close(); // Nếu bạn chỉ muốn đóng cửa sổ
+                          // Hoặc có thể điều hướng đến trang chủ nếu bạn đang sử dụng Navigation
+        }
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ButtonState == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
         }
     }
 }
