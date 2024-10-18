@@ -8,7 +8,7 @@
         FontFamily="{StaticResource Comic Sans MS 400}" 
         WindowStyle="None">
 
-    <Border BorderThickness="2" BorderBrush="Transparent" Background="#D3D3D3" CornerRadius="20">
+    <Border BorderThickness="2" BorderBrush="Transparent" Background="#D1E8E2" CornerRadius="10">
         <Grid>
             <Label Content="Create a task" 
                    HorizontalAlignment="Left" 
@@ -24,7 +24,7 @@
                        Margin="20,65,0,0" 
                        Stroke="Black" 
                        VerticalAlignment="Top" 
-                       Fill="#bbb2b5" 
+                       Fill="#E0E0E0" 
                        RadiusX="20" 
                        RadiusY="20"/>
 
@@ -95,7 +95,6 @@
                     VerticalAlignment="Top" 
                     Background="#389583" 
                     Foreground="White" 
-                    FontSize="20" 
                     Click="SaveButton_Click"/>
 
             <Button x:Name="BackButton" 
@@ -105,7 +104,6 @@
                     Margin="607,389,0,0" 
                     VerticalAlignment="Top" 
                     Background="#ab3b61" 
-                    FontSize="20" 
                     Foreground="White" 
                     Click="CancelButton_Click"/>
         </Grid>
