@@ -31,7 +31,8 @@ namespace WPFApp
                 if (string.IsNullOrWhiteSpace(TitleTextBox.Text) ||
                     string.IsNullOrWhiteSpace(DescriptionTextbox.Text))
                 {
-                    MessageBox.Show("Please fill in all fields.");
+                    NotificationWindow notificationWindow = new NotificationWindow("Please fill in all field.");
+                    notificationWindow.Show();
                     return;
                 }
 
@@ -48,14 +49,14 @@ namespace WPFApp
                 _toDoService.AddToDoForTeam(1, newToDo);
 
                 TaskAdded?.Invoke(this, EventArgs.Empty);
-                // Optionally show a success message or close the window
-                MessageBox.Show("Task added successfully.");
+                
+                NotificationWindow notification = new NotificationWindow("Task added successfully");
+                notification.Show();
                 Close();
             }
             catch (Exception ex)
             {
-                // Handle exceptions (e.g., show an error message)
-                MessageBox.Show($"Error: {ex.Message}");
+                NotificationWindow notification = new NotificationWindow($"Error: {ex.Message}");
             }
         }
 

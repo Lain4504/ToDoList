@@ -26,7 +26,7 @@ namespace WPFApp
         {
             InitializeComponent();
             _toDoService = toDoService ?? throw new ArgumentNullException(nameof(toDoService));
-            LoadTeamTasks(1); // Ví dụ ID đội, nên thay thế nó bằng cách chọn của người dùng hoặc logic khác
+            LoadTeamTasks(1); 
         }
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -43,7 +43,7 @@ namespace WPFApp
         private void MaximizeButton_Click(object sender, RoutedEventArgs e)
         {
             if (this.WindowState == WindowState.Normal)
-                this.WindowState = WindowState.Maximized; // Tối đa hóa cửa sổ
+                this.WindowState = WindowState.Maximized; // Max
             else
                 this.WindowState = WindowState.Normal; // Trở lại trạng thái bình thường
         }
@@ -133,7 +133,6 @@ namespace WPFApp
             {
                 try
                 {
-                    // Call the asynchronous search method
                     IEnumerable<ToDo> tasks = await _toDoService.GetToDoByTitleAsync(searchTitle,1);
                     TaskListView.ItemsSource = tasks; // Update the task list view with the search results
                 }
@@ -151,8 +150,7 @@ namespace WPFApp
         private void NewTaskButton_Click(object sender, RoutedEventArgs e)
         {
 
-            int teamId = 1; // Replace with the actual team ID as necessary
-            // Create and show the NewTaskWindow with the necessary parameters
+            int teamId = 1;
             NewTaskWindow newTaskWindow = new NewTaskWindow(_toDoService, teamId);
             newTaskWindow.TaskAdded += (s, args) =>
             {
