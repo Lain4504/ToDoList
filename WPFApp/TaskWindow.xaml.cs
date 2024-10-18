@@ -160,15 +160,36 @@ namespace WPFApp
 
         private void NewTaskButton_Click(object sender, RoutedEventArgs e)
         {
-
             int teamId = 1;
             NewTaskWindow newTaskWindow = new NewTaskWindow(_toDoService, teamId);
+
+            // Lắng nghe sự kiện TaskAdded để cập nhật giao diện task detail
             newTaskWindow.TaskAdded += (s, args) =>
             {
+                var taskArgs = args as TaskAddedEventArgs;
+                if (taskArgs != null)
+                {
+                    var newTask = taskArgs.NewTask;
+
+                    // Cập nhật task detail UI
+                    TaskTitleTextBlock.Text = newTask.Title;
+                    var taskDescriptionTextBlock = TaskDescriptionScrollViewer.Content as TextBlock;
+                    if (taskDescriptionTextBlock != null)
+                    {
+                        taskDescriptionTextBlock.Text = newTask.Description;
+                    }
+                    DueDateTextBlock.Text = $"Due: {newTask.DueDate}";
+                    _currentTaskID = newTask.Id;
+                    _currentTeamID = teamId;
+                }
+
+                // Tải lại danh sách tasks
                 LoadTeamTasks(teamId);
             };
+
             newTaskWindow.ShowDialog();
         }
+
         private void UpdateTaskButton_Click(object sender, RoutedEventArgs e)
         {
             if (_currentTaskID > 0)
@@ -178,6 +199,17 @@ namespace WPFApp
                 updateWindow.TaskUpdated += (s, args) =>
                 {
                     LoadTeamTasks(teamId);
+                    var updateTask = _toDoService.GetToDoDetails(1, _currentTaskID);
+                    if (updateTask != null)
+                    {
+                        TaskTitleTextBlock.Text = updateTask.Title;
+                        var taskDescriptionBlock = TaskDescriptionScrollViewer.Content as TextBlock;
+                        if (taskDescriptionBlock != null)
+                        {
+                            taskDescriptionBlock.Text = updateTask.Description;
+                        }
+                        DueDateTextBlock.Text = $"Due: {updateTask.DueDate}";
+                    }
                 };
                 updateWindow.ShowDialog();
             }
@@ -195,6 +227,12 @@ namespace WPFApp
             {
                 LoadTeamTasks(1);
             }
+        }
+        private void BinButton_Click(object sender, RoutedEventArgs e)
+        {
+            Trash trash = new Trash();
+            trash.Show();
+            this.Close();
         }
 
     }

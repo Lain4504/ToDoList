@@ -27,29 +27,27 @@ namespace WPFApp
         {
             try
             {
-                // Validate inputs
                 if (string.IsNullOrWhiteSpace(TitleTextBox.Text) ||
                     string.IsNullOrWhiteSpace(DescriptionTextbox.Text))
                 {
-                    NotificationWindow notificationWindow = new NotificationWindow("Please fill in all field.");
+                    NotificationWindow notificationWindow = new NotificationWindow("Please fill in all fields.");
                     notificationWindow.Show();
                     return;
                 }
 
-                // Create a new ToDo item
                 var newToDo = new ToDo
                 {
                     Title = TitleTextBox.Text,
                     Description = DescriptionTextbox.Text,
                     DueDate = PeriodDatePicker.SelectedDate ?? DateTime.Now,
-                    IsCompleted = false 
+                    IsCompleted = false
                 };
 
-                // Call the service to add the ToDo for the specified team
                 _toDoService.AddToDoForTeam(1, newToDo);
 
-                TaskAdded?.Invoke(this, EventArgs.Empty);
-                
+                // Gọi sự kiện TaskAdded, truyền task mới tạo vào
+                TaskAdded?.Invoke(this, new TaskAddedEventArgs(newToDo));
+
                 NotificationWindow notification = new NotificationWindow("Task added successfully");
                 notification.Show();
                 Close();
@@ -57,8 +55,10 @@ namespace WPFApp
             catch (Exception ex)
             {
                 NotificationWindow notification = new NotificationWindow($"Error: {ex.Message}");
+                notification.Show();
             }
         }
+
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
