@@ -85,17 +85,17 @@
             <!-- Window Control Buttons -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-20,-20,0">
                 <!-- Minimize Button -->
-                <Button Style="{StaticResource RoundedButtonStyle}" Width="30" Height="30" Click="MinimizeButton_Click">
+                <Button Style="{StaticResource RoundedButtonStyle}" Width="30" Height="30">
                     <fa:ImageAwesome Style="{StaticResource MinimizeIcon}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>
                 </Button>
 
                 <!-- Maximize Button -->
-                <Button Style="{StaticResource RoundedButtonStyle}" Width="30" Height="30" Click="MaximizeButton_Click">
+                <Button Style="{StaticResource RoundedButtonStyle}" Width="30" Height="30">
                     <fa:ImageAwesome Style="{StaticResource MaximizeIcon}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>
                 </Button>
 
                 <!-- Close Button -->
-                <Button Style="{StaticResource RoundedButtonStyle}" Width="30" Height="30" Click="CloseButton_Click">
+                <Button Style="{StaticResource RoundedButtonStyle}" Width="30" Height="30">
                     <fa:ImageAwesome Style="{StaticResource CloseIcon}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>
                 </Button>
             </StackPanel>

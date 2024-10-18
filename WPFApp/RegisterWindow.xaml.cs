@@ -15,7 +15,7 @@ namespace WPFApp.Views
             InitializeComponent();
             _dbContext = new ToDoListContext(); // Initialize DB context
             RegisterButton.Click += RegisterButton_Click;
-            CancelButton.Click += CancelButton_Click;
+            //CancelButton.Click += CancelButton_Click;
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
@@ -85,10 +85,10 @@ namespace WPFApp.Views
                 Username = username,
                 Email = email,
                 PasswordHash = passwordHash,
-                FullName = fullName,
-                DayOfBirth = dayOfBirth ?? DateTime.MinValue, // Use default if not provided
-                Phone = phone,
-                Role = GetRoleForUser(username)
+                //FullName = fullName,
+                //DayOfBirth = dayOfBirth ?? DateTime.MinValue, // Use default if not provided
+                //Phone = phone,
+                //Role = GetRoleForUser(username)
             };
 
             _dbContext.Users.Add(newUser);
