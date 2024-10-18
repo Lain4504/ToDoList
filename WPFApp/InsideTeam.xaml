@@ -159,7 +159,7 @@
                 </Border>
                 <Button Background="White" Foreground="White" BorderThickness="0" Margin="359,98,538,514" BorderBrush="White" Grid.ColumnSpan="2">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <fa:ImageAwesome Style="{StaticResource UserIcon}"  Width="32" Height="32" Margin="0,20,10,0"/>
+                        <fa:ImageAwesome Style="{StaticResource UserIcon}"  Width="32" Height="32" Margin="0,20,10,0" Foreground="#FF379683"/>
                     </StackPanel>
                 </Button>
                 <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="299" Margin="331,338,0,0" VerticalAlignment="Top" Width="300" Grid.ColumnSpan="2"/>
@@ -175,7 +175,7 @@
             </Border>
             <Button Background="White" Foreground="White" BorderThickness="0" Margin="664,115,249,527" BorderBrush="White" Grid.Column="1">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <fa:ImageAwesome Style="{StaticResource MemberIcon}"  Width="32" Height="32" Margin="0,20,10,0"/>
+                    <fa:ImageAwesome Style="{StaticResource MemberIcon}"  Width="32" Height="32" Margin="0,20,10,0" Foreground="#FF379683"/>
                 </StackPanel>
             </Button>
 

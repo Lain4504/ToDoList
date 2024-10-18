@@ -54,5 +54,9 @@
         <Setter Property="Icon" Value="Group"/>
         <Setter Property="Foreground" Value="White" />
     </Style>
+    <Style x:Key="UserIcon" TargetType="fa:ImageAwesome">
+        <Setter Property="Icon" Value="User"/>
+        <Setter Property="Foreground" Value="White" />
+    </Style>
     
 </ResourceDictionary>
