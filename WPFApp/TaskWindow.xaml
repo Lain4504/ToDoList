@@ -180,7 +180,7 @@
                         </Button>
                     </StackPanel>
 
-                    <TextBlock x:Name="TaskTitleTextBlock" Text="Task Title" FontSize="20" FontWeight="Bold" Margin="0,10,0,10" Foreground="#05396b"/>
+                    <TextBlock x:Name="TaskTitleTextBlock" FontSize="20" FontWeight="Bold" Margin="0,10,0,10" Foreground="#05396b"/>
 
                     <!-- ScrollViewer for Task Description -->
                     <ScrollViewer x:Name="TaskDescriptionScrollViewer"
@@ -197,7 +197,6 @@
                             Margin="0,5" 
                             HorizontalAlignment="Left">
                         <TextBlock x:Name="DueDateTextBlock" 
-                                   Text="Due: 17/12/2024" 
                                    FontSize="14" 
                                    HorizontalAlignment="Left"/>
                     </Border>
@@ -205,8 +204,8 @@
                     <!-- Buttons for Delete, Update, Edit -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10">
                         <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Click="DeleteTaskButton_Click"/>
-                        <Button Content="Update" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White"/>
-                        <Button Content="Complete" Style="{StaticResource CustomButtonStyle}" Background="#44318d" Foreground="White"/>
+                        <Button Content="Update" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White" Click="UpdateTaskButton_Click"/>
+                        <Button Content="Check State" Style="{StaticResource CustomButtonStyle}" Background="#44318d" Foreground="White"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>

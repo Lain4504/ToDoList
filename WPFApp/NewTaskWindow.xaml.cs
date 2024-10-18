@@ -60,12 +60,9 @@ namespace WPFApp
             }
         }
 
-        // Optionally handle the Back button to close the window
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            // Quay về trang chủ hoặc đóng cửa sổ
-            this.Close(); // Nếu bạn chỉ muốn đóng cửa sổ
-                          // Hoặc có thể điều hướng đến trang chủ nếu bạn đang sử dụng Navigation
+            this.Close(); 
         }
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

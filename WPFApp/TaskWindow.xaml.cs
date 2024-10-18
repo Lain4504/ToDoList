@@ -106,6 +106,17 @@ namespace WPFApp
                         NotificationWindow notification = new NotificationWindow("Task deleted successfully!");
                         notification.ShowDialog();
 
+                        // Xóa dữ liệu hiển thị trên Task Viewer
+                        TaskTitleTextBlock.Text = string.Empty; // Xóa tiêu đề task
+                        var taskDescriptionTextBlock = TaskDescriptionScrollViewer.Content as TextBlock;
+                        if (taskDescriptionTextBlock != null)
+                        {
+                            taskDescriptionTextBlock.Text = string.Empty; // Xóa nội dung task
+                        }
+                        DueDateTextBlock.Text = string.Empty; // Xóa ngày hết hạn
+
+                        // Reset ID của task hiện tại về 0
+                        _currentTaskID = 0;
                         // Cập nhật danh sách tasks sau khi xóa
                         LoadTeamTasks(_currentTeamID);
                     }
@@ -134,7 +145,7 @@ namespace WPFApp
                 try
                 {
                     IEnumerable<ToDo> tasks = await _toDoService.GetToDoByTitleAsync(searchTitle,1);
-                    TaskListView.ItemsSource = tasks; // Update the task list view with the search results
+                    TaskListView.ItemsSource = tasks; 
                 }
                 catch (Exception ex)
                 {
@@ -143,7 +154,7 @@ namespace WPFApp
             }
             else
             {
-                LoadTeamTasks(1); // Reload the original task list if the search box is empty
+                LoadTeamTasks(1); 
             }
         }
 
@@ -156,7 +167,26 @@ namespace WPFApp
             {
                 LoadTeamTasks(teamId);
             };
-            newTaskWindow.ShowDialog(); // Open the window as a dialog
+            newTaskWindow.ShowDialog();
+        }
+        private void UpdateTaskButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentTaskID > 0)
+            {
+                int teamId = 1;
+                UpdateTask updateWindow = new UpdateTask(_toDoService, teamId, _currentTaskID);
+                updateWindow.TaskUpdated += (s, args) =>
+                {
+                    LoadTeamTasks(teamId);
+                };
+                updateWindow.ShowDialog();
+            }
+            else
+            {
+                NotificationWindow notification = new NotificationWindow("Please choose a task before prress update.");
+                notification.ShowDialog();
+            }
+            
         }
         private void TaskSearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -166,5 +196,6 @@ namespace WPFApp
                 LoadTeamTasks(1);
             }
         }
+
     }
 }

@@ -15,6 +15,6 @@ namespace Services
         void DeleteToDoForTeam(int teamId, int todoId);
         ToDo GetToDoDetails(int teamId, int todoId);
         Task<IEnumerable<ToDo>> GetToDoByTitleAsync(string title, int teamId);
-
+        Task<bool> IsTaskCompleted(int todoId);
     }
 }

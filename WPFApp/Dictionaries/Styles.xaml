@@ -327,7 +327,6 @@
     </Style>
     <!-- Nav Button -->
     <Style x:Key="TaskManagerNavButton" TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource Nav.Default}" />
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Margin" Value="0 0 0 20"/>
         <Setter Property="Height" Value="40"/>
