@@ -3,177 +3,162 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFApp" 
         xmlns:fa="http://schemas.fontawesome.io/icons/"
-        xmlns:local="clr-namespace:WPFApp"
         mc:Ignorable="d"
-        Title="Team" Height="832" Width="1250"
-        MinWidth="1150" MinHeight="450"
-        WindowStartupLocation="CenterScreen">
+        Title="Team" Height="700" Width="1050"
+        ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" 
+        Background="Transparent" WindowStartupLocation="CenterScreen"
+        FontFamily="{StaticResource Comic Sans MS 400}"
+    >
+    <Window.Resources>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width" Value="8"/>
+            <!-- Độ rộng thanh cuộn -->
+            <Setter Property="Background" Value="Transparent"/>
+            <!-- Màu nền -->
+            <Setter Property="Opacity" Value="0.7"/>
+            <!-- Độ trong suốt -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid>
+                            <Track Name="PART_Track" IsDirectionReversed="true">
+                                <Track.Thumb>
+                                    <Thumb Background="#e3e2de" 
+                                       Margin="0" 
+                                       Cursor="Arrow"/>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="93*"/>
-            <RowDefinition Height="179*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="80"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-        <!--Nav pane-->
-        <Rectangle Fill="{StaticResource AccentDark}" Grid.RowSpan="2"/>
-        <StackPanel Margin="10,15,10,15" Grid.RowSpan="2">
-            <Button Style="{StaticResource TaskManagerNavButton}" />
-            <Viewbox Width="25" Height="25">
-                <fa:ImageAwesome Style="{StaticResource ListIcon}"/>
-            </Viewbox>
-            <Button/>
-            <Button Style="{StaticResource TaskManagerNavButton}" />
-            <Viewbox Width="25" Height="25">
-                <fa:ImageAwesome Style="{StaticResource TickIcon}"/>
-            </Viewbox>
-            <Button/>
-            <Button Style="{StaticResource TaskManagerNavButton}" />
-            <Viewbox Width="25" Height="25">
-                <fa:ImageAwesome Style="{StaticResource TimerIcon}"/>
-            </Viewbox>
-            <Button/>
-        </StackPanel>
-        <!--Task List Background-->
-        <Rectangle Fill="{StaticResource TaskListBackground}"
-            Grid.Column="1" Grid.RowSpan="2"/>
-        <!--Task List Grid-->
-        <Grid Grid.Column="1" Opacity="1" Grid.RowSpan="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="60"/>
-                <RowDefinition Height="35"/>
-                <RowDefinition Height="95*"/>
-                <RowDefinition Height="626*"/>
-            </Grid.RowDefinitions>
-            <!--Task Label-->
-            <Label Style="{StaticResource Heading1}" 
-            Content="List of Teams" 
-            VerticalAlignment="Top"
-            Padding="20 0 0 0"
-            IsHitTestVisible="False" FontSize="65" FontFamily="Arial Rounded MT Bold" FontWeight="Bold" Height="78" Grid.RowSpan="3" Margin="0,24,0,0"/>
-            <!--Add new Task Button-->
-            <Button Style="{StaticResource RoundAccentButton}"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Height="40"
-                Width="40"
-                Margin="132,23,0,0"
-                Command="{Binding IOpenNewWindow}"
-                 Grid.Row="2">
-                <!-- Thêm sự kiện Click -->
-                <!--Icon-->
-                <Viewbox Width="16" Height="16">
-                    <fa:ImageAwesome Style="{StaticResource NewTaskIcon}"/>
-                </Viewbox>
-            </Button>
-            <!--Search Task Bar-->
-            <TextBox x:Name="TaskSearchBox"
-                Style="{StaticResource TaskListSearchBox}"
-                Grid.Row="2"
-                Margin="776,19,49,41"/>
-            <Label IsHitTestVisible="False"
-            Content="Search Teams..."
-            Grid.Row="2"
-            VerticalAlignment="Top"
-            Margin="788,24,-6,0"
-            Foreground="{StaticResource Borders}"
-            Visibility="{Binding Text.IsEmpty, ElementName=TaskSearchBox, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-            <Button Style="{StaticResource SearchButton}"
-                Grid.Row="2"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Margin="0,21,56,0"
-                Padding="10"
-                Background="White"
-                BorderBrush="Transparent"
-                Height="30"
-                Width="30"
-               >
-                <!-- Kết nối sự kiện -->
-                <Viewbox Width="16" Height="16">
-                    <fa:ImageAwesome Style="{StaticResource SearchIcon}"/>
-                </Viewbox>
-            </Button>
-            <Rectangle Fill="{DynamicResource WindowBackground}" Margin="52,82,0,65" Grid.Row="2" HorizontalAlignment="Left" Width="1069" RenderTransformOrigin="1,1" Grid.RowSpan="2"/>
-            <Label IsHitTestVisible="False"
-                Content="Search Teams..."
-                Grid.Row="2"
-                VerticalAlignment="Top"
-                Margin="788,24,-6,0"
-                Foreground="{StaticResource Borders}"
-                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TaskSearchBox}"/>
-            <Label IsHitTestVisible="False"
-                Content="Search Teams..."
-                Grid.Row="2"
-                VerticalAlignment="Top"
-                Margin="788,24,-6,0"
-                Foreground="{StaticResource Borders}"
-                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TaskSearchBox}"/>
-            <Label IsHitTestVisible="False"
-                Content="Search Teams..."
-                Grid.Row="2"
-                VerticalAlignment="Top"
-                Margin="788,24,-6,0"
-                Foreground="{StaticResource Borders}"
-                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TaskSearchBox}"/>
-            <Label IsHitTestVisible="False"
-                Content="Search Teams..."
-                Grid.Row="2"
-                VerticalAlignment="Top"
-                Margin="788,24,-6,0"
-                Foreground="{StaticResource Borders}"
-                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TaskSearchBox}"/>
-            <Label IsHitTestVisible="False"
-                Content="Search Teams..."
-                Grid.Row="2"
-                VerticalAlignment="Top"
-                Margin="788,24,-6,0"
-                Foreground="{StaticResource Borders}"
-                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TaskSearchBox}"/>
-            <Label IsHitTestVisible="False"
-                Content="Search Teams..."
-                Grid.Row="2"
-                VerticalAlignment="Top"
-                Margin="788,24,-6,0"
-                Foreground="{StaticResource Borders}"
-                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TaskSearchBox}"/>
-            <Label IsHitTestVisible="False"
-                Content="Search Teams..."
-                Grid.Row="2"
-                VerticalAlignment="Top"
-                Margin="788,24,-6,0"
-                Foreground="{StaticResource Borders}"
-                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TaskSearchBox}"/>
-            <Label IsHitTestVisible="False"
-                Content="Search Teams..."
-                Grid.Row="2"
-                VerticalAlignment="Top"
-                Margin="788,24,-6,0"
-                Foreground="{StaticResource Borders}"
-                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TaskSearchBox}"/>
-            <Label IsHitTestVisible="False"
-                Content="Search Teams..."
-                Grid.Row="2"
-                VerticalAlignment="Top"
-                Margin="788,24,-6,0"
-                Foreground="{StaticResource Borders}"
-                Visibility="{Binding Text.IsEmpty, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TaskSearchBox}"/>
-            <TextBlock HorizontalAlignment="Left" Height="27" Margin="73,3,0,0" TextWrapping="Wrap" Text="Team Id" VerticalAlignment="Top" Width="77" FontWeight="Bold" Foreground="#FF276810" Grid.Row="3" FontSize="15"/>
-            <TextBlock HorizontalAlignment="Left" Height="27" Margin="242,3,0,0" TextWrapping="Wrap" Text="Team Name" VerticalAlignment="Top" Width="118" FontWeight="Bold" Foreground="#FF276810" Grid.Row="3" FontSize="15"/>
-            <TextBlock HorizontalAlignment="Left" Height="27" Margin="479,3,0,0" TextWrapping="Wrap" Text="Status" VerticalAlignment="Top" Width="76" FontWeight="Bold" Foreground="#FF276810" Grid.Row="3" FontSize="15"/>
-            <TextBlock HorizontalAlignment="Left" Height="27" Margin="621,3,0,0" TextWrapping="Wrap" Text="Admin Id" VerticalAlignment="Top" Width="82" FontWeight="Bold" Grid.Row="3" FontSize="15" Foreground="#FF276810"/>
-            <TextBlock HorizontalAlignment="Left" Height="27" Margin="775,3,0,0" TextWrapping="Wrap" Text="Admin User" VerticalAlignment="Top" Width="100" FontWeight="Bold" Foreground="#FF276810" Grid.Row="3" FontSize="15"/>
-            <TextBlock HorizontalAlignment="Left" Height="27" Margin="969,3,0,0" TextWrapping="Wrap" Text="Action" VerticalAlignment="Top" Width="76" FontWeight="Bold" Foreground="#FF276810" Grid.Row="3" FontSize="15"/>
-            <TextBox x:Name="TaskSearchBox_Copy2"
-                Style="{StaticResource TaskListSearchBox}"
-                Grid.Row="3"
-                Margin="1039,64,71,527"/>
+    <Border Background="#F5F5F5" CornerRadius="10" MouseDown="Border_MouseDown">
+        <Grid>
+            <!-- Define a grid with two columns: Sidebar (1/5) and Main Content (4/5) -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.3*" />
+                <!-- Sidebar -->
+                <ColumnDefinition Width="4*" />
+                <!-- Main Content -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Sidebar Menu -->
+            <Border Background="#E0E0E0" CornerRadius="10,0,0,10" Padding="20" Grid.Column="0" VerticalAlignment="Stretch">
+                <StackPanel Margin="0,20,0,20">
+                    <!-- Task Button with Icon -->
+                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <fa:ImageAwesome Style="{StaticResource TaskICon}"  Width="32" Height="32" Margin="0,0,10,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Bin Button with Icon -->
+                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <fa:ImageAwesome Style="{StaticResource TrashIcon}"  Width="32" Height="32" Margin="0,20,10,0"/>
+
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <!-- Main Content -->
+            <Grid Grid.Column="1" Margin="5,10,10,10">
+                <!-- Define two columns in the main content area -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <!-- Task List Column -->
+                    <ColumnDefinition Width="3*" />
+                    <!-- Task Details Column -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Task List Grid -->
+                <Grid Grid.Column="0" Opacity="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="42"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Team Label -->
+                    <Label Content="List of Teams" 
+                           VerticalAlignment="Center"
+                           Padding="20 0 0 0"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           IsHitTestVisible="False" Height="32"
+                           Foreground="#05396b"/>
+
+                    <!-- Add new Task Button -->
+                    <Button Style="{StaticResource CustomAddButtonStyle}"
+                    HorizontalAlignment="Left"
+                     VerticalAlignment="Top"
+                     Height="32"
+                     Width="35"
+                     Margin="44,10,0,0"
+                      Command="{Binding IOpenNewWindow}"
+                     Click="NewTaskButton_Click" Grid.Row="1">
+                        <fa:ImageAwesome Style="{StaticResource AddIcon}" Width="16" Height="16"/>
+                    </Button>
+
+
+                    <!-- Search Task Bar -->
+                    <TextBox x:Name="TaskSearchBox" TextChanged="TaskSearchBox_TextChanged"
+                             Grid.Row="1"
+                             Margin="587,1,-533,1"
+                             FontSize="14"
+                             Padding="10"
+                             Background="#8de4af"
+                             BorderBrush="#5cdb94"
+                             BorderThickness="1"
+                             Style="{StaticResource RoundedTextBoxStyle}"/>
+
+                    <!-- Placeholder for Search Bar -->
+                    <Label IsHitTestVisible="False"
+                           Content="Search Teams..."
+                           Grid.Row="1"
+                           VerticalAlignment="Center"
+                           Margin="605,0,-565,0"
+                           Foreground="Gray"
+                           Visibility="{Binding Text.IsEmpty, ElementName=TaskSearchBox, Converter={StaticResource BooleanToVisibilityConverter}}" Height="26"/>
+
+                    <!-- Search Button -->
+
+
+                    <!-- List View For Task Items with ScrollViewer -->
+                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="0" Margin="44,68,0,0" Grid.Row="2" VerticalAlignment="Top" Width="874"/>
+                </Grid>
+                <Button
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Bottom"
+                     Padding="0"
+                     Background="Transparent"
+                     BorderBrush="Transparent"
+                     Height="40"
+                     Width="40"
+                     Click="SearchButton_Click" Margin="489,0,0,579" Grid.Column="1">
+                    <Viewbox Width="16" Height="16" Margin="0">
+                        <fa:ImageAwesome Style="{StaticResource SearchIcon}" Width="20" Height="20" Margin="0" />
+                    </Viewbox>
+                </Button>
+                <Border BorderBrush="Black" BorderThickness="1" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="524" Margin="40,126,0,0" VerticalAlignment="Top" Width="882">
+                    <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Height="1" Margin="0,53,0,0" VerticalAlignment="Top" Width="882" Background="#FFBFBFBF"/>
+                </Border>
+
+            </Grid>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="60,152,0,0" TextWrapping="Wrap" Text="Team Id" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="208,152,0,0" TextWrapping="Wrap" Text="Team Name" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="339,152,0,0" TextWrapping="Wrap" Text="Status" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="457,152,0,0" TextWrapping="Wrap" Text="Admin Id" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="611,152,0,0" TextWrapping="Wrap" Text="Admin Name" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="796,152,0,0" TextWrapping="Wrap" Text="Action" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+            <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Click="DeleteTaskButton_Click" Grid.Column="1" Margin="829,209,68,461"/>
+            <Button Content="Update" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White" Grid.Column="1" Margin="742,209,155,461"/>
         </Grid>
-        <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="54" Margin="62,115,0,0" TextWrapping="Wrap" Text="Add" VerticalAlignment="Top" Width="68" FontSize="30" FontWeight="Bold" Foreground="#FF265F1C"/>
-        <Button Grid.Column="1" Margin="52,228,49,50" BorderBrush="#FFABA5A5" Height="1"/>
-    </Grid>
+    </Border>
 </Window>
