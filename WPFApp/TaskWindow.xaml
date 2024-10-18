@@ -1,4 +1,4 @@
-﻿<Window x:Class="WPFApp.MainWindow"
+﻿<Window x:Class="WPFApp.TaskWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPFApp" 
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        Title="MainWindow" Height="700" Width="1050"
+        Title="TaskWindow" Height="700" Width="1050"
         ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" 
         Background="Transparent" WindowStartupLocation="CenterScreen"
         FontFamily="{StaticResource Comic Sans MS 400}"
@@ -206,7 +206,6 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10">
                         <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Click="DeleteTaskButton_Click"/>
                         <Button Content="Update" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White"/>
-                        <Button Content="Edit" Style="{StaticResource CustomButtonStyle}" Background="#8de4af" Foreground="#05396b"/>
                         <Button Content="Complete" Style="{StaticResource CustomButtonStyle}" Background="#44318d" Foreground="White"/>
                     </StackPanel>
                 </StackPanel>

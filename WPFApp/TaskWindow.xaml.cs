@@ -11,18 +11,18 @@ using System.Windows.Input;
 namespace WPFApp
 {
    
-    public partial class MainWindow : Window
+    public partial class TaskWindow : Window
     {
         private readonly IToDoService _toDoService;
 
         // Constructor không tham số
-        public MainWindow() : this(new ToDoService(new ToDoRepository(new ToDoListContext())))
+        public TaskWindow() : this(new ToDoService(new ToDoRepository(new ToDoListContext())))
         {
             InitializeComponent();
         }
 
         // Constructor với tham số
-        public MainWindow(IToDoService toDoService)
+        public TaskWindow(IToDoService toDoService)
         {
             InitializeComponent();
             _toDoService = toDoService ?? throw new ArgumentNullException(nameof(toDoService));
@@ -92,7 +92,7 @@ namespace WPFApp
             {
                 // Hiển thị cửa sổ xác nhận xóa
                 ConfirmationWindow confirmationWindow = new ConfirmationWindow();
-                confirmationWindow.Owner = this; // Thiết lập chủ sở hữu của cửa sổ xác nhận là MainWindow
+                confirmationWindow.Owner = this; // Thiết lập chủ sở hữu của cửa sổ xác nhận là TaskWindow
                 confirmationWindow.ShowDialog(); // Hiển thị cửa sổ dưới dạng dialog
 
                 // Kiểm tra nếu người dùng xác nhận xóa

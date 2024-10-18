@@ -29,4 +29,22 @@
         <Setter Property="Icon" Value="Clipboard"/>
         <Setter Property="Foreground" Value="#379683"/>
     </Style>
+
+        <Style x:Key="NewTaskIcon" TargetType="fa:ImageAwesome">
+            <Setter Property="Icon" Value="Plus" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style x:Key="ListIcon" TargetType="fa:ImageAwesome">
+            <Setter Property="Icon" Value="Tasks"/>
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style x:Key="TickIcon" TargetType="fa:ImageAwesome">
+            <Setter Property="Icon" Value="Group"/>
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+        <Style x:Key="TimerIcon" TargetType="fa:ImageAwesome">
+            <Setter Property="Icon" Value="Recycle"/>
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+
 </ResourceDictionary>
