@@ -121,7 +121,7 @@
                     <Grid>
                         <TextBlock HorizontalAlignment="Left" Height="25" Margin="97,17,0,0" TextWrapping="Wrap" Text="Task" VerticalAlignment="Top" Width="156" FontSize="20" FontWeight="Bold"/>
                         <TextBlock TextWrapping="Wrap" Text="First, add a task that you would like to work on." Width="156" Margin="74,45,10,54" Foreground="#FF9A9A9A"/>
-                        <Button Content="Task Management"  Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Left" Height="26" Margin="75,101,0,0" VerticalAlignment="Top" Width="77" Background="#FF389583" BorderBrush="#FF389583" Foreground="White"/>
+                        <Button Content="Task Management"  Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Left" Height="26" Margin="75,101,0,0" VerticalAlignment="Top" Width="77" Background="#FF389583" BorderBrush="#FF389583" Foreground="White" Click="Button_Click"/>
                     </Grid>
                 </Border>
                 <Button Background="White" Foreground="White" BorderThickness="0" Margin="57,98,263,514" BorderBrush="White">

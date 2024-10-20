@@ -1,32 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataAccessLayer;
+using Repositories;
+using Services;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace WPFApp
 {
-    /// <summary>
-    /// Interaction logic for InsideTeam.xaml
-    /// </summary>
     public partial class InsideTeam : Window
     {
-        public InsideTeam()
+        public int TeamId { get; private set; }
+
+        public InsideTeam(
+            //int teamId
+            )
         {
             InitializeComponent();
+            TeamId = 1; // Khởi tạo teamId từ tham số truyền vào
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            // Mở cửa sổ TaskWindow và truyền teamId
+            TaskWindow taskWindow = new TaskWindow(new ToDoService(new ToDoRepository(new ToDoListContext())), TeamId);
+            taskWindow.Show();
         }
     }
 }
