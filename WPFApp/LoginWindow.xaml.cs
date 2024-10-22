@@ -10,6 +10,7 @@ namespace WPFApp.Views
     public partial class LoginWindow : Window
     {
         private readonly ToDoListContext _dbContext;
+        private bool _hasShownError;
 
         public LoginWindow()
         {
@@ -18,6 +19,8 @@ namespace WPFApp.Views
 
             // Event handlers for the buttons
             LoginButton.Click += LoginButton_Click;
+            RegisterButton.Click += RegisterButton_Click;
+            _hasShownError = false; // Initialize the flag
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -25,21 +28,16 @@ namespace WPFApp.Views
             string username = UsernameTextBox.Text.Trim();
             string password = PasswordBox.Password;
 
-            // Validate login using the database
             if (ValidateLogin(username, password))
             {
                 MessageBox.Show("Login successful!");
-                // Navigate to the main application window (to be implemented)
+                OpenTaskWindow();
             }
             else
             {
                 MessageBox.Show("Invalid username or password. Please try again.");
+                _hasShownError = true;
             }
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close(); // Close the login window
         }
 
         #region Helper Methods
@@ -49,17 +47,16 @@ namespace WPFApp.Views
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 MessageBox.Show("Username or password cannot be empty.");
+                _hasShownError = true;
                 return false;
             }
 
-            // Hash the entered password to compare with the stored password hash
             string passwordHash = HashPassword(password);
 
-            // Find user by username and password hash
             var user = _dbContext.Users
                 .FirstOrDefault(u => u.Username == username && u.PasswordHash == passwordHash);
 
-            return user != null; // Returns true if user exists, false otherwise
+            return user != null;
         }
 
         private string HashPassword(string password)
@@ -74,6 +71,24 @@ namespace WPFApp.Views
             }
         }
 
+        private void OpenTaskWindow()
+        {
+            TaskWindow taskWindow = new TaskWindow();
+            taskWindow.Show();
+            this.Close(); 
+        }
+
+        private void RegisterButton_Click(object sender, RoutedEventArgs e)
+        {
+            RegisterWindow registerWindow = new RegisterWindow();
+            registerWindow.Show();
+            this.Close();
+        }
+
         #endregion
+
+        private void UsernameTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+        }
     }
 }
