@@ -1,8 +1,6 @@
 ﻿using BusinessObjects;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +21,15 @@ namespace Repositories
             return await _context.Users
                 .Include(u => u.Teams)
                 .FirstOrDefaultAsync(u => u.UserId == userId);
+        }
+
+     
+        public List<Team> GetTeamsForUser(int userId)
+        {
+            return _context.Users
+                .Where(user => user.UserId == userId)
+                .SelectMany(user => user.Teams)
+                .ToList();
         }
     }
 }

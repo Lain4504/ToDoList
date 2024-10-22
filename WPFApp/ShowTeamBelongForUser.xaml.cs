@@ -1,28 +1,58 @@
-﻿using System.Windows;
-using WPFApp.ViewModel;
+﻿using Repositories;
+using System.Windows;
+using DataAccessLayer;
+using System.Collections.Generic;
+using BusinessObjects;
 
 namespace WPFApp
 {
     public partial class ShowTeamBelongForUser : Window
     {
-        private UserViewModel userViewModel;
+        private readonly UserRepository _userRepository;
+        private Team _selectedTeam;
 
-        public ShowTeamBelongForUser()
+        public ShowTeamBelongForUser(int userId)
         {
             InitializeComponent();
-            userViewModel = new UserViewModel();
-            DataContext = userViewModel; // Set the DataContext to the instance
+            var context = new ToDoListContext();
+            _userRepository = new UserRepository(context);
+            LoadUserTeams(userId);
         }
 
-        private async void LoadTeamsButton_Click(object sender, RoutedEventArgs e)
+        private void LoadUserTeams(int userId)
         {
-            int userId = 1; // Replace with the actual user ID or get it from user input
-            await userViewModel.LoadUserTeams(userId);
+            var teams = _userRepository.GetTeamsForUser(userId);
+            TeamsListBox.ItemsSource = teams;
         }
 
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        private void TeamsListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            this.Close(); // Logic to go back or close the window
+            if (TeamsListBox.SelectedItem is Team selectedTeam)
+            {
+                _selectedTeam = selectedTeam;
+                ViewTasksButton.IsEnabled = _selectedTeam != null;
+            }
+            else
+            {
+                _selectedTeam = null;
+                ViewTasksButton.IsEnabled = false;
+            }
+        }
+
+        private void ViewTasksButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedTeam != null)
+            {
+                var tasksWindow = new ShowTasksWindow(_selectedTeam);
+                tasksWindow.Show();
+            }
+        }
+
+        
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
