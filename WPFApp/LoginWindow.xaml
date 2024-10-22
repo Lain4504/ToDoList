@@ -119,8 +119,8 @@
 
             <!-- Buttons -->
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <Button Name="LoginButton" Content="Login" Style="{StaticResource RoundedButtonStyle}" Background="#8EE4AF" Foreground="Black" Width="100" Height="40" Click="LoginButton_Click" Margin="0,0,10,0" FontSize="16"/>
-                <Button Name="RegisterButton" Content="Register" Style="{StaticResource RoundedButtonStyle}" Background="#389583" Foreground="White" Width="100" Height="40" Click="RegisterButton_Click" FontSize="16"/>
+                <Button Name="LoginButton" Content="Login" Style="{StaticResource RoundedButtonStyle}" Background="#8EE4AF" Foreground="Black" Width="100" Height="40" Click="LoginButton_Click" Margin="0,0,10,0" FontSize="16" Cursor="Hand"/>
+                <Button Name="RegisterButton" Content="Register" Style="{StaticResource RoundedButtonStyle}" Background="#389583" Foreground="White" Width="100" Height="40" Click="RegisterButton_Click" FontSize="16" Cursor="Hand"/>
             </StackPanel>
         </Grid>
     </Border>
