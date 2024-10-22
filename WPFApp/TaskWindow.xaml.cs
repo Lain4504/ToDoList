@@ -10,24 +10,26 @@ using System.Windows.Input;
 
 namespace WPFApp
 {
-   
     public partial class TaskWindow : Window
     {
         private readonly IToDoService _toDoService;
+        private int _currentTaskID;
+        private int _currentTeamID;
 
-        // Constructor không tham số
-        public TaskWindow() : this(new ToDoService(new ToDoRepository(new ToDoListContext())))
+        // Constructor không tham số, khởi tạo với teamId mặc định là 1
+        public TaskWindow() : this(new ToDoService(new ToDoRepository(new ToDoListContext())), 1)
         {
-            InitializeComponent();
         }
 
-        // Constructor với tham số
-        public TaskWindow(IToDoService toDoService)
+        // Constructor với tham số cho service và teamId
+        public TaskWindow(IToDoService toDoService, int teamId)
         {
             InitializeComponent();
             _toDoService = toDoService ?? throw new ArgumentNullException(nameof(toDoService));
-            LoadTeamTasks(1); 
+            _currentTeamID = teamId; // Lưu teamId
+            LoadTeamTasks(_currentTeamID); // Tải danh sách tác vụ cho teamId đã được truyền vào
         }
+
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -35,6 +37,7 @@ namespace WPFApp
                 this.DragMove();
             }
         }
+
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized; // Giảm cửa sổ
@@ -65,8 +68,6 @@ namespace WPFApp
                 MessageBox.Show($"Error loading tasks: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        private int _currentTaskID;
-        private int _currentTeamID;
 
         private void TaskListItem_TaskSelected(object sender, TaskSelectedEventArgs e)
         {
@@ -144,8 +145,8 @@ namespace WPFApp
             {
                 try
                 {
-                    IEnumerable<ToDo> tasks = await _toDoService.GetToDoByTitleAsync(searchTitle,1);
-                    TaskListView.ItemsSource = tasks; 
+                    IEnumerable<ToDo> tasks = await _toDoService.GetToDoByTitleAsync(searchTitle, _currentTeamID);
+                    TaskListView.ItemsSource = tasks;
                 }
                 catch (Exception ex)
                 {
@@ -154,48 +155,84 @@ namespace WPFApp
             }
             else
             {
-                LoadTeamTasks(1); 
+                LoadTeamTasks(_currentTeamID);
             }
         }
 
         private void NewTaskButton_Click(object sender, RoutedEventArgs e)
         {
+            NewTaskWindow newTaskWindow = new NewTaskWindow(_toDoService, _currentTeamID);
 
-            int teamId = 1;
-            NewTaskWindow newTaskWindow = new NewTaskWindow(_toDoService, teamId);
+            // Lắng nghe sự kiện TaskAdded để cập nhật giao diện task detail
             newTaskWindow.TaskAdded += (s, args) =>
             {
-                LoadTeamTasks(teamId);
+                var taskArgs = args as TaskAddedEventArgs;
+                if (taskArgs != null)
+                {
+                    var newTask = taskArgs.NewTask;
+
+                    // Cập nhật task detail UI
+                    TaskTitleTextBlock.Text = newTask.Title;
+                    var taskDescriptionTextBlock = TaskDescriptionScrollViewer.Content as TextBlock;
+                    if (taskDescriptionTextBlock != null)
+                    {
+                        taskDescriptionTextBlock.Text = newTask.Description;
+                    }
+                    DueDateTextBlock.Text = $"Due: {newTask.DueDate}";
+                    _currentTaskID = newTask.Id;
+                    _currentTeamID = _currentTeamID; // Giữ teamId hiện tại
+                }
+
+                // Tải lại danh sách tasks
+                LoadTeamTasks(_currentTeamID);
             };
+
             newTaskWindow.ShowDialog();
         }
+
         private void UpdateTaskButton_Click(object sender, RoutedEventArgs e)
         {
             if (_currentTaskID > 0)
             {
-                int teamId = 1;
-                UpdateTask updateWindow = new UpdateTask(_toDoService, teamId, _currentTaskID);
+                UpdateTask updateWindow = new UpdateTask(_toDoService, _currentTeamID, _currentTaskID);
                 updateWindow.TaskUpdated += (s, args) =>
                 {
-                    LoadTeamTasks(teamId);
+                    LoadTeamTasks(_currentTeamID);
+                    var updateTask = _toDoService.GetToDoDetails(_currentTeamID, _currentTaskID);
+                    if (updateTask != null)
+                    {
+                        TaskTitleTextBlock.Text = updateTask.Title;
+                        var taskDescriptionBlock = TaskDescriptionScrollViewer.Content as TextBlock;
+                        if (taskDescriptionBlock != null)
+                        {
+                            taskDescriptionBlock.Text = updateTask.Description;
+                        }
+                        DueDateTextBlock.Text = $"Due: {updateTask.DueDate}";
+                    }
                 };
                 updateWindow.ShowDialog();
             }
             else
             {
-                NotificationWindow notification = new NotificationWindow("Please choose a task before prress update.");
+                NotificationWindow notification = new NotificationWindow("Please choose a task before pressing update.");
                 notification.ShowDialog();
             }
-            
         }
+
         private void TaskSearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             string searchTitle = TaskSearchBox.Text.Trim();
             if (string.IsNullOrEmpty(searchTitle))
             {
-                LoadTeamTasks(1);
+                LoadTeamTasks(_currentTeamID);
             }
         }
 
+        private void BinButton_Click(object sender, RoutedEventArgs e)
+        {
+            Trash trash = new Trash();
+            trash.Show();
+            this.Close();
+        }
     }
 }

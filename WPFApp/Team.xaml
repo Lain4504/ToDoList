@@ -37,7 +37,7 @@
         </Style>
     </Window.Resources>
 
-    <Border Background="#F5F5F5" CornerRadius="10" MouseDown="Border_MouseDown">
+    <Border Background="#F5F5F5" CornerRadius="10">
         <Grid>
             <!-- Define a grid with two columns: Sidebar (1/5) and Main Content (4/5) -->
             <Grid.ColumnDefinitions>
@@ -102,13 +102,13 @@
                      Width="35"
                      Margin="44,10,0,0"
                       Command="{Binding IOpenNewWindow}"
-                     Click="NewTaskButton_Click" Grid.Row="1">
+                      Grid.Row="1">
                         <fa:ImageAwesome Style="{StaticResource AddIcon}" Width="16" Height="16"/>
                     </Button>
 
 
                     <!-- Search Task Bar -->
-                    <TextBox x:Name="TaskSearchBox" TextChanged="TaskSearchBox_TextChanged"
+                    <TextBox x:Name="TaskSearchBox"
                              Grid.Row="1"
                              Margin="587,1,-533,1"
                              FontSize="14"
@@ -141,7 +141,7 @@
                      BorderBrush="Transparent"
                      Height="40"
                      Width="40"
-                     Click="SearchButton_Click" Margin="489,0,0,579" Grid.Column="1">
+                     Margin="489,0,0,579" Grid.Column="1">
                     <Viewbox Width="16" Height="16" Margin="0">
                         <fa:ImageAwesome Style="{StaticResource SearchIcon}" Width="20" Height="20" Margin="0" />
                     </Viewbox>
@@ -157,8 +157,8 @@
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="457,152,0,0" TextWrapping="Wrap" Text="Admin Id" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="611,152,0,0" TextWrapping="Wrap" Text="Admin Name" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="796,152,0,0" TextWrapping="Wrap" Text="Action" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
-            <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Click="DeleteTaskButton_Click" Grid.Column="1" Margin="829,209,68,461"/>
-            <Button Content="Update" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White" Grid.Column="1" Margin="742,209,155,461"/>
+            <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Grid.Column="1" Margin="829,209,68,461"/>
+            <Button Content="View Detail" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White" Grid.Column="1" Margin="742,209,155,461"/>
         </Grid>
     </Border>
 </Window>
