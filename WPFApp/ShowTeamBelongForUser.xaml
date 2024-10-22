@@ -10,9 +10,33 @@
 
     <Border BorderThickness="2" BorderBrush="Transparent" Background="#D1E8E2" CornerRadius="10">
         <Grid>
-            <Label Content="Teams Belonging to User" 
+            <Label Content="Enter User ID:" 
                    HorizontalAlignment="Left" 
                    Margin="29,10,0,0" 
+                   VerticalAlignment="Top" 
+                   FontSize="20" 
+                   Foreground="#2c3532" 
+                   FontWeight="Bold"/>
+
+            <TextBox x:Name="UserIdTextBox" 
+                      HorizontalAlignment="Left" 
+                      Margin="214,20,0,0" 
+                      VerticalAlignment="Top" 
+                      Width="273" 
+                      FontSize="16"/>
+
+            <Button x:Name="LoadTeamsButton" 
+                    Content="Load Teams" 
+                    HorizontalAlignment="Left" 
+                    Margin="528,24,0,0" 
+                    VerticalAlignment="Top" 
+                    Background="#389583" 
+                    Foreground="White" 
+                    Click="LoadTeamsButton_Click"/>
+
+            <Label Content="Teams Belonging to User" 
+                   HorizontalAlignment="Left" 
+                   Margin="29,50,0,0" 
                    VerticalAlignment="Top" 
                    FontSize="30" 
                    Foreground="#2c3532" 
@@ -21,7 +45,7 @@
             <Rectangle HorizontalAlignment="Left" 
                        Height="369" 
                        Width="578" 
-                       Margin="20,65,0,0" 
+                       Margin="20,95,0,0" 
                        Stroke="Black" 
                        VerticalAlignment="Top" 
                        Fill="#E0E0E0" 
@@ -32,7 +56,7 @@
                      ItemsSource="{Binding Teams}" 
                      DisplayMemberPath="Name" 
                      HorizontalAlignment="Left" 
-                     Margin="29,79,0,0" 
+                     Margin="29,110,0,0" 
                      VerticalAlignment="Top" 
                      Width="400" 
                      Height="300" 
@@ -41,22 +65,13 @@
                      FontSize="16"
                      SelectionChanged="TeamsListBox_SelectionChanged"/>
 
-            <Button x:Name="LoadTeamsButton" 
-                    Content="Load Teams" 
-                    HorizontalAlignment="Left" 
-                    Margin="701,389,0,0" 
-                    VerticalAlignment="Top" 
-                    Background="#389583" 
-                    Foreground="White" 
-                    Click="LoadTeamsButton_Click"/>
-
             <Button x:Name="ViewTasksButton" 
                     Content="View Tasks" 
                     HorizontalAlignment="Left" 
-                    Margin="701,350,0,0" 
+                    Margin="646,24,0,0" 
                     VerticalAlignment="Top" 
-                    Background="#389583" 
-                    Foreground="White" 
+                    Background="White" 
+                    Foreground="#389583"
                     IsEnabled="False" 
                     Click="ViewTasksButton_Click"/>
 
@@ -67,7 +82,7 @@
                     VerticalAlignment="Top" 
                     Background="#ab3b61" 
                     Foreground="White" 
-                    Click="BackButton_Click"/>
+                    Click="BackButton_Click" Width="72"/>
         </Grid>
     </Border>
 </Window>

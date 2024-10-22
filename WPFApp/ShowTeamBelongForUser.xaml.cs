@@ -39,16 +39,19 @@ namespace WPFApp
             }
         }
 
-        private void ViewTasksButton_Click(object sender, RoutedEventArgs e)
+        private void LoadTeamsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_selectedTeam != null)
+            if (int.TryParse(UserIdTextBox.Text, out int userId))
             {
-                var tasksWindow = new ShowTasksWindow(_selectedTeam);
-                tasksWindow.Show();
+                LoadUserTeams(userId);
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid User ID.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
-        
+
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {

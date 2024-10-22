@@ -16,7 +16,7 @@ namespace WPFApp
 
         private void LoadTasks()
         {
-            var tasks = _team.ToDos; 
+            var tasks = _team.ToDos;
             TasksListBox.ItemsSource = _team.ToDos;
         }
 
