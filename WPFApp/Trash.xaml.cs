@@ -27,6 +27,11 @@ namespace WPFApp
         {
             DeletedTasks.Remove(task);
         }
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
     }
 
     public class DeletedTask
