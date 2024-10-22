@@ -234,5 +234,28 @@ namespace WPFApp
             trash.Show();
             this.Close();
         }
+        private void CheckStateButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentTaskID > 0)
+            {
+                var updateCompletionWindow = new UpdateTaskCompletion(_toDoService, _currentTeamID, _currentTaskID);
+
+                // Subscribe to the event
+                updateCompletionWindow.TaskCompletionUpdated += (s, args) =>
+                {
+                    LoadTeamTasks(_currentTeamID); // Reload the task list
+                };
+
+                updateCompletionWindow.ShowDialog();
+            }
+            else
+            {
+                NotificationWindow notification = new NotificationWindow("Please select a task before checking the state.");
+                notification.ShowDialog();
+            }
+        }
+
+
+
     }
 }
