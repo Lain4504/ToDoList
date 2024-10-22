@@ -28,17 +28,28 @@ namespace WPFApp.Views
             string username = UsernameTextBox.Text.Trim();
             string password = PasswordBox.Password;
 
+            bool isNotificationOpen = Application.Current.Windows.OfType<NotificationWindow>().Any();
+
             if (ValidateLogin(username, password))
             {
-                MessageBox.Show("Login successful!");
+                if (!isNotificationOpen)
+                {
+                    NotificationWindow successNotification = new NotificationWindow("Login successful!");
+                    successNotification.Show();
+                }
                 OpenTaskWindow();
             }
             else
             {
-                MessageBox.Show("Invalid username or password. Please try again.");
-                _hasShownError = true;
+                if (!isNotificationOpen)
+                {
+                    NotificationWindow errorNotification = new NotificationWindow("Invalid username or password. Please try again.");
+                    errorNotification.Show();
+                    _hasShownError = true;
+                }
             }
         }
+
 
         #region Helper Methods
 
@@ -80,9 +91,18 @@ namespace WPFApp.Views
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is RegisterWindow)
+                {
+                    window.Activate(); 
+                    return; 
+                }
+            }
+
             RegisterWindow registerWindow = new RegisterWindow();
-            registerWindow.Show();
             this.Close();
+            registerWindow.Show();
         }
 
         #endregion

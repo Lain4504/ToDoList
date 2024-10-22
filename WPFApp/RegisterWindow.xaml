@@ -122,9 +122,9 @@
                 <TextBox Name="PhoneTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="30"/>
             </StackPanel>
 
-            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
-                <Button Name="RegisterButton" Content="Register" Style="{StaticResource RoundedButtonStyle}" Background="#8EE4AF" Margin="0,0,10,0"/>
-                <Button Name="BackToLoginButton" Content="Back to Login" Style="{StaticResource RoundedButtonStyle}" Width="120"/>
+            <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10" IsEnabled="True">
+                <Button Name="RegisterButton" Content="Register" Style="{StaticResource RoundedButtonStyle}" Background="#8EE4AF" Margin="0,0,10,0" Cursor="Hand"/>
+                <Button Name="BackToLoginButton" Content="Back to Login" Style="{StaticResource RoundedButtonStyle}" Width="120" Click="BackToLoginButton_Click" Panel.ZIndex="25" Cursor="Hand"/>
             </StackPanel>
         </Grid>
     </Border>
