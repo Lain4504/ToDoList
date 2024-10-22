@@ -4,13 +4,15 @@ namespace Repositories
 {
     public interface ITeamRepository
     {
+        User GetUserById(int userId);
         Team GetTeamById(int teamId);
         IEnumerable<Team> GetAll();
-        void AddTeam(Team team);
+        void CreateTeam(Team team);
         void UpdateTeam(Team team);
         void DeleteTeam(int teamId);
-        IEnumerable<User> GetMembers(int teamId);
-        void AddMember(Team team, User user);
-        void RemoveMember(Team team, User user);
+        Task<bool> IsAdminUser(int userId);
+        Task UpdateTeamStatusAsync(int teamId, TeamStatus newStatus);
+        Task<IEnumerable<User>> GetMembersByTeamIdAsync(int teamId);
+        Task<IEnumerable<Team>> GetTeamByNameAsync(string name);
     }
 }
