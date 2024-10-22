@@ -1,5 +1,7 @@
 ﻿using BusinessObjects;
 using DataAccessLayer;
+using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
@@ -15,7 +17,8 @@ namespace WPFApp.Views
             InitializeComponent();
             _dbContext = new ToDoListContext(); // Initialize DB context
             RegisterButton.Click += RegisterButton_Click;
-            //CancelButton.Click += CancelButton_Click;
+            // Uncomment if you have a Cancel button
+            // CancelButton.Click += CancelButton_Click;
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
@@ -58,7 +61,8 @@ namespace WPFApp.Views
 
         private bool ValidateInputs(string username, string email, string password, string confirmPassword)
         {
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email) ||
+                string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
             {
                 MessageBox.Show("Please fill in all required fields.");
                 return false;
@@ -85,10 +89,10 @@ namespace WPFApp.Views
                 Username = username,
                 Email = email,
                 PasswordHash = passwordHash,
-                //FullName = fullName,
-                //DayOfBirth = dayOfBirth ?? DateTime.MinValue, // Use default if not provided
-                //Phone = phone,
-                //Role = GetRoleForUser(username)
+                FullName = fullName,
+                DayOfBirth = dayOfBirth ?? DateTime.MinValue, // Use default if not provided
+                Phone = phone,
+                Role = GetRoleForUser(username)
             };
 
             _dbContext.Users.Add(newUser);
@@ -113,7 +117,7 @@ namespace WPFApp.Views
 
                 foreach (byte b in bytes)
                 {
-                    builder.Append(b.ToString("x2"));
+                    builder.Append(b.ToString("x2")); // Convert byte to hexadecimal string
                 }
 
                 return builder.ToString();

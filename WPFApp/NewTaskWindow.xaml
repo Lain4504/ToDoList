@@ -4,9 +4,9 @@
         Title="NewTaskWindow" Height="490" Width="830"
         AllowsTransparency="True" 
         Background="Transparent" 
-        ResizeMode="NoResize"  
         FontFamily="{StaticResource Comic Sans MS 400}" 
-        WindowStyle="None">
+        WindowStyle="None"
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
 
     <Border BorderThickness="2" BorderBrush="Transparent" Background="#D1E8E2" CornerRadius="10">
         <Grid>

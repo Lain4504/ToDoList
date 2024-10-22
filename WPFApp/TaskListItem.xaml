@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:WPFApp"
              mc:Ignorable="d" 
              d:DesignHeight="145" d:DesignWidth="435"
-             MouseDown="TaskItem_MouseDown">
+             MouseDown="TaskItem_MouseDown"
+            ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Border Background="#85DC" 
             CornerRadius="10" 
             BorderBrush="#c38d9d" 
