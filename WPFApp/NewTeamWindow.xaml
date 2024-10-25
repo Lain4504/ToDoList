@@ -1,8 +1,8 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="WPFApp.Addmember"
-        Title="AddMember" Height="250" Width="400"
+        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="WPFApp.NewTeamWindow"
+        Title="NewTeamWindow" Height="250" Width="400"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent"
         FontFamily="{StaticResource Comic Sans MS 400}">
@@ -18,7 +18,7 @@
             </Border.Effect>
             <Grid>
                 <!-- Title -->
-                <Label Content="Add Member" 
+                <Label Content="Create a team" 
                        HorizontalAlignment="Center" 
                        VerticalAlignment="Top" 
                        FontSize="22" 
@@ -36,13 +36,11 @@
                            TextAlignment="Center"/>
 
                 <!-- Add button -->
-                <Button Content="Add" 
-                        Width="80"
-                        Height="32"
-                        HorizontalAlignment="Left" 
+                <Button Content="Add"
+                        Height="32" 
                         VerticalAlignment="Bottom" 
-                        Margin="190,0,0,-10" 
-                        Click="CloseButton_Click"
+                        Margin="190,0,88,-10" 
+                        Click="SaveButton_Click"
                         Background="#4CAF50"
                         Foreground="White"
                         FontWeight="Bold"
@@ -56,19 +54,19 @@
                     HorizontalAlignment="Left" 
                     VerticalAlignment="Bottom" 
                     Margin="275,0,0,-10" 
-                    Click="CloseButton_Click"
+                    Click="CancelButton_Click"
                     Background="#FFACACAC"
                     Foreground="White"
                     FontWeight="Bold"
                     BorderThickness="0"
                     Cursor="Hand"
                     Style="{StaticResource FlatButtonStyle}"/>
-                <Label Content="User Id:" HorizontalAlignment="Left" Height="33" Margin="10,44,0,0" VerticalAlignment="Top" Width="77"/>
-                <Label Content="User Name:" HorizontalAlignment="Left" Height="33" Margin="10,94,0,0" VerticalAlignment="Top" Width="77"/>
-                <Label Content="Email:" HorizontalAlignment="Left" Height="33" Margin="10,146,0,0" VerticalAlignment="Top" Width="77"/>
-                <TextBox HorizontalAlignment="Left" Height="24" Margin="87,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="238" BorderBrush="#FF2C3532" TextChanged="TextBox_TextChanged"/>
-                <TextBox HorizontalAlignment="Left" Height="24" Margin="87,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="238" BorderBrush="#FF2C3532" TextChanged="TextBox_TextChanged"/>
-                <TextBox HorizontalAlignment="Left" Height="24" Margin="87,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="238" BorderBrush="#FF2C3532" TextChanged="TextBox_TextChanged"/>
+                <Label Content="Team Name:" HorizontalAlignment="Left" Height="33" Margin="10,44,0,0" VerticalAlignment="Top" Width="77"/>
+                <Label Content="Status:" HorizontalAlignment="Left" Height="33" Margin="10,94,0,0" VerticalAlignment="Top" Width="77"/>
+                <Label Content="Admin Id" HorizontalAlignment="Left" Height="33" Margin="10,146,0,0" VerticalAlignment="Top" Width="77"/>
+                <TextBox x:Name="TeamNameTextBox" HorizontalAlignment="Left" Height="24" Margin="87,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="238" BorderBrush="#FF2C3532" />
+                <TextBox x:Name="StatusTextBox" HorizontalAlignment="Left" Height="24" Margin="87,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="238" BorderBrush="#FF2C3532" />
+                <TextBox x:Name="AdminIdTextBox" HorizontalAlignment="Left" Height="24" Margin="87,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="238" BorderBrush="#FF2C3532" />
             </Grid>
         </Border>
     </Grid>

@@ -1,4 +1,4 @@
-using BusinessObjects;
+﻿using BusinessObjects;
 using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,6 +13,14 @@ namespace Repositories
         {
             _context = context;
         }
+        public IEnumerable<User> GetUsersInTeam(int teamId)
+        {
+            var team = _context.Teams
+            .Include(t => t.Members)
+            .FirstOrDefault(t => t.TeamId == teamId);
+            return team.Members;
+        }
+     
         public User GetUserById(int userId)
         {
            return _context.Users.FirstOrDefault(t => t.UserId == userId);
@@ -25,7 +33,21 @@ namespace Repositories
         {
             return _context.Teams.ToList();
         }
-         public void CreateTeam(Team team)
+
+        public IEnumerable<User> GetUsersOutTeam(int teamId)
+        {
+            var usersInTeam = _context.Teams
+                .Where(t => t.TeamId == teamId)
+                .SelectMany(t => t.Members) 
+                .ToList();
+
+            var allUsers = _context.Users.ToList();
+            var usersOutTeam = allUsers.Where(u => !usersInTeam.Any(member => member.UserId == u.UserId));
+
+            return usersOutTeam;
+        }
+
+        public void CreateTeam(Team team)
          {
             _context.Teams.Add(team);
             _context.SaveChanges();
@@ -64,10 +86,11 @@ namespace Repositories
             }
             return team.AdminUser.isAdmin;
         }
-        public async Task<IEnumerable<User>> GetMembersByTeamIdAsync(int teamId)
+       
+        public async Task<IEnumerable<User>> GetMembersByNameAsync(int teamId, string name)
         {
             var team = await _context.Teams.Include(t => t.Members).FirstOrDefaultAsync(t => t.TeamId == teamId);
-            return team.Members;
+            return team.Members.Where(u => u.FullName.Contains(name, StringComparison.OrdinalIgnoreCase));
         }
         public async Task<IEnumerable<Team>> GetTeamByNameAsync(string name)
         {

@@ -16,6 +16,23 @@ namespace Services
         {
             _teamRepository = teamRepository;
         }
+        public IEnumerable<User> GetUsersInTeam(int teamId)
+        {
+            var team = _teamRepository.GetTeamById(teamId);
+            if (team == null)
+            {
+                throw new Exception("Team not found");
+            }
+            return _teamRepository.GetUsersInTeam(teamId);
+        }
+        public IEnumerable<User> GetUsersOutTeam(int teamId)
+        {
+            return _teamRepository.GetUsersOutTeam(teamId);
+        }
+        public User GetUserById(int teamId)
+        {
+            return _teamRepository.GetUserById(teamId);
+        }
         public Team GetTeamById(int teamId)
         {
             return _teamRepository.GetTeamById(teamId);
@@ -54,13 +71,6 @@ namespace Services
         {
             _teamRepository.DeleteTeam(teamId);
         }
-        public async Task<IEnumerable<User>> GetMembersByTeam(int teamId)
-        {
-            var team = _teamRepository.GetTeamById(teamId);
-            if (team == null)
-                throw new Exception("Team not found");
-            return await _teamRepository.GetMembersByTeamIdAsync(teamId);
-        }
         public void AddMemberInTeam(int teamId, User user)
         {
             if (user == null)
@@ -73,8 +83,9 @@ namespace Services
             team.Members.Add(user);
             _teamRepository.UpdateTeam(team);
         }
-        public void RemoveMemberFromTeam(int teamId, User user)
+        public void RemoveMemberFromTeam(int teamId, int userId)
         {
+            var user = _teamRepository.GetUserById(userId);
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
             var team = _teamRepository.GetTeamById(teamId);
@@ -93,6 +104,13 @@ namespace Services
         public async Task<bool> IsAdminUserAsync(int userId)
         {
             return await _teamRepository.IsAdminUser(userId);
+        }
+        public async Task<IEnumerable<User>> GetUserByNameAsync(int teamId, string name)
+        {
+            var team = _teamRepository.GetTeamById(teamId);
+            if (team == null)
+                throw new Exception("Team not found");
+            return await _teamRepository.GetMembersByNameAsync(teamId,name);
         }
         public async Task<IEnumerable<Team>> GetTeamByNameAsync(string name)
         {
