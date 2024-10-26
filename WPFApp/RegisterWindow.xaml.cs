@@ -1,5 +1,7 @@
 ﻿using BusinessObjects;
 using DataAccessLayer;
+using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
@@ -13,9 +15,25 @@ namespace WPFApp.Views
         public RegisterWindow()
         {
             InitializeComponent();
-            _dbContext = new ToDoListContext(); // Initialize DB context
+            _dbContext = new ToDoListContext();
             RegisterButton.Click += RegisterButton_Click;
-            //CancelButton.Click += CancelButton_Click;
+            BackToLoginButton.Click += BackToLoginButton_Click;
+        }
+        private void BackToLoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is LoginWindow loginWindow)
+                {
+                    loginWindow.Activate();
+                    this.Close();
+                    return;
+                }
+            }
+
+            LoginWindow newLoginWindow = new LoginWindow();
+            newLoginWindow.Show();
+            this.Close();
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
@@ -41,7 +59,12 @@ namespace WPFApp.Views
             // Check if user exists
             if (IsUserExists(username, email))
             {
-                MessageBox.Show("Username or Email already exists.");
+                // Check if a NotificationWindow is already open
+                if (!Application.Current.Windows.OfType<NotificationWindow>().Any())
+                {
+                    NotificationWindow errorNotification = new NotificationWindow("Username or Email already exists.");
+                    errorNotification.Show();
+                }
                 return;
             }
 
@@ -58,15 +81,26 @@ namespace WPFApp.Views
 
         private bool ValidateInputs(string username, string email, string password, string confirmPassword)
         {
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email) ||
+                string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
             {
-                MessageBox.Show("Please fill in all required fields.");
+                // Show notification for empty fields
+                if (!Application.Current.Windows.OfType<NotificationWindow>().Any())
+                {
+                    NotificationWindow emptyFieldNotification = new NotificationWindow("Please fill in all required fields.");
+                    emptyFieldNotification.Show();
+                }
                 return false;
             }
 
             if (password != confirmPassword)
             {
-                MessageBox.Show("Passwords do not match.");
+                // Show notification for password mismatch
+                if (!Application.Current.Windows.OfType<NotificationWindow>().Any())
+                {
+                    NotificationWindow passwordMismatchNotification = new NotificationWindow("Passwords do not match.");
+                    passwordMismatchNotification.Show();
+                }
                 return false;
             }
 
@@ -85,16 +119,24 @@ namespace WPFApp.Views
                 Username = username,
                 Email = email,
                 PasswordHash = passwordHash,
-                //FullName = fullName,
-                //DayOfBirth = dayOfBirth ?? DateTime.MinValue, // Use default if not provided
-                //Phone = phone,
-                //Role = GetRoleForUser(username)
+                FullName = fullName,
+                DayOfBirth = dayOfBirth ?? DateTime.MinValue, // Use default if not provided
+                Phone = phone,
+                Role = GetRoleForUser(username)
             };
 
             _dbContext.Users.Add(newUser);
             _dbContext.SaveChanges();
 
-            MessageBox.Show("Registration successful!");
+            // Show success notification
+            if (!Application.Current.Windows.OfType<NotificationWindow>().Any())
+            {
+                NotificationWindow successNotification = new NotificationWindow("Registration successful!");
+                successNotification.Show();
+            }
+
+            LoginWindow newLoginWindow = new LoginWindow();
+            newLoginWindow.Show();
             Close();
         }
 
@@ -113,7 +155,7 @@ namespace WPFApp.Views
 
                 foreach (byte b in bytes)
                 {
-                    builder.Append(b.ToString("x2"));
+                    builder.Append(b.ToString("x2")); // Convert byte to hexadecimal string
                 }
 
                 return builder.ToString();

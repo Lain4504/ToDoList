@@ -43,7 +43,7 @@ namespace WPFApp
                     IsCompleted = false
                 };
 
-                _toDoService.AddToDoForTeam(1, newToDo);
+                _toDoService.AddToDoForTeam(_teamId, newToDo);
 
                 // Gọi sự kiện TaskAdded, truyền task mới tạo vào
                 TaskAdded?.Invoke(this, new TaskAddedEventArgs(newToDo));

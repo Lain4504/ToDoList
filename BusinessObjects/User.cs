@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace BusinessObjects
 {
@@ -15,5 +11,11 @@ namespace BusinessObjects
         public bool isAdmin { get; set; }
         public ICollection<Team> Teams { get; set; } = new List<Team>();
         public ICollection<ToDo> ToDos { get; set; } = new List<ToDo>();
+
+        // Optional: Add properties for full name, date of birth, and phone if needed
+        public string FullName { get; set; }
+        public DateTime? DayOfBirth { get; set; } // Nullable to allow for no input
+        public string Phone { get; set; }
+        public int Role { get; set; } // Assuming role is represented as an int (0 for user, 1 for admin)
     }
 }

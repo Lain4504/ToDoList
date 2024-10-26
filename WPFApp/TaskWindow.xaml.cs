@@ -16,8 +16,8 @@ namespace WPFApp
         private int _currentTaskID;
         private int _currentTeamID;
 
-        // Constructor không tham số, khởi tạo với teamId mặc định là 1
-        public TaskWindow() : this(new ToDoService(new ToDoRepository(new ToDoListContext())), 1)
+        // Constructor không tham số, khởi tạo với teamId mặc định là -1
+        public TaskWindow() : this(new ToDoService(new ToDoRepository(new ToDoListContext())), -1)
         {
         }
 
