@@ -5,59 +5,48 @@ using Services;
 using System;
 using System.Windows;
 using System.Windows.Input;
+
 namespace WPFApp
 {
-    /// <summary>
-    /// Interaction logic for UpdateTeam.xaml
-    /// </summary>
-    public partial class UpdateTeam : Window
+    public partial class NewTeamWindow : Window
     {
         private readonly ITeamService _teamService;
-        private readonly int _teamId;
-
-        public delegate void TeamUpdatedEventHandler(object sender, EventArgs e);
-        public event TeamUpdatedEventHandler TeamUpdated;
-
-        public UpdateTeam(ITeamService teamService, int teamId)
+        public delegate void TeamAddedEventHandler(object sender, EventArgs e);
+        public event TeamAddedEventHandler TeamAdded;
+        // Parameterized constructor
+        public NewTeamWindow(ITeamService teamService)
         {
             InitializeComponent();
             this.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseLeftButtonDown);
             _teamService = teamService ?? throw new ArgumentNullException(nameof(teamService));
-            _teamId = teamId;
-            LoadTeamDetails(); // Load the details of the team to be updated
         }
-
-        private void LoadTeamDetails()
-        {
-            var team = _teamService.GetTeamById(_teamId);
-            if (team != null)
-            {
-                TeamNameTextBox.Text = team.Name;
-                StatusTextBox.Text = team.Status.ToString();
-                AdminIdTextBox.Text = team.AdminUserId.ToString();
-            }
-        }
-
-        private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(TeamNameTextBox.Text) ||
-                    string.IsNullOrWhiteSpace(StatusTextBox.Text)  ||
+                    string.IsNullOrWhiteSpace(StatusTextBox.Text) ||
                     string.IsNullOrWhiteSpace(AdminIdTextBox.Text))
-
                 {
                     NotificationWindow notificationWindow = new NotificationWindow("Please fill in all fields.");
                     notificationWindow.Show();
                     return;
                 }
-                var updateTeam = _teamService.GetTeamById(_teamId);
-                updateTeam.Name = TeamNameTextBox.Text;
-                updateTeam.Status = (TeamStatus)Enum.Parse(typeof(TeamStatus), StatusTextBox.Text);
-                updateTeam.AdminUserId = int.Parse(AdminIdTextBox.Text);
-                _teamService.UpdateTeam(updateTeam);
-                TeamUpdated?.Invoke(this, new TeamAddedEventArgs(updateTeam));
-                NotificationWindow notification = new NotificationWindow("Team updated successfully");
+
+                var newTeam = new Team
+                {
+                    Name = TeamNameTextBox.Text,
+                    Status = (TeamStatus)Enum.Parse(typeof(TeamStatus), StatusTextBox.Text),
+                    AdminUserId = int.Parse(AdminIdTextBox.Text),
+                    DeletedAt = null,
+                };
+
+                _teamService.CreateTeam(newTeam, newTeam.AdminUserId);
+
+                // Gọi sự kiện TeamAdded, truyền team mới tạo vào
+                TeamAdded?.Invoke(this, new TeamAddedEventArgs(newTeam));
+
+                NotificationWindow notification = new NotificationWindow("Team added successfully");
                 notification.Show();
                 Close();
             }
@@ -68,11 +57,11 @@ namespace WPFApp
             }
         }
 
+
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ButtonState == MouseButtonState.Pressed)
