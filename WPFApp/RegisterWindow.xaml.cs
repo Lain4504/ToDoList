@@ -15,10 +15,25 @@ namespace WPFApp.Views
         public RegisterWindow()
         {
             InitializeComponent();
-            _dbContext = new ToDoListContext(); // Initialize DB context
+            _dbContext = new ToDoListContext();
             RegisterButton.Click += RegisterButton_Click;
-            // Uncomment if you have a Cancel button
-            // CancelButton.Click += CancelButton_Click;
+            BackToLoginButton.Click += BackToLoginButton_Click;
+        }
+        private void BackToLoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is LoginWindow loginWindow)
+                {
+                    loginWindow.Activate();
+                    this.Close();
+                    return;
+                }
+            }
+
+            LoginWindow newLoginWindow = new LoginWindow();
+            newLoginWindow.Show();
+            this.Close();
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
@@ -44,7 +59,12 @@ namespace WPFApp.Views
             // Check if user exists
             if (IsUserExists(username, email))
             {
-                MessageBox.Show("Username or Email already exists.");
+                // Check if a NotificationWindow is already open
+                if (!Application.Current.Windows.OfType<NotificationWindow>().Any())
+                {
+                    NotificationWindow errorNotification = new NotificationWindow("Username or Email already exists.");
+                    errorNotification.Show();
+                }
                 return;
             }
 
@@ -64,13 +84,23 @@ namespace WPFApp.Views
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(email) ||
                 string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
             {
-                MessageBox.Show("Please fill in all required fields.");
+                // Show notification for empty fields
+                if (!Application.Current.Windows.OfType<NotificationWindow>().Any())
+                {
+                    NotificationWindow emptyFieldNotification = new NotificationWindow("Please fill in all required fields.");
+                    emptyFieldNotification.Show();
+                }
                 return false;
             }
 
             if (password != confirmPassword)
             {
-                MessageBox.Show("Passwords do not match.");
+                // Show notification for password mismatch
+                if (!Application.Current.Windows.OfType<NotificationWindow>().Any())
+                {
+                    NotificationWindow passwordMismatchNotification = new NotificationWindow("Passwords do not match.");
+                    passwordMismatchNotification.Show();
+                }
                 return false;
             }
 
@@ -98,7 +128,15 @@ namespace WPFApp.Views
             _dbContext.Users.Add(newUser);
             _dbContext.SaveChanges();
 
-            MessageBox.Show("Registration successful!");
+            // Show success notification
+            if (!Application.Current.Windows.OfType<NotificationWindow>().Any())
+            {
+                NotificationWindow successNotification = new NotificationWindow("Registration successful!");
+                successNotification.Show();
+            }
+
+            LoginWindow newLoginWindow = new LoginWindow();
+            newLoginWindow.Show();
             Close();
         }
 

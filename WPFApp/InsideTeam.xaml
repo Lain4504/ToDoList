@@ -112,7 +112,7 @@
                      BorderBrush="Transparent"
                      Height="40"
                      Width="40"
-                     Click="SearchButton_Click" Margin="494,238,0,0" Grid.Column="1">
+                    Margin="494,238,0,0" Grid.Column="1">
 
                     <Viewbox Width="16" Height="16" Margin="0">
                         <fa:ImageAwesome Style="{StaticResource SearchIcon}" Width="20" Height="20" Margin="0" />
@@ -151,7 +151,7 @@
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="92,320,0,0" TextWrapping="Wrap" Text="User Id" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="235,320,0,0" TextWrapping="Wrap" Text="User Name" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="428,320,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top" Width="114" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
-            <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Click="DeleteTaskButton_Click" Grid.Column="1" Margin="840,375,57,295"/>
+            <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Grid.Column="1" Margin="840,375,57,295"/>
             <Button Content="Update" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White" Grid.Column="1" Margin="757,376,140,294"/>
             <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="606,320,0,0" TextWrapping="Wrap" Text="Phone" VerticalAlignment="Top" Width="114" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
 
