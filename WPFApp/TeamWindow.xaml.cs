@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using WPFApp.ViewModel;
 using System.Collections.ObjectModel;
 
 namespace WPFApp
