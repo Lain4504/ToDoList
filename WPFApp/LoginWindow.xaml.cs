@@ -3,7 +3,10 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
+using BusinessObjects;
 using DataAccessLayer;
+using Repositories;
+using Services;
 
 namespace WPFApp.Views
 {
@@ -27,7 +30,6 @@ namespace WPFApp.Views
         {
             string username = UsernameTextBox.Text.Trim();
             string password = PasswordBox.Password;
-
             bool isNotificationOpen = Application.Current.Windows.OfType<NotificationWindow>().Any();
 
             if (ValidateLogin(username, password))
@@ -37,7 +39,8 @@ namespace WPFApp.Views
                     NotificationWindow successNotification = new NotificationWindow("Login successful!");
                     successNotification.Show();
                 }
-                OpenTaskWindow();
+                var user = _dbContext.Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == HashPassword(password));
+                OpenTaskWindow(user.UserId);
             }
             else
             {
@@ -82,10 +85,10 @@ namespace WPFApp.Views
             }
         }
 
-        private void OpenTaskWindow()
+        private void OpenTaskWindow(int userID)
         {
-            TaskWindow taskWindow = new TaskWindow();
-            taskWindow.Show();
+            TeamWindow teamWindow = new TeamWindow(new TeamService(new TeamRepository(new ToDoListContext())), userID);
+            teamWindow.Show();
             this.Close(); 
         }
 

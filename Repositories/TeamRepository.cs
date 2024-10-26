@@ -40,10 +40,9 @@ namespace Repositories
                 .Where(t => t.TeamId == teamId)
                 .SelectMany(t => t.Members) 
                 .ToList();
-
+            var team = _context.Teams.FirstOrDefault(t => t.TeamId == teamId);
             var allUsers = _context.Users.ToList();
-            var usersOutTeam = allUsers.Where(u => !usersInTeam.Any(member => member.UserId == u.UserId));
-
+            var usersOutTeam = allUsers.Where(u => !usersInTeam.Any(member => member.UserId == u.UserId) && u.UserId != team.AdminUserId);
             return usersOutTeam;
         }
 

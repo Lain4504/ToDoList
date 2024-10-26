@@ -16,19 +16,15 @@ namespace WPFApp
     public partial class TeamWindow : Window
     {
         private readonly ITeamService _teamService;
+        private readonly int _loggedInUserID; // Lưu người dùng đã đăng nhập
 
-        // Constructor không tham số
-        public TeamWindow() : this(new TeamService(new TeamRepository(new ToDoListContext())))
-        {
-            InitializeComponent();
-            LoadTeams();
-        }
         // Constructor với tham số
-        public TeamWindow(ITeamService teamService)
+        public TeamWindow(ITeamService teamService, int loggedInUserID)
         {
             InitializeComponent();
             _teamService = teamService ?? throw new ArgumentNullException(nameof(teamService));
-            LoadTeams();
+            _loggedInUserID = loggedInUserID;
+            LoadTeams(_loggedInUserID);
         }
         // Các button thao tác với cửa sổ
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
@@ -48,11 +44,13 @@ namespace WPFApp
         {
             this.Close(); // Đóng cửa sổ
         }
-        public void LoadTeams()
+        public void LoadTeams(int userID)
         {
             try
             {
-                IEnumerable<BusinessObjects.Team> teams = _teamService.GetAllTeams().Where(t => t.DeletedAt == null);
+                var teams = _teamService.GetAllTeams()
+                                        .Where(t => t.DeletedAt == null && t.AdminUserId == userID)
+                                        .ToList();
                 TeamListView.ItemsSource = teams;
             }
             catch (Exception ex)
@@ -62,7 +60,7 @@ namespace WPFApp
         }
         private void NewTeamButton_Click(object sender, RoutedEventArgs e)
         {
-            NewTeamWindow newTeamWindow = new NewTeamWindow(_teamService);
+            NewTeamWindow newTeamWindow = new NewTeamWindow(_teamService, _loggedInUserID);
 
             // Lắng nghe sự kiện TeamAdded để cập nhật giao diện team detail
             newTeamWindow.TeamAdded += (s, args) =>
@@ -81,7 +79,7 @@ namespace WPFApp
                 }
             };
             newTeamWindow.ShowDialog(); 
-            LoadTeams();
+            LoadTeams(_loggedInUserID);
         }
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
@@ -110,7 +108,7 @@ namespace WPFApp
                 UpdateTeam updateWindow = new UpdateTeam(_teamService, selectedTeam.TeamId);
                 updateWindow.TeamUpdated += (s, args) =>
                 {
-                    LoadTeams();
+                    LoadTeams(_loggedInUserID);
                 };
                 updateWindow.ShowDialog();
             }
@@ -153,7 +151,7 @@ namespace WPFApp
                             // Thông báo UI đã cập nhật dữ liệu
                             TeamListView.Items.Refresh();
                         }
-                        LoadTeams();
+                        LoadTeams(_loggedInUserID);
                     }
                     catch (Exception ex)
                     {
@@ -176,7 +174,7 @@ namespace WPFApp
             string searchTitle = TeamSearchBox.Text.Trim();
             if (string.IsNullOrEmpty(searchTitle))
             {
-                LoadTeams();
+                LoadTeams(_loggedInUserID);
                 SearchPlaceholderLabel.Visibility = Visibility.Visible;
             }
             else

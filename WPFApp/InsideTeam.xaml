@@ -109,6 +109,8 @@
                           BorderBrush="Transparent"
                           Height="40"
                           Width="40"
+                          HorizontalAlignment="Stretch" 
+                          VerticalAlignment="Top"
                           Margin="832,255,90,385"
                           Click="SearchButton_Click">
                         <Viewbox Width="16" Height="16" Margin="0">
@@ -122,7 +124,7 @@
                             <Button Content="Task Management"  Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Left" Height="26" Margin="75,101,0,0" VerticalAlignment="Top" Width="105" Background="#FF389583" BorderBrush="#FF389583" Foreground="White" Click="Button_Click"/>
                         </Grid>
                     </Border>
-                    <Button Background="White" Foreground="White" BorderThickness="0" Margin="209,87,697,525" BorderBrush="White">
+                    <Button Background="White" Foreground="White" BorderThickness="0" Margin="209,104,697,508" BorderBrush="White">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                             <fa:ImageAwesome Style="{StaticResource TaskICon}"  Width="32" Height="32" Margin="0,20,10,0"/>
                         </StackPanel>
@@ -134,7 +136,7 @@
                             <Button Content="Invite" Click="NewMemberButton_Click" Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Left" Height="26" Margin="75,101,0,0" VerticalAlignment="Top" Width="77" Background="#FF389583" BorderBrush="#FF389583" Foreground="White"/>
                         </Grid>
                     </Border>
-                    <Button Background="White" Foreground="White" BorderThickness="0" Margin="490,99,423,521" BorderBrush="White" RenderTransformOrigin="0.5,0.5">
+                    <Button Background="White" Foreground="White" BorderThickness="0" Margin="490,116,423,504" BorderBrush="White" RenderTransformOrigin="0.5,0.5">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                             <fa:ImageAwesome Style="{StaticResource UserIcon}"  Width="32" Height="32" Foreground="#FF379683"/>
                         </StackPanel>
