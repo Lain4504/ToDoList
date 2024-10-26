@@ -140,56 +140,16 @@
                         </StackPanel>
                     </Button>
                 </Grid>
-                <Button
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Padding="0"
-                     Background="Transparent"
-                     BorderBrush="Transparent"
-                     Height="40"
-                     Width="40"
-                    Margin="494,238,0,0" Grid.Column="1">
-
-                    <Viewbox Width="16" Height="16" Margin="0">
-                        <fa:ImageAwesome Style="{StaticResource SearchIcon}" Width="20" Height="20" Margin="0" />
-                    </Viewbox>
-                </Button>
-                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="144" Margin="203,60,0,0" VerticalAlignment="Top" Width="242" Background="White" Grid.ColumnSpan="2">
-                    <Grid>
-                        <TextBlock HorizontalAlignment="Left" Height="25" Margin="97,17,0,0" TextWrapping="Wrap" Text="Task" VerticalAlignment="Top" Width="156" FontSize="20" FontWeight="Bold"/>
-                        <TextBlock TextWrapping="Wrap" Text="First, add a task that you would like to work on." Width="156" Margin="74,45,10,54" Foreground="#FF9A9A9A"/>
-                        <Button Content="Task Management"  Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Left" Height="26" Margin="75,101,0,0" VerticalAlignment="Top" Width="77" Background="#FF389583" BorderBrush="#FF389583" Foreground="White" Click="Button_Click"/>
-                    </Grid>
-                </Border>
-                <Button Background="White" Foreground="White" BorderThickness="0" Margin="207,90,113,522" BorderBrush="White">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <fa:ImageAwesome Style="{StaticResource TaskICon}"  Width="32" Height="32" Margin="0,20,10,0"/>
-                    </StackPanel>
-                </Button>
-
-                <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="144" Margin="120,60,0,0" VerticalAlignment="Top" Width="242" Background="White" Grid.Column="1">
-                    <Grid>
-                        <TextBlock HorizontalAlignment="Left" Height="25" Margin="74,10,0,0" TextWrapping="Wrap" Text="Add Member" VerticalAlignment="Top" Width="156" FontSize="20" FontWeight="Bold"/>
-                        <TextBlock TextWrapping="Wrap" Text="Invite members to this Space to work on your projects with you." Margin="74,45,0,39" Foreground="#FF9A9A9A"/>
-                        <Button Content="Add" Style="{StaticResource CustomButtonStyle}" HorizontalAlignment="Left" Height="26" Margin="75,101,0,0" VerticalAlignment="Top" Width="77" Background="#FF389583" BorderBrush="#FF389583" Foreground="White"/>
-                    </Grid>
-                </Border>
-                <Button Background="White" Foreground="White" BorderThickness="0" Margin="126,88,387,524" BorderBrush="White" Grid.Column="1">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <fa:ImageAwesome Style="{StaticResource UserIcon}"  Width="32" Height="32" Foreground="#FF379683"/>
-                    </StackPanel>
-                </Button>
             </Grid>
-            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" Height="367" Margin="0,306,0,0" VerticalAlignment="Top" Width="890" Grid.Column="1">
-                <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Height="1" Margin="0,53,0,0" VerticalAlignment="Top" Width="882" Background="#FFBFBFBF"/>
-            </Border>
-            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="821,320,0,0" TextWrapping="Wrap" Text="Action" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
-            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="92,320,0,0" TextWrapping="Wrap" Text="User Id" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
-            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="235,320,0,0" TextWrapping="Wrap" Text="User Name" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
-            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="428,320,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top" Width="114" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
-            <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Grid.Column="1" Margin="840,375,57,295"/>
-            <Button Content="Update" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White" Grid.Column="1" Margin="757,376,140,294"/>
-            <TextBlock Grid.Column="1" HorizontalAlignment="Left" Height="30" Margin="606,320,0,0" TextWrapping="Wrap" Text="Phone" VerticalAlignment="Top" Width="114" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Stretch" Height="367" Margin="0,306,0,0" VerticalAlignment="Stretch" Width="890" Grid.Column="1">
+                <Grid>
+                    <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Height="1" Margin="0,53,0,0" VerticalAlignment="Top" Width="890" Background="#FFBFBFBF"/>
+                    <TextBlock HorizontalAlignment="Left" Height="30" Margin="768,15,0,0" TextWrapping="Wrap" Text="Action" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+                    <TextBlock HorizontalAlignment="Left" Height="30" Margin="29,15,0,0" TextWrapping="Wrap" Text="User Id" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+                    <TextBlock HorizontalAlignment="Left" Height="30" Margin="146,15,0,0" TextWrapping="Wrap" Text="User Name" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+                    <TextBlock HorizontalAlignment="Left" Height="30" Margin="302,15,0,0" TextWrapping="Wrap" Text="Email" VerticalAlignment="Top" Width="114" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+                    <TextBlock HorizontalAlignment="Left" Height="30" Margin="456,15,0,0" TextWrapping="Wrap" Text="Is Admin" VerticalAlignment="Top" Width="114" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+                    <TextBlock HorizontalAlignment="Left" Height="30" Margin="575,15,0,0" TextWrapping="Wrap" Text="Full Name" VerticalAlignment="Top" Width="114" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
 
                     <!-- ScrollViewer with ItemsControl to display teams -->
                     <ScrollViewer x:Name="TeamDescriptionScrollViewer"

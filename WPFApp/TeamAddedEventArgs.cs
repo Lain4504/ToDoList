@@ -1,5 +1,4 @@
 ﻿using BusinessObjects;
-using WPFApp.ViewModel;
 namespace WPFApp
 {
     public class TeamAddedEventArgs : EventArgs

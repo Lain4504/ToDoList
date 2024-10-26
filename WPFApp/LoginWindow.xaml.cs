@@ -84,8 +84,8 @@ namespace WPFApp.Views
 
         private void OpenTaskWindow()
         {
-            TaskWindow taskWindow = new TaskWindow();
-            taskWindow.Show();
+            TeamWindow teamWindow = new TeamWindow();
+            teamWindow.Show();
             this.Close(); 
         }
 

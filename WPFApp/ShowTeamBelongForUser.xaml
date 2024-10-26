@@ -73,7 +73,7 @@
                     Background="White" 
                     Foreground="#389583"
                     IsEnabled="False" 
-                    Click="ViewTasksButton_Click"/>
+                 />
 
             <Button x:Name="BackButton" 
                     Content="Back" 
