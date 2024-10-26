@@ -9,5 +9,23 @@ namespace WPFApp
         public Trash(){
             InitializeComponent();
         }
+
+        public void DeleteTaskPermanently(DeletedTask task)
+        {
+            DeletedTasks.Remove(task);
+        }
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
+    }
+
+    public class DeletedTask
+    {
+        public int TaskId { get; set; }
+        public string TaskName { get; set; }
+        public DateTime DeletedAt { get; set; }
+
     }
 }

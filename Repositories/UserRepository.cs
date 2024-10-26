@@ -1,4 +1,8 @@
 ﻿using BusinessObjects;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,6 +48,15 @@ namespace Repositories
         public Task<User> GetUserWithTeamsAsync(int userId)
         {
             throw new NotImplementedException();
+        }
+
+     
+        public List<Team> GetTeamsForUser(int userId)
+        {
+            return _context.Users
+                .Where(user => user.UserId == userId)
+                .SelectMany(user => user.Teams)
+                .ToList();
         }
     }
 }
