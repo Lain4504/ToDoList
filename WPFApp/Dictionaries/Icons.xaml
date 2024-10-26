@@ -46,5 +46,17 @@
             <Setter Property="Icon" Value="Recycle"/>
             <Setter Property="Foreground" Value="White" />
         </Style>
-
+    <Style x:Key="ArrowIcon" TargetType="fa:ImageAwesome">
+        <Setter Property="Icon" Value="ArrowCircleRight"/>
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style x:Key="MemberIcon" TargetType="fa:ImageAwesome">
+        <Setter Property="Icon" Value="Group"/>
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    <Style x:Key="UserIcon" TargetType="fa:ImageAwesome">
+        <Setter Property="Icon" Value="User"/>
+        <Setter Property="Foreground" Value="White" />
+    </Style>
+    
 </ResourceDictionary>

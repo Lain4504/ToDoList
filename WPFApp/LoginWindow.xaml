@@ -37,40 +37,54 @@
 
         <!-- Custom ControlTemplate for rounded TextBox -->
         <Style TargetType="TextBox" x:Key="RoundedTextBoxStyle">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#5cdb94"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5,5,5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,5,0,10"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border Background="White" 
-                                BorderBrush="#5cdb94" 
-                                BorderThickness="1" 
-                                CornerRadius="15" 
-                                Padding="10">
-                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="15">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                  HorizontalScrollBarVisibility="Hidden" 
+                                  VerticalScrollBarVisibility="Hidden" 
+                                  VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="0,5,0,10"/>
         </Style>
 
         <!-- Custom ControlTemplate for rounded PasswordBox -->
         <Style TargetType="PasswordBox" x:Key="RoundedPasswordBoxStyle">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#5cdb94"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5,5,5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,5,0,10"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="PasswordBox">
-                        <Border Background="White" 
-                                BorderBrush="#5cdb94" 
-                                BorderThickness="1" 
-                                CornerRadius="15" 
-                                Padding="10">
-                            <ScrollViewer Margin="0" x:Name="PART_ContentHost"/>
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="15">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                  HorizontalScrollBarVisibility="Hidden" 
+                                  VerticalScrollBarVisibility="Hidden" 
+                                  VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Margin" Value="0,5,0,10"/>
         </Style>
 
         <!-- Border for the main window with rounded corners -->
@@ -91,22 +105,6 @@
             </Grid.RowDefinitions>
 
             <!-- Window Control Buttons -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,15,0">
-                <!-- Minimize Button -->
-                <Button Style="{StaticResource RoundedButtonStyle}" Width="30" Height="30">
-                    <fa:ImageAwesome Style="{StaticResource MinimizeIcon}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>
-                </Button>
-
-                <!-- Maximize Button -->
-                <Button Style="{StaticResource RoundedButtonStyle}" Width="30" Height="30">
-                    <fa:ImageAwesome Style="{StaticResource MaximizeIcon}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>
-                </Button>
-
-                <!-- Close Button -->
-                <Button Style="{StaticResource RoundedButtonStyle}" Width="30" Height="30">
-                    <fa:ImageAwesome Style="{StaticResource CloseIcon}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>
-                </Button>
-            </StackPanel>
 
             <TextBlock Text="Login" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="10" Foreground="#05396B"/>
 
@@ -114,15 +112,15 @@
             <StackPanel Grid.Row="1" Margin="10">
                 <TextBlock Text="Username:" FontSize="16" Width="359
                            "/>
-                <TextBox Name="UsernameTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="30" Width="358"/>
+                <TextBox Name="UsernameTextBox" Style="{StaticResource RoundedTextBoxStyle}" Height="30" Width="358" TextChanged="UsernameTextBox_TextChanged"/>
                 <TextBlock Text="Password:" FontSize="16" Width="359"/>
                 <PasswordBox Name="PasswordBox" Style="{StaticResource RoundedPasswordBoxStyle}" Height="30" Width="358"/>
             </StackPanel>
 
             <!-- Buttons -->
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <Button Name="LoginButton" Content="Login" Style="{StaticResource RoundedButtonStyle}" Background="#8EE4AF"/>
-                <Button Name="RegisterButton" Content="Register" Style="{StaticResource RoundedButtonStyle}" Background="#389583" Foreground="White"/>
+                <Button Name="LoginButton" Content="Login" Style="{StaticResource RoundedButtonStyle}" Background="#8EE4AF" Foreground="Black" Width="100" Height="40" Click="LoginButton_Click" Margin="0,0,10,0" FontSize="16" Cursor="Hand"/>
+                <Button Name="RegisterButton" Content="Register" Style="{StaticResource RoundedButtonStyle}" Background="#389583" Foreground="White" Width="100" Height="40" Click="RegisterButton_Click" FontSize="16" Cursor="Hand"/>
             </StackPanel>
         </Grid>
     </Border>

@@ -1,11 +1,6 @@
 ﻿using BusinessObjects;
 using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repositories
 {
@@ -58,8 +53,19 @@ namespace Repositories
         public async Task<IEnumerable<ToDo>> GetToDoByTitleAsync(string title, int teamId)
         {
             return await _context.ToDos
-                .Where(t => t.Title.Contains(title) && t.TeamId == teamId)
+                .Where(t => t.Title.Contains(title) && t.TeamId == teamId && t.DeletedAt == null)
                 .ToListAsync();
         }
+
+        public async Task<bool> IsTaskCompleted(int todoId)
+        {
+            var todo = await _context.ToDos.FirstOrDefaultAsync(t => t.Id == todoId && t.DeletedAt == null);
+            if (todo == null)
+            {
+                throw new Exception("Task not found");
+            }
+            return todo.IsCompleted;
+        }
+
     }
 }

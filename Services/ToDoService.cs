@@ -2,8 +2,6 @@
 using Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Services
@@ -72,9 +70,15 @@ namespace Services
             }
             return todo;
         }
+
         public async Task<IEnumerable<ToDo>> GetToDoByTitleAsync(string title, int teamId)
         {
             return await _toDoRepository.GetToDoByTitleAsync(title, teamId);
+        }
+
+        public async Task<bool> IsTaskCompleted(int todoId)
+        {
+            return await _toDoRepository.IsTaskCompleted(todoId);
         }
     }
 }

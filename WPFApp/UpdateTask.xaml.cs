@@ -1,6 +1,5 @@
 ﻿using BusinessObjects;
-using DataAccessLayer;
-using Repositories;
+using Microsoft.VisualBasic;
 using Services;
 using System;
 using System.Windows;
@@ -8,22 +7,41 @@ using System.Windows.Input;
 
 namespace WPFApp
 {
-    public partial class NewTaskWindow : Window
+    /// <summary>
+    /// Interaction logic for UpdateTask.xaml
+    /// </summary>
+    public partial class UpdateTask : Window
     {
         private readonly IToDoService _toDoService;
         private readonly int _teamId;
-        public delegate void TaskAddedEventHandler(object sender, EventArgs e);
-        public event TaskAddedEventHandler TaskAdded;
-        // Parameterized constructor
-        public NewTaskWindow(IToDoService toDoService, int teamId)
+        private readonly int _todoId; // ID of the ToDo to be updated
+
+        public delegate void TaskUpdatedEventHandler(object sender, EventArgs e);
+        public event TaskUpdatedEventHandler TaskUpdated;
+
+        public UpdateTask(IToDoService toDoService, int teamId, int todoId)
         {
             InitializeComponent();
             this.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseLeftButtonDown);
             _toDoService = toDoService ?? throw new ArgumentNullException(nameof(toDoService));
-            _teamId = teamId; // Store the team ID
+            _teamId = teamId;
+            _todoId = todoId;
+
+            LoadTaskDetails(); // Load the details of the task to be updated
         }
-        // Event handler for the Save button
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+
+        private void LoadTaskDetails()
+        {
+            var todo = _toDoService.GetToDoDetails(_teamId, _todoId);
+            if (todo != null)
+            {
+                TitleTextBox.Text = todo.Title;
+                DescriptionTextbox.Text = todo.Description;
+                PeriodDatePicker.SelectedDate = todo.DueDate;
+            }
+        }
+
+        private void UpdateButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -35,20 +53,19 @@ namespace WPFApp
                     return;
                 }
 
-                var newToDo = new ToDo
+                var updateToDo = new ToDo
                 {
+                    Id = _todoId, // Set the ID of the task being updated
                     Title = TitleTextBox.Text,
                     Description = DescriptionTextbox.Text,
                     DueDate = PeriodDatePicker.SelectedDate ?? DateTime.Now,
-                    IsCompleted = false
+                    IsCompleted = false // or set according to your logic
                 };
 
-                _toDoService.AddToDoForTeam(_teamId, newToDo);
+                _toDoService.UpdateToDoForTeam(_teamId, updateToDo);
+                TaskUpdated?.Invoke(this, EventArgs.Empty);
 
-                // Gọi sự kiện TaskAdded, truyền task mới tạo vào
-                TaskAdded?.Invoke(this, new TaskAddedEventArgs(newToDo));
-
-                NotificationWindow notification = new NotificationWindow("Task added successfully");
+                NotificationWindow notification = new NotificationWindow("Task updated successfully");
                 notification.Show();
                 Close();
             }
@@ -59,11 +76,11 @@ namespace WPFApp
             }
         }
 
-
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close(); 
+            this.Close();
         }
+
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ButtonState == MouseButtonState.Pressed)
