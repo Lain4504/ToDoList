@@ -54,6 +54,7 @@ namespace Services
             {
                 throw new Exception("Admin user not found");
             }
+            team.CreatedAt = DateTime.Now;
             team.AdminUserId = adminUser.UserId;
             team.Status = TeamStatus.ACTIVE;
             _teamRepository.CreateTeam(team);

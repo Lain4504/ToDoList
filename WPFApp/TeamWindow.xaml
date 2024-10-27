@@ -92,7 +92,7 @@
                      VerticalAlignment="Top"
                      Height="32"
                      Width="35"
-                     Margin="44,10,0,0"
+                     Margin="62,10,0,0"
                       Command="{Binding IOpenNewWindow}"
                       Grid.Row="1"
                       Click="NewTeamButton_Click">
@@ -144,11 +144,10 @@
                     <Grid>
                         <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" Height="1" Margin="0,53,0,0" VerticalAlignment="Top" Width="882" Background="#FFBFBFBF"/>
                         <TextBlock HorizontalAlignment="Left" Height="30" Margin="12,18,0,0" TextWrapping="Wrap" Text="Team Id" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
-                        <TextBlock HorizontalAlignment="Left" Height="30" Margin="160,18,0,0" TextWrapping="Wrap" Text="Team Name" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
-                        <TextBlock HorizontalAlignment="Left" Height="30" Margin="358,18,0,0" TextWrapping="Wrap" Text="Status" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
-                        <TextBlock HorizontalAlignment="Left" Height="30" Margin="516,18,0,0" TextWrapping="Wrap" Text="Admin Id" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
-                        <TextBlock HorizontalAlignment="Left" Height="30" Margin="748,18,0,0" TextWrapping="Wrap" Text="Action" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
-
+                        <TextBlock HorizontalAlignment="Left" Height="30" Margin="124,18,0,0" TextWrapping="Wrap" Text="Team Name" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+                        <TextBlock HorizontalAlignment="Left" Height="30" Margin="308,18,0,0" TextWrapping="Wrap" Text="Desciption" VerticalAlignment="Top" Width="112" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+                        <TextBlock HorizontalAlignment="Left" Height="30" Margin="600,18,0,0" TextWrapping="Wrap" Text="Status" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
+                        <TextBlock HorizontalAlignment="Left" Height="30" Margin="741,18,0,0" TextWrapping="Wrap" Text="Action" VerticalAlignment="Top" Width="113" FontSize="14" FontWeight="Bold" FontFamily="Comic Sans MS"/>
                         <!-- ScrollViewer with ItemsControl to display teams -->
                         <ScrollViewer x:Name="TeamDescriptionScrollViewer"
                            VerticalScrollBarVisibility="Auto"
@@ -163,10 +162,10 @@
                                             <!-- Team Details -->
                                             <Border MouseLeftButtonDown="TeamItem_MouseDoubleClick">
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="{Binding TeamId}" TextWrapping="Wrap" Width="100" Margin="30,0,50,0" />
-                                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Width="100"  Margin="0,0,80,0"/>
-                                                    <TextBlock Text="{Binding Status}" TextWrapping="Wrap" Width="100"  Margin="0,0,80,0"/>
-                                                    <TextBlock Text="{Binding AdminUserId}" TextWrapping="Wrap" Width="100"  Margin="0,0,50,0"/>
+                                                    <TextBlock Text="{Binding TeamId}" TextWrapping="Wrap" Width="50" Margin="40,0,50,0" />
+                                                    <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Width="150"  Margin="0,0,30,0"/>
+                                                    <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Width="250"  Margin="0,0,30,0"/>
+                                                    <TextBlock Text="{Binding Status}" TextWrapping="Wrap" Width="50"  Margin="0,0,30,0"/>
                                                 </StackPanel>
                                             </Border>
                                             <!-- Delete and Update Buttons for each team -->

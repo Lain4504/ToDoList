@@ -12,7 +12,7 @@ namespace WPFApp
 
         public void DeleteTaskPermanently(DeletedTask task)
         {
-            DeletedTasks.Remove(task);
+            //DeletedTasks.Remove(task);
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
