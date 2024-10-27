@@ -187,8 +187,9 @@ namespace WPFApp
             if (selectedTeam != null)
             {
                 // Mở cửa sổ InsideTeam với thông tin của team đã chọn
-                InsideTeam insideTeamWindow = new InsideTeam(new TeamService(new TeamRepository(new ToDoListContext())), selectedTeam.TeamId); // Thay thế _teamService nếu cần
-                insideTeamWindow.ShowDialog(); // Hiển thị cửa sổ chi tiết team
+                InsideTeam insideTeamWindow = new InsideTeam(new TeamService(new TeamRepository(new ToDoListContext())), selectedTeam.TeamId, this);
+                insideTeamWindow.Show(); // Hiển thị cửa sổ chi tiết team
+                this.Hide();
             }
         }
 
