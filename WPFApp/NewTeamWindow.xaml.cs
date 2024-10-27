@@ -11,22 +11,23 @@ namespace WPFApp
     public partial class NewTeamWindow : Window
     {
         private readonly ITeamService _teamService;
+        private readonly int _loggedInUserID; // Lưu người dùng đã đăng nhập
         public delegate void TeamAddedEventHandler(object sender, EventArgs e);
         public event TeamAddedEventHandler TeamAdded;
         // Parameterized constructor
-        public NewTeamWindow(ITeamService teamService)
+        public NewTeamWindow(ITeamService teamService, int loggedInUserID)
         {
             InitializeComponent();
             this.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseLeftButtonDown);
             _teamService = teamService ?? throw new ArgumentNullException(nameof(teamService));
+            _loggedInUserID = loggedInUserID;
         }
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(TeamNameTextBox.Text) ||
-                    string.IsNullOrWhiteSpace(StatusTextBox.Text) ||
-                    string.IsNullOrWhiteSpace(AdminIdTextBox.Text))
+                    string.IsNullOrWhiteSpace(DesciptionTextBox.Text))
                 {
                     NotificationWindow notificationWindow = new NotificationWindow("Please fill in all fields.");
                     notificationWindow.Show();
@@ -36,18 +37,27 @@ namespace WPFApp
                 var newTeam = new Team
                 {
                     Name = TeamNameTextBox.Text,
-                    Status = (TeamStatus)Enum.Parse(typeof(TeamStatus), StatusTextBox.Text),
-                    AdminUserId = int.Parse(AdminIdTextBox.Text),
+                    Description = DesciptionTextBox.Text,
+                    AdminUserId = _loggedInUserID,
                     DeletedAt = null,
                 };
+                var existingTeam = _teamService.GetAllTeams()
+                                      .FirstOrDefault(t => t.Name.Equals(newTeam.Name, StringComparison.OrdinalIgnoreCase) && t.DeletedAt == null);
+
+                if (existingTeam != null)
+                {
+                    NotificationWindow notification = new NotificationWindow("A team with the same name already exists.");
+                    notification.Show();
+                    return;
+                }
 
                 _teamService.CreateTeam(newTeam, newTeam.AdminUserId);
 
                 // Gọi sự kiện TeamAdded, truyền team mới tạo vào
                 TeamAdded?.Invoke(this, new TeamAddedEventArgs(newTeam));
 
-                NotificationWindow notification = new NotificationWindow("Team added successfully");
-                notification.Show();
+                NotificationWindow successNotification = new NotificationWindow("Team added successfully");
+                successNotification.Show();
                 Close();
             }
             catch (Exception ex)
@@ -56,7 +66,6 @@ namespace WPFApp
                 notification.Show();
             }
         }
-
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
@@ -68,6 +77,11 @@ namespace WPFApp
             {
                 this.DragMove();
             }
+        }
+
+        private void DesciptionTextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+
         }
     }
 }

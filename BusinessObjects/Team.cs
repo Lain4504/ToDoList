@@ -8,7 +8,9 @@ namespace BusinessObjects
             [Key]
             public int TeamId { get; set; }
             public string Name { get; set; }
+            public string? Description { get; set; }
             public TeamStatus Status { get; set; }
+            public DateTime CreatedAt { get; set; }
             public DateTime? DeletedAt { get; set; }
             // Admin user relationship
             public int AdminUserId { get; set; }
