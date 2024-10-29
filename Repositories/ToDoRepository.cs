@@ -1,4 +1,8 @@
 ﻿using BusinessObjects;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 using DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,28 +17,64 @@ namespace Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public ToDoRepository()
+        public IEnumerable<ToDo> GetDeletedTodos()
         {
+            return _context.ToDos
+                .Where(t => t.IsDeleted && t.DeletedAt >= DateTime.Now.AddDays(-7))
+                .ToList();
+        }
+
+        public ToDo GetToDoById(int id)
+        {
+            return _context.ToDos.Find(id);
+        }
+
+        public void RestoreToDo(int todoId, int teamId)
+        {
+            var todo = GetToDoById(teamId, todoId);
+
+            if (todo != null)
+            {
+                todo.IsDeleted = false;
+                todo.DeletedAt = DateTime.MinValue; // Hoặc giá trị mặc định khác
+                _context.SaveChanges();
+            }
+        }
+
+        public void PermanentlyDeleteToDo(int todoId)
+        {
+            var todo = GetToDoById(todoId);
+            if (todo != null)
+            {
+                _context.ToDos.Remove(todo);
+                _context.SaveChanges();
+            }
         }
 
         public Team GetTeamById(int teamId)
         {
             return _context.Teams.FirstOrDefault(t => t.TeamId == teamId);
         }
+
         public IEnumerable<ToDo> GetToDosByTeam(int teamId)
         {
-            return _context.ToDos.Where(t => t.TeamId == teamId && t.DeletedAt == null).ToList();
+            return _context.ToDos
+                .Where(t => t.TeamId == teamId && t.DeletedAt == null)
+                .ToList();
         }
+
         public void AddToDo(ToDo todo)
         {
             _context.ToDos.Add(todo);
             _context.SaveChanges();
         }
+
         public void UpdateToDo(ToDo todo)
         {
             _context.ToDos.Update(todo);
             _context.SaveChanges();
         }
+
         public void DeleteToDo(int todoId)
         {
             var todo = _context.ToDos.FirstOrDefault(t => t.Id == todoId);
@@ -48,8 +88,10 @@ namespace Repositories
 
         public ToDo GetToDoById(int teamId, int todoId)
         {
-            return _context.ToDos.FirstOrDefault(t => t.TeamId == teamId && t.Id == todoId && t.DeletedAt == null);
+            return _context.ToDos
+                .FirstOrDefault(t => t.TeamId == teamId && t.Id == todoId && t.DeletedAt == null);
         }
+
         public async Task<IEnumerable<ToDo>> GetToDoByTitleAsync(string title, int teamId)
         {
             return await _context.ToDos
@@ -59,13 +101,13 @@ namespace Repositories
 
         public async Task<bool> IsTaskCompleted(int todoId)
         {
-            var todo = await _context.ToDos.FirstOrDefaultAsync(t => t.Id == todoId && t.DeletedAt == null);
+            var todo = await _context.ToDos
+                .FirstOrDefaultAsync(t => t.Id == todoId && t.DeletedAt == null);
             if (todo == null)
             {
                 throw new Exception("Task not found");
             }
             return todo.IsCompleted;
         }
-
     }
 }

@@ -24,7 +24,20 @@ namespace Services
             }
             return _toDoRepository.GetToDosByTeam(teamId);
         }
+        public IEnumerable<ToDo> GetDeletedTodos()
+        {
+            return _toDoRepository.GetDeletedTodos();
+        }
 
+        public void RestoreToDo(int todoId, int teamId)
+        {
+            _toDoRepository.RestoreToDo(todoId,teamId); ;
+        }
+
+        public void PermanentlyDeleteTodo(int id)
+        {
+            _toDoRepository.PermanentlyDeleteToDo(id);
+        }
         public void AddToDoForTeam(int teamId, ToDo todo)
         {
             var team = _toDoRepository.GetTeamById(teamId);
