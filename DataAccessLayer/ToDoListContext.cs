@@ -1,4 +1,4 @@
-﻿using BusinessObject;
+﻿
 using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +16,7 @@ namespace DataAccessLayer
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Team> Teams { get; set; }
         public virtual DbSet<ToDo> ToDos { get; set; }
-        public virtual DbSet<TrashItem> DeletedTasks { get; set; } // Thêm DbSet cho DeletedTasks
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
