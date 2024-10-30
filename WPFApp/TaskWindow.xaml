@@ -148,12 +148,14 @@
                         <ItemsControl x:Name="TaskListView">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <local:TaskListItem Title="{Binding Title}" 
-                                    Description="{Binding Description}"
-                                    DueDate="{Binding DueDate}" 
-                                    Id="{Binding Id}"
-                                    TeamId="{Binding TeamId}"
-                                    TaskSelected="TaskListItem_TaskSelected"/>
+                                    <local:TaskListItem 
+                    Title="{Binding Title}" 
+                    Description="{Binding Description}"
+                    DueDate="{Binding DueDate}" 
+                    Id="{Binding Id}"
+                    TeamId="{Binding TeamId}"
+                    IsCompleted="{Binding IsCompleted}"
+                                        TaskSelected="TaskListItem_TaskSelected"/>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -204,8 +206,9 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10">
                         <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Click="DeleteTaskButton_Click"/>
                         <Button Content="Update" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White" Click="UpdateTaskButton_Click"/>
-                        <Button Content="Check State" Style="{StaticResource CustomButtonStyle}" Background="#44318d" Foreground="White"/>
+                        <Button Content="Check State" Style="{StaticResource CustomButtonStyle}" Background="#44318d" Foreground="White" Click="CheckStateButton_Click"/>
                     </StackPanel>
+
                 </StackPanel>
             </Grid>
         </Grid>

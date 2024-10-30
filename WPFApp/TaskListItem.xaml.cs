@@ -7,7 +7,7 @@ namespace WPFApp
 {
     public partial class TaskListItem : UserControl
     {
-        // Define the DependencyProperties for Title, Description, DueDate, TaskID, and TeamID
+        // Define the DependencyProperties for Title, Description, DueDate, TaskID, TeamID, and IsComplete
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register("Title", typeof(string), typeof(TaskListItem), new PropertyMetadata(string.Empty));
 
@@ -22,6 +22,10 @@ namespace WPFApp
 
         public static readonly DependencyProperty TeamIDProperty =
             DependencyProperty.Register("TeamId", typeof(int), typeof(TaskListItem), new PropertyMetadata(0));
+
+        // New DependencyProperty for IsComplete
+        public static readonly DependencyProperty IsCompleteProperty =
+            DependencyProperty.Register("IsCompleted", typeof(bool), typeof(TaskListItem), new PropertyMetadata(false));
 
         // Define the public properties for binding the UI to these dependency properties
         public string Title
@@ -54,6 +58,13 @@ namespace WPFApp
             set => SetValue(TeamIDProperty, value);
         }
 
+        // New public property for IsComplete
+        public bool IsCompleted
+        {
+            get => (bool)GetValue(IsCompleteProperty);
+            set => SetValue(IsCompleteProperty, value);
+        }
+
         public TaskListItem()
         {
             InitializeComponent();
@@ -71,7 +82,8 @@ namespace WPFApp
                 Description = Description,
                 DueDate = DueDate,
                 Id = Id,
-                TeamId = TeamId
+                TeamId = TeamId,
+                IsCompleted = IsCompleted // Pass the IsComplete value
             });
         }
     }
@@ -85,4 +97,5 @@ public class TaskSelectedEventArgs : EventArgs
     public string DueDate { get; set; }
     public int Id { get; set; }    // ID of the Task
     public int TeamId { get; set; }    // ID of the Team
+    public bool IsCompleted { get; set; } // Indicate if the task is complete
 }
