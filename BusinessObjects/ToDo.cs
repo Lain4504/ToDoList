@@ -16,5 +16,6 @@ namespace BusinessObjects
         public bool IsCompleted { get; set; }
         public DateTime? DeletedAt { get; set; } // Thời gian xóa task
         public ICollection<User> AssignedUsers { get; set; } = new List<User>();
+        public bool IsDeleted { get; set; }
     }
 }
