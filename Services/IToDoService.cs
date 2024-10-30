@@ -17,6 +17,6 @@ namespace Services
         Task<IEnumerable<ToDo>> GetToDoByTitleAsync(string title, int teamId);
         Task<bool> IsTaskCompleted(int todoId);
         void UpdateTaskCompletionStatus(int teamId, int todoId, bool isCompleted);
-
+        void RestoreToDo(int todoId, int teamId);
     }
 }

@@ -230,7 +230,7 @@ namespace WPFApp
 
         private void BinButton_Click(object sender, RoutedEventArgs e)
         {
-            Trash trash = new Trash();
+            TrashWindow trash = new TrashWindow();
             trash.Show();
             this.Close();
         }

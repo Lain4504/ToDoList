@@ -12,16 +12,16 @@ namespace WPFApp
     {
         public int TeamId { get; private set; }
         private readonly ITeamService _teamService;
-        private int _currentUserID;
-
+        private TeamWindow _teamWindow;
         // Constructor với tham số cho service và teamId
-        public InsideTeam(ITeamService teamService, int teamId)
+        public InsideTeam(ITeamService teamService, int teamId, TeamWindow teamWindow)
         {
             InitializeComponent();
             _teamService = teamService ?? throw new ArgumentNullException(nameof(teamService));
             TeamId = teamId; // Lưu teamId
             LoadTeamUsers(TeamId); // Tải danh sách tác vụ cho teamId đã được truyền vào
             SetTeamName(TeamId);
+            _teamWindow = teamWindow;
         }
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
@@ -38,6 +38,7 @@ namespace WPFApp
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close(); // Đóng cửa sổ
+            _teamWindow.Show();
         }
         public void SetTeamName(int teamID)
         {
