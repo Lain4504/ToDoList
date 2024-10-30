@@ -25,34 +25,46 @@ namespace WPFApp.Views
             RegisterButton.Click += RegisterButton_Click;
             _hasShownError = false; // Initialize the flag
         }
+        private bool _notificationShown = false; // Add a flag to track notification status
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             string username = UsernameTextBox.Text.Trim();
             string password = PasswordBox.Password;
-            bool isNotificationOpen = Application.Current.Windows.OfType<NotificationWindow>().Any();
 
             if (ValidateLogin(username, password))
             {
-                if (!isNotificationOpen)
+                if (!_notificationShown)
                 {
+                    _notificationShown = true; // Set flag to true to prevent multiple notifications
                     NotificationWindow successNotification = new NotificationWindow("Login successful!");
-                    successNotification.Show();
+
+                    successNotification.Closed += (s, args) =>
+                    {
+                        var user = _dbContext.Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == HashPassword(password));
+                        if (user != null)
+                        {
+                            OpenTaskWindow(user.UserId);
+                            this.Close();
+                        }
+                    };
+
+                    this.Hide();
+                    successNotification.ShowDialog();
                 }
-                var user = _dbContext.Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == HashPassword(password));
-                OpenTaskWindow(user.UserId);
             }
             else
             {
-                if (!isNotificationOpen)
+                if (!_notificationShown)
                 {
+                    _notificationShown = true;
+
                     NotificationWindow errorNotification = new NotificationWindow("Invalid username or password. Please try again.");
-                    errorNotification.Show();
-                    _hasShownError = true;
+
+                    errorNotification.ShowDialog();
                 }
             }
         }
-
 
         #region Helper Methods
 
@@ -60,7 +72,6 @@ namespace WPFApp.Views
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
-                MessageBox.Show("Username or password cannot be empty.");
                 _hasShownError = true;
                 return false;
             }
