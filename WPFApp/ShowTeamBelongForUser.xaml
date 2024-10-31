@@ -10,33 +10,9 @@
 
     <Border BorderThickness="2" BorderBrush="Transparent" Background="#D1E8E2" CornerRadius="10">
         <Grid>
-            <Label Content="Enter User ID:" 
-                   HorizontalAlignment="Left" 
-                   Margin="29,10,0,0" 
-                   VerticalAlignment="Top" 
-                   FontSize="20" 
-                   Foreground="#2c3532" 
-                   FontWeight="Bold"/>
-
-            <TextBox x:Name="UserIdTextBox" 
-                      HorizontalAlignment="Left" 
-                      Margin="214,20,0,0" 
-                      VerticalAlignment="Top" 
-                      Width="273" 
-                      FontSize="16"/>
-
-            <Button x:Name="LoadTeamsButton" 
-                    Content="Load Teams" 
-                    HorizontalAlignment="Left" 
-                    Margin="528,24,0,0" 
-                    VerticalAlignment="Top" 
-                    Background="#389583" 
-                    Foreground="White" 
-                    Click="LoadTeamsButton_Click"/>
-
             <Label Content="Teams Belonging to User" 
                    HorizontalAlignment="Left" 
-                   Margin="29,38,0,0" 
+                   Margin="29,20,0,0" 
                    VerticalAlignment="Top" 
                    FontSize="30" 
                    Foreground="#2c3532" 
@@ -53,13 +29,12 @@
                        RadiusY="20"/>
 
             <ListBox x:Name="TeamsListBox" 
-                     ItemsSource="{Binding Teams}" 
                      DisplayMemberPath="Name" 
                      HorizontalAlignment="Left" 
-                     Margin="46,110,0,0" 
+                     Margin="42,110,0,0" 
                      VerticalAlignment="Top" 
-                     Width="400" 
-                     Height="300" 
+                     Width="452" 
+                     Height="339" 
                      BorderBrush="#2c3532" 
                      Background="#ffffff" 
                      FontSize="16"
@@ -68,17 +43,17 @@
             <Button x:Name="ViewTasksButton" 
                     Content="View Tasks" 
                     HorizontalAlignment="Left" 
-                    Margin="510,389,0,0" 
+                    Margin="515,428,0,0" 
                     VerticalAlignment="Top" 
                     Background="White" 
                     Foreground="#389583"
                     IsEnabled="False" 
-                 />
+                    Click="ViewTasksButton_Click" RenderTransformOrigin="0.29,15.074"/>
 
             <Button x:Name="BackButton" 
                     Content="Back" 
                     HorizontalAlignment="Left" 
-                    Margin="607,389,0,0" 
+                    Margin="696,428,0,0" 
                     VerticalAlignment="Top" 
                     Background="#ab3b61" 
                     Foreground="White" 

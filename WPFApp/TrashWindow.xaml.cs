@@ -11,32 +11,21 @@ namespace WPFApp
 {
     public partial class TrashWindow : Window
     {
-        private readonly ToDoService _todoService;
+        private readonly IToDoService _todoService; 
         private int _currentTeamId;
 
         public ObservableCollection<ToDo> DeletedTodos { get; set; }
 
-        public TrashWindow(ToDoService todoService, int teamId)
+        public TrashWindow(IToDoService todoService, int teamId)
         {
             InitializeComponent();
-            _todoService = todoService;
+            _todoService = todoService ?? throw new ArgumentNullException(nameof(todoService));
             _currentTeamId = teamId;
             DeletedTodos = new ObservableCollection<ToDo>(_todoService.GetDeletedTodos());
-            DeletedTodosListView.DataContext = this;
+            DeletedTodosItemsControl.DataContext = this;
         }
 
-        public TrashWindow(ToDoService todoService)
-        {
-            InitializeComponent();
-            _todoService = todoService;
-            DeletedTodos = new ObservableCollection<ToDo>(_todoService.GetDeletedTodos());
-            DeletedTodosListView.DataContext = this;
-        }
 
-        public TrashWindow()
-        {
-            InitializeComponent();
-        }
 
         private void RestoreToDo(int todoId, int teamId)
         {
@@ -44,9 +33,9 @@ namespace WPFApp
             ReloadDeletedTodos();
         }
 
-        private void PermanentlyDeleteTodo(int todoId)
+        private void PermanentlyDeleteTodo(int teamId, int todoId)
         {
-            _todoService.PermanentlyDeleteTodo(todoId);
+            _todoService.PermanentlyDeleteTodo(teamId, todoId);
             ReloadDeletedTodos();
         }
 
@@ -64,18 +53,23 @@ namespace WPFApp
             var button = sender as Button;
             if (button != null && int.TryParse(button.Tag.ToString(), out int todoId))
             {
-                RestoreToDo(todoId, _currentTeamId);
+                RestoreToDo(todoId, _currentTeamId); 
+                ReloadDeletedTodos();
             }
         }
+
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             if (button != null && int.TryParse(button.Tag.ToString(), out int todoId))
             {
-                PermanentlyDeleteTodo(todoId);
+                
+                _todoService.PermanentlyDeleteTodo(_currentTeamId, todoId);
+                ReloadDeletedTodos();
             }
         }
+
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
@@ -84,12 +78,18 @@ namespace WPFApp
 
         private void DeletedTodosListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+           
         }
+
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            
             this.DragMove();
         }
+        private void BinButton_Click(object sender, RoutedEventArgs e)
+        {
+            var TrashWindow = new TrashWindow(_todoService, _currentTeamId);
+            TrashWindow.Show(); 
+        }
+
     }
 }

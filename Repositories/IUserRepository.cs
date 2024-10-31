@@ -10,5 +10,6 @@ namespace Repositories
     public interface IUserRepository
     {
         Task<User> GetUserWithTeamsAsync(int userId);
+        User GetUser(int userId);
     }
 }

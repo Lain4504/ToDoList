@@ -7,42 +7,31 @@
         Background="Transparent" WindowStartupLocation="CenterScreen"
         FontFamily="{StaticResource Comic Sans MS 400}">
 
-    <Window.Resources>
-        <Style TargetType="ScrollBar">
-            <Setter Property="Width" Value="8"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Opacity" Value="0.7"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ScrollBar">
-                        <Grid>
-                            <Track Name="PART_Track" IsDirectionReversed="true">
-                                <Track.Thumb>
-                                    <Thumb Background="#e3e2de" Margin="0" Cursor="Arrow"/>
-                                </Track.Thumb>
-                            </Track>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
-
-    <Border Background="#F5F5F5" CornerRadius="10" MouseDown="Border_MouseDown">
+    <Border BorderThickness="2" BorderBrush="Transparent" Background="#D1E8E2" CornerRadius="10">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.3*" />
-                <!-- Sidebar -->
                 <ColumnDefinition Width="4*" />
-                <!-- Main Content -->
             </Grid.ColumnDefinitions>
 
             <!-- Sidebar Menu -->
-            <Border Background="#E0E0E0" CornerRadius="10,0,0,10" Padding="20" Grid.Column="0" VerticalAlignment="Stretch">
+            <Border Background="#E0E0E0" CornerRadius="10,0,0,10" Padding="5" Grid.Column="0" VerticalAlignment="Stretch">
                 <StackPanel Margin="0,20,0,20">
                     <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <fa:ImageAwesome Style="{StaticResource TrashIcon}" Width="32" Height="32" Margin="0,0,10,0"/>
+                            <fa:ImageAwesome Style="{StaticResource TaskICon}" Width="32" Height="32" Margin="0,0,10,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0" Click="BinButton_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <fa:ImageAwesome Style="{StaticResource TrashIcon}" Width="32" Height="32" Margin="0,20,10,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0" >
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <fa:ImageAwesome Style="{StaticResource ShowTeamIcon}" Width="32" Height="32" Margin="0,20,10,0"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -50,25 +39,58 @@
 
             <!-- Main Content -->
             <Grid Grid.Column="1" Margin="10" Background="#F5F5F5">
-                <ListView Name="DeletedTodosListView" ItemsSource="{Binding DeletedTodos}" SelectionChanged="DeletedTodosListView_SelectionChanged">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" Width="300"/>
-                            <GridViewColumn Header="Deleted At" DisplayMemberBinding="{Binding DeletedAt}" Width="200"/>
-                            <GridViewColumn Header="Actions" Width="200">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button Content="Restore" Tag="{Binding Id}" Click="RestoreButton_Click" Margin="5" Style="{StaticResource CustomButtonStyle}"/>
-                                            <Button Content="Delete" Tag="{Binding Id}" Click="DeleteButton_Click" Margin="5" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <Button Content="Refresh" Click="RefreshButton_Click" HorizontalAlignment="Right" Margin="0,589,59,61" Width="75" Style="{StaticResource CustomButtonStyle}"/>
+                <Label Content="Deleted To-Do Items" 
+                       HorizontalAlignment="Left" 
+                       Margin="29,20,0,0" 
+                       VerticalAlignment="Top" 
+                       FontSize="30" 
+                       Foreground="#2c3532" 
+                       FontWeight="Bold"/>
+
+                <StackPanel Margin="29,77,59,113">
+                    <!-- Header Row -->
+                    <Grid Background="#D1E8E2" Margin="0,0,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Title" FontWeight="Bold" Padding="5" Grid.Column="0" />
+                        <TextBlock Text="Deleted At" FontWeight="Bold" Padding="5" Grid.Column="1"/>
+                        <TextBlock Text="Actions" FontWeight="Bold" Padding="5" Grid.Column="2"/>
+                    </Grid>
+
+                    <!-- Items -->
+                    <ItemsControl Name="DeletedTodosItemsControl" ItemsSource="{Binding DeletedTodos}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Background="#F5F5F5" Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="300"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Background="LightBlue" Margin="0,0,5,0" Padding="5" Grid.Column="0">
+                                        <TextBlock Text="{Binding Title}"/>
+                                    </Border>
+
+                                    <Border Background="LightCoral" Margin="0,0,5,0" Padding="5" Grid.Column="1">
+                                        <TextBlock Text="{Binding DeletedAt}"/>
+                                    </Border>
+
+                                    <StackPanel Orientation="Horizontal" Grid.Column="2">
+                                        <Button Content="Restore" Tag="{Binding Id}" Click="RestoreButton_Click" Margin="5" Style="{StaticResource CustomButtonStyle}"/>
+                                        <Button Content="Delete" Tag="{Binding Id}" Click="DeleteButton_Click" Margin="5" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <Button Content="Refresh" Click="RefreshButton_Click" HorizontalAlignment="Right" Margin="0,600,59,46" Width="75" Style="{StaticResource CustomButtonStyle}"/>
             </Grid>
         </Grid>
     </Border>

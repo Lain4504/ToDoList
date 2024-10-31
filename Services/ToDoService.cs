@@ -10,9 +10,9 @@ namespace Services
     {
         private readonly IToDoRepository _toDoRepository;
 
-        public ToDoService(ToDoRepository toDoRepository)
+        public ToDoService(IToDoRepository toDoRepository)
         {
-            _toDoRepository = toDoRepository;
+            _toDoRepository = toDoRepository ?? throw new ArgumentNullException(nameof(toDoRepository));
         }
 
         public IEnumerable<ToDo> GetToDosForTeam(int teamId)
@@ -24,6 +24,7 @@ namespace Services
             }
             return _toDoRepository.GetToDosByTeam(teamId);
         }
+
         public IEnumerable<ToDo> GetDeletedTodos()
         {
             return _toDoRepository.GetDeletedTodos();
@@ -31,15 +32,27 @@ namespace Services
 
         public void RestoreToDo(int todoId, int teamId)
         {
-            _toDoRepository.RestoreToDo(todoId,teamId); ;
+            var todo = _toDoRepository.GetToDoById(teamId, todoId);
+            if (todo == null)
+            {
+                throw new Exception("ToDo not found");
+            }
+            _toDoRepository.RestoreToDo(todoId, teamId);
         }
 
-        public void PermanentlyDeleteTodo(int id)
+        public void PermanentlyDeleteTodo(int teamId, int todoId)
         {
-            _toDoRepository.PermanentlyDeleteToDo(id);
+            var todo = _toDoRepository.GetToDoById(teamId, todoId);
+            if (todo == null)
+            {
+                throw new Exception("ToDo not found");
+            }
+            _toDoRepository.PermanentlyDeleteToDo(todoId);
         }
+
         public void AddToDoForTeam(int teamId, ToDo todo)
         {
+            if (todo == null) throw new ArgumentNullException(nameof(todo));
             var team = _toDoRepository.GetTeamById(teamId);
             if (team == null)
             {
@@ -52,6 +65,7 @@ namespace Services
 
         public void UpdateToDoForTeam(int teamId, ToDo todo)
         {
+            if (todo == null) throw new ArgumentNullException(nameof(todo));
             var existingTodo = _toDoRepository.GetToDoById(teamId, todo.Id);
             if (existingTodo == null)
             {
@@ -86,12 +100,20 @@ namespace Services
 
         public async Task<IEnumerable<ToDo>> GetToDoByTitleAsync(string title, int teamId)
         {
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException("Title cannot be empty", nameof(title));
+
             return await _toDoRepository.GetToDoByTitleAsync(title, teamId);
         }
 
         public async Task<bool> IsTaskCompleted(int todoId)
         {
             return await _toDoRepository.IsTaskCompleted(todoId);
+        }
+
+        public IEnumerable<ToDo> GetToDosByTeamId(int teamId)
+        {
+            return _toDoRepository.GetToDosByTeam(teamId);
         }
     }
 }

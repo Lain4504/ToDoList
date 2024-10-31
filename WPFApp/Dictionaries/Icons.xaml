@@ -58,5 +58,12 @@
         <Setter Property="Icon" Value="User"/>
         <Setter Property="Foreground" Value="White" />
     </Style>
-    
+    <Style x:Key="ShowTeamIcon" TargetType="fa:ImageAwesome">
+        <Setter Property="Icon" Value="Users"/>
+        <!-- Hoặc icon phù hợp khác -->
+        <Setter Property="Foreground" Value="#379683"/>
+        <!-- Màu sắc của icon -->
+    </Style>
+
+
 </ResourceDictionary>

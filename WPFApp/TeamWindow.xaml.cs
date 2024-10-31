@@ -3,8 +3,8 @@ using BusinessObjects;
 using DataAccessLayer;
 using Repositories;
 using Services;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -15,35 +15,34 @@ namespace WPFApp
     public partial class TeamWindow : Window
     {
         private readonly ITeamService _teamService;
-        private readonly int _loggedInUserID; // Lưu người dùng đã đăng nhập
+        private readonly IUserService _userService;
+        private readonly IToDoService _toDoService;
+        private readonly int _loggedInUserID;
+        private User _currentUser;
 
-        // Constructor với tham số
-        public TeamWindow(ITeamService teamService, int loggedInUserID)
+        // Constructor with parameters
+        public TeamWindow(ITeamService teamService, IUserService userService, IToDoService toDoService, int loggedInUserID)
         {
             InitializeComponent();
             _teamService = teamService ?? throw new ArgumentNullException(nameof(teamService));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _toDoService = toDoService ?? throw new ArgumentNullException(nameof(toDoService));
             _loggedInUserID = loggedInUserID;
+
+            // Initialize current user
+            _currentUser = _userService.GetCurrentUser(); // Đảm bảo phương thức này trả về một người dùng hợp lệ
+            if (_currentUser == null)
+            {
+                MessageBox.Show("Current user is not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             LoadTeams(_loggedInUserID);
         }
-        // Các button thao tác với cửa sổ
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized; // Giảm cửa sổ
-        }
 
-        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.WindowState == WindowState.Normal)
-                this.WindowState = WindowState.Maximized; // Max
-            else
-                this.WindowState = WindowState.Normal; // Trở lại trạng thái bình thường
-        }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close(); // Đóng cửa sổ
-        }
-        public void LoadTeams(int userID)
+        // Load teams for the logged-in user
+        private void LoadTeams(int userID)
         {
             try
             {
@@ -54,32 +53,37 @@ namespace WPFApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading tasks: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ShowErrorMessage($"Error loading teams: {ex.Message}");
             }
         }
+
+        // Minimize window
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        // Maximize/restore window
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = (this.WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
+        }
+
+        // Close window
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        // New team button click
         private void NewTeamButton_Click(object sender, RoutedEventArgs e)
         {
-            NewTeamWindow newTeamWindow = new NewTeamWindow(_teamService, _loggedInUserID);
-
-            // Lắng nghe sự kiện TeamAdded để cập nhật giao diện team detail
-            newTeamWindow.TeamAdded += (s, args) =>
-            {
-                var teamArgs = args as TeamAddedEventArgs;
-                if (teamArgs != null)
-                {
-                    var newTeam = teamArgs.NewTeam;
-
-                    // Cập nhật danh sách Teams
-                    var teamsList = DataContext as ObservableCollection<BusinessObjects.Team>;
-                    if (teamsList != null)
-                    {
-                        teamsList.Add(newTeam); // Thêm đội mới vào danh sách
-                    }
-                }
-            };
-            newTeamWindow.ShowDialog(); 
-            LoadTeams(_loggedInUserID);
+            var newTeamWindow = new NewTeamWindow(_teamService, _loggedInUserID);
+            newTeamWindow.TeamAdded += (s, args) => LoadTeams(_loggedInUserID);
+            newTeamWindow.ShowDialog();
         }
+
+        // Search teams
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             string searchTitle = TeamSearchBox.Text.Trim();
@@ -88,110 +92,133 @@ namespace WPFApp
             {
                 try
                 {
-                    IEnumerable<BusinessObjects.Team> teams = await _teamService.GetTeamByNameAsync(searchTitle);
+                    var teams = await _teamService.GetTeamByNameAsync(searchTitle);
                     TeamListView.ItemsSource = teams;
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error searching tasks: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    ShowErrorMessage($"Error searching teams: {ex.Message}");
                 }
             }
         }
+
+        // Update team button click
         private void UpdateTeamButton_Click(object sender, RoutedEventArgs e)
         {
-            // Lấy team hiện tại từ dữ liệu được liên kết với ViewModel
             var selectedTeam = (sender as Button)?.DataContext as BusinessObjects.Team;
 
             if (selectedTeam != null)
             {
-                UpdateTeam updateWindow = new UpdateTeam(_teamService, selectedTeam.TeamId);
-                updateWindow.TeamUpdated += (s, args) =>
-                {
-                    LoadTeams(_loggedInUserID);
-                };
+                var updateWindow = new UpdateTeam(_teamService, selectedTeam.TeamId);
+                updateWindow.TeamUpdated += (s, args) => LoadTeams(_loggedInUserID);
                 updateWindow.ShowDialog();
             }
             else
             {
-                NotificationWindow notification = new NotificationWindow("Please choose a team before pressing update.");
-                notification.ShowDialog();
+                ShowNotification("Please choose a team before pressing update.");
             }
         }
 
-        // Sự kiện xóa 
+        // Delete team button click
         private void DeleteTeamButton_Click(object sender, RoutedEventArgs e)
         {
             var selectedTeam = (sender as Button)?.DataContext as BusinessObjects.Team;
 
             if (selectedTeam != null)
             {
-                // Hiển thị cửa sổ xác nhận xóa
-                ConfirmationWindow confirmationWindow = new ConfirmationWindow();
-                confirmationWindow.Owner = this; // Thiết lập chủ sở hữu của cửa sổ xác nhận
-                confirmationWindow.ShowDialog(); // Hiển thị cửa sổ dưới dạng dialog
+                var confirmationWindow = new ConfirmationWindow { Owner = this };
+                confirmationWindow.ShowDialog();
 
-                // Kiểm tra nếu người dùng xác nhận xóa
                 if (confirmationWindow.IsConfirmed)
                 {
-                    try
-                    {
-                        // Gọi service để xóa team
-                        _teamService.DeleteTeam(selectedTeam.TeamId);
-
-                        // Hiển thị thông báo thành công qua NotificationWindow
-                        NotificationWindow notification = new NotificationWindow("Team deleted successfully!");
-                        notification.ShowDialog();
-
-                        // Xóa team khỏi danh sách hiện tại
-                        var teamsList = DataContext as ObservableCollection<BusinessObjects.Team>;
-                        if (teamsList != null)
-                        {
-                            teamsList.Remove(selectedTeam);
-                            // Thông báo UI đã cập nhật dữ liệu
-                            TeamListView.Items.Refresh();
-                        }
-                        LoadTeams(_loggedInUserID);
-                    }
-                    catch (Exception ex)
-                    {
-                        // Hiển thị thông báo lỗi qua NotificationWindow
-                        NotificationWindow notification = new NotificationWindow($"Error deleting team: {ex.Message}");
-                        notification.ShowDialog();
-                    }
-                    
+                    TryDeleteTeam(selectedTeam.TeamId);
                 }
             }
             else
             {
-                // Hiển thị thông báo khi không có team được chọn
-                NotificationWindow notification = new NotificationWindow("No team selected for deletion.");
-                notification.ShowDialog();
+                ShowNotification("No team selected for deletion.");
             }
-        }
-        private void TeamSearchBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            string searchTitle = TeamSearchBox.Text.Trim();
-            if (string.IsNullOrEmpty(searchTitle))
-            {
-                LoadTeams(_loggedInUserID);
-                SearchPlaceholderLabel.Visibility = Visibility.Visible;
-            }
-            else
-                SearchPlaceholderLabel.Visibility = Visibility.Collapsed;
         }
 
+        // Try to delete team with error handling
+        private void TryDeleteTeam(int teamId)
+        {
+            try
+            {
+                _teamService.DeleteTeam(teamId);
+                ShowNotification("Team deleted successfully!");
+                LoadTeams(_loggedInUserID);
+            }
+            catch (Exception ex)
+            {
+                ShowErrorMessage($"Error deleting team: {ex.Message}");
+            }
+        }
+
+        // Search box text changed
+        private void TeamSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(TeamSearchBox.Text.Trim()))
+            {
+                LoadTeams(_loggedInUserID);
+            }
+        }
+
+        // Double click on team item
         private void TeamItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var selectedTeam = (sender as Border)?.DataContext as BusinessObjects.Team;
 
             if (selectedTeam != null)
             {
-                // Mở cửa sổ InsideTeam với thông tin của team đã chọn
-                InsideTeam insideTeamWindow = new InsideTeam(new TeamService(new TeamRepository(new ToDoListContext())), selectedTeam.TeamId, this);
-                insideTeamWindow.Show(); // Hiển thị cửa sổ chi tiết team
+                var insideTeamWindow = new InsideTeam(new TeamService(new TeamRepository(new ToDoListContext())), selectedTeam.TeamId, this);
+                insideTeamWindow.Show();
                 this.Hide();
             }
         }
+
+
+
+        // Helper methods for notifications
+        private void ShowNotification(string message)
+        {
+            var notificationWindow = new NotificationWindow(message);
+            notificationWindow.ShowDialog();
+        }
+
+        private void ShowErrorMessage(string message)
+        {
+            MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        // Show teams button click
+        private void ShowTeamsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_userService == null)
+                MessageBox.Show("UserService is not initialized.");
+            if (_toDoService == null)
+                MessageBox.Show("ToDoService is not initialized.");
+            if (_currentUser == null)
+                MessageBox.Show("CurrentUser is not initialized.");
+            if (_userService == null || _toDoService == null || _currentUser == null)
+            {
+                MessageBox.Show("One or more required services are not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                // Tạo và hiển thị cửa sổ mới cho các đội của người dùng
+                ShowTeamBelongForUser showTeamWindow = new ShowTeamBelongForUser(_userService, _toDoService, _loggedInUserID, _currentUser);
+                showTeamWindow.Show();
+                this.Close(); // Đóng cửa sổ hiện tại nếu cần
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error showing teams: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
 
     }
 }

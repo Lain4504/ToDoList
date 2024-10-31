@@ -13,12 +13,18 @@ namespace WPFApp.Views
     public partial class LoginWindow : Window
     {
         private readonly ToDoListContext _dbContext;
+        private readonly ITeamService _teamService;
+        private readonly IUserService _userService; // Assuming you have this service
+        private readonly IToDoService _toDoService; // Add this line
         private bool _hasShownError;
 
         public LoginWindow()
         {
             InitializeComponent();
             _dbContext = new ToDoListContext();
+            _teamService = new TeamService(new TeamRepository(_dbContext)); // Initialize your team service
+            _userService = new UserService(new UserRepository(_dbContext)); // Initialize your user service
+            _toDoService = new ToDoService(new ToDoRepository(_dbContext)); // Initialize your to-do service
 
             // Event handlers for the buttons
             LoginButton.Click += LoginButton_Click;
@@ -32,18 +38,29 @@ namespace WPFApp.Views
             string password = PasswordBox.Password;
             bool isNotificationOpen = Application.Current.Windows.OfType<NotificationWindow>().Any();
 
+            // Kiểm tra thông tin đăng nhập
             if (ValidateLogin(username, password))
             {
+                // Hiển thị thông báo đăng nhập thành công
                 if (!isNotificationOpen)
                 {
                     NotificationWindow successNotification = new NotificationWindow("Login successful!");
                     successNotification.Show();
                 }
+
+                // Lấy thông tin người dùng từ cơ sở dữ liệu
                 var user = _dbContext.Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == HashPassword(password));
-                OpenTaskWindow(user.UserId);
+
+                // Cập nhật người dùng hiện tại
+                if (user != null)
+                {
+                    User.CurrentUser = user; // Cập nhật thuộc tính CurrentUser
+                    OpenTaskWindow(user.UserId); // Mở cửa sổ nhiệm vụ với ID người dùng
+                }
             }
             else
             {
+                // Hiển thị thông báo lỗi nếu thông tin đăng nhập không hợp lệ
                 if (!isNotificationOpen)
                 {
                     NotificationWindow errorNotification = new NotificationWindow("Invalid username or password. Please try again.");
@@ -87,9 +104,10 @@ namespace WPFApp.Views
 
         private void OpenTaskWindow(int userID)
         {
-            TeamWindow teamWindow = new TeamWindow(new TeamService(new TeamRepository(new ToDoListContext())), userID);
+            // Pass the IToDoService and IUserService to the TeamWindow
+            TeamWindow teamWindow = new TeamWindow(_teamService, _userService, _toDoService, userID);
             teamWindow.Show();
-            this.Close(); 
+            this.Close();
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
@@ -98,8 +116,8 @@ namespace WPFApp.Views
             {
                 if (window is RegisterWindow)
                 {
-                    window.Activate(); 
-                    return; 
+                    window.Activate();
+                    return;
                 }
             }
 
