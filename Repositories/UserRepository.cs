@@ -44,7 +44,12 @@ namespace Repositories
                 throw;
             }
         }
-
+        public User GetUser(int userId)
+        {
+            return _context.Users
+                .Include(u => u.Teams)
+                .FirstOrDefault(u => u.UserId == userId);
+        }
         public Task<User> GetUserWithTeamsAsync(int userId)
         {
             throw new NotImplementedException();

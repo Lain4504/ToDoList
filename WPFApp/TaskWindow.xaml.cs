@@ -12,6 +12,8 @@ namespace WPFApp
 {
     public partial class TaskWindow : Window
     {
+        private readonly ITeamService _teamService;
+        private readonly IUserService _userService;
         private readonly IToDoService _toDoService;
         private int _currentTaskID;
         private int _currentTeamID;
@@ -230,10 +232,37 @@ namespace WPFApp
 
         private void BinButton_Click(object sender, RoutedEventArgs e)
         {
-            TrashWindow trash = new TrashWindow();
-            trash.Show();
-            this.Close();
+           
+            var trashWindow = new TrashWindow(_toDoService, _currentTeamID); 
+            trashWindow.Show(); 
         }
+
+        private void ShowTeamsButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+            var context = new ToDoListContext();
+
+           
+            IUserRepository userRepository = new UserRepository(context);
+            ITeamRepository teamRepository = new TeamRepository(context); 
+
+         
+            IUserService userService = new UserService(userRepository);
+            ITeamService teamService = new TeamService(teamRepository); 
+            IToDoService todoService = new ToDoService(new ToDoRepository(context)); 
+
+            int currentTeamId = _currentTeamID;
+
+            var teamsWindow = new TeamWindow(teamService, userService, todoService, currentTeamId);
+            teamsWindow.Show();
+        }
+
+
+
+
+
+
+
         private void CheckStateButton_Click(object sender, RoutedEventArgs e)
         {
             if (_currentTaskID > 0)
@@ -256,4 +285,5 @@ namespace WPFApp
         }
 
     }
+
 }

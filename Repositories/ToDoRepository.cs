@@ -36,7 +36,7 @@ namespace Repositories
             if (todo != null)
             {
                 todo.IsDeleted = false;
-                todo.DeletedAt = DateTime.MinValue; // Hoặc giá trị mặc định khác
+                todo.DeletedAt = DateTime.MinValue; 
                 _context.SaveChanges();
             }
         }
@@ -53,7 +53,9 @@ namespace Repositories
 
         public Team GetTeamById(int teamId)
         {
-            return _context.Teams.FirstOrDefault(t => t.TeamId == teamId);
+            return _context.Teams
+                 .Include(t => t.ToDos) 
+                 .FirstOrDefault(t => t.TeamId == teamId);
         }
 
         public IEnumerable<ToDo> GetToDosByTeam(int teamId)

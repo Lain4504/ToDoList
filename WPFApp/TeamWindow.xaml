@@ -48,7 +48,7 @@
             </Grid.ColumnDefinitions>
 
             <!-- Sidebar Menu -->
-            <Border Background="#E0E0E0" CornerRadius="10,0,0,10" Padding="20" Grid.Column="0" VerticalAlignment="Stretch">
+            <Border Background="#E0E0E0" CornerRadius="10,0,0,10" Padding="5" Grid.Column="0" VerticalAlignment="Stretch">
                 <StackPanel Margin="0,20,0,20">
                     <!-- Task Button with Icon -->
                     <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0">
@@ -64,6 +64,16 @@
 
                         </StackPanel>
                     </Button>
+                    <!-- ShowTeam Button with Icon -->
+                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0" Click="ShowTeamsButton_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <fa:ImageAwesome Style="{StaticResource ShowTeamIcon}" Width="32" Height="32" Margin="0,20,10,0"/>
+                        </StackPanel>
+                    </Button>
+
+
+
+
                 </StackPanel>
             </Border>
 

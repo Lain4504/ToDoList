@@ -1,57 +1,80 @@
-﻿using Repositories;
-using System.Windows;
-using DataAccessLayer;
+﻿using BusinessObjects;
+using Services;
+using System;
 using System.Collections.Generic;
-using BusinessObjects;
+using System.Linq;
+using System.Windows;
 
 namespace WPFApp
 {
     public partial class ShowTeamBelongForUser : Window
     {
-        private readonly UserRepository _userRepository;
-        private Team _selectedTeam;
+        private readonly IUserService _userService;
+        private readonly IToDoService _toDoService;
+        private readonly int _userId;
+        private readonly User _currentUser;
 
-        public ShowTeamBelongForUser(int userId)
+        public ShowTeamBelongForUser(IUserService userService, IToDoService toDoService, int userId, User currentUser)
         {
             InitializeComponent();
-            var context = new ToDoListContext();
-            _userRepository = new UserRepository(context);
-            LoadUserTeams(userId);
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _toDoService = toDoService ?? throw new ArgumentNullException(nameof(toDoService));
+            _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
+
+            LoadTeams();
         }
 
-        private void LoadUserTeams(int userId)
+        private void LoadTeams()
         {
-            var teams = _userRepository.GetTeamsForUser(userId);
-            TeamsListBox.ItemsSource = teams;
+            if (_currentUser != null)
+            {
+                var teams = _userService.GetTeamsByUserId(_currentUser.UserId) ?? Enumerable.Empty<Team>();
+                TeamsListBox.ItemsSource = teams.ToList();
+            }
+            else
+            {
+                MessageBox.Show("No user is logged in.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+
+        private int GetSelectedUserId()
+        {
+    
+            return _currentUser?.UserId ?? throw new InvalidOperationException("No user is selected.");
         }
 
         private void TeamsListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
+            ViewTasksButton.IsEnabled = TeamsListBox.SelectedItem != null;
+        }
+
+        private void ViewTasksButton_Click(object sender, RoutedEventArgs e)
+        {
             if (TeamsListBox.SelectedItem is Team selectedTeam)
             {
-                _selectedTeam = selectedTeam;
-                ViewTasksButton.IsEnabled = _selectedTeam != null;
+                var todos = _toDoService.GetToDosByTeamId(selectedTeam.TeamId);
+                if (todos != null && todos.Any())
+                {
+                    string todoList = string.Join("\n", todos.Select(t => t.Title));
+                    MessageBox.Show($"ToDos for Team {selectedTeam.Name}:\n{todoList}", "ToDo List", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show($"No ToDos found for Team {selectedTeam.Name}.", "ToDo List", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
             else
             {
-                _selectedTeam = null;
-                ViewTasksButton.IsEnabled = false;
+                MessageBox.Show("Please select a team first.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
-        private void LoadTeamsButton_Click(object sender, RoutedEventArgs e)
+
+        private User GetCurrentUser()
         {
-            if (int.TryParse(UserIdTextBox.Text, out int userId))
-            {
-                LoadUserTeams(userId);
-            }
-            else
-            {
-                MessageBox.Show("Please enter a valid User ID.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            return _currentUser;
         }
-
-
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {

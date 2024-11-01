@@ -17,5 +17,6 @@ namespace BusinessObjects
         public DateTime? DayOfBirth { get; set; } // Nullable to allow for no input
         public string Phone { get; set; }
         public int Role { get; set; } // Assuming role is represented as an int (0 for user, 1 for admin)
+        public static User CurrentUser { get; set; }
     }
 }

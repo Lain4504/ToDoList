@@ -10,5 +10,9 @@ namespace Services
     public interface IUserService
     {
         Task<User> GetUserTeamsAsync(int userId);
+        User GetUser(int userId);
+        IEnumerable<Team> GetTeamsByUserId(int userId);
+        User GetCurrentUser();
+      
     }
 }
