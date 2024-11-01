@@ -83,6 +83,7 @@ namespace Repositories
             if (todo != null)
             {
                 todo.DeletedAt = DateTime.Now;
+                todo.IsDeleted = true;
                 _context.ToDos.Update(todo);
                 _context.SaveChanges();
             }

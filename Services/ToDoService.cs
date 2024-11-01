@@ -115,5 +115,20 @@ namespace Services
         {
             return _toDoRepository.GetToDosByTeam(teamId);
         }
+        public void UpdateTaskCompletionStatus(int teamId, int todoId, bool isCompleted)
+        {
+            var existingTodo = _toDoRepository.GetToDoById(teamId, todoId);
+            if (existingTodo == null)
+            {
+                throw new Exception("ToDo not found");
+            }
+
+            // Chỉ cập nhật trạng thái IsCompleted
+            existingTodo.IsCompleted = isCompleted;
+
+            // Lưu thay đổi
+            _toDoRepository.UpdateToDo(existingTodo);
+        }
+
     }
 }
