@@ -143,7 +143,7 @@ namespace WPFApp
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // Mở cửa sổ TaskWindow và truyền teamId
-            TaskWindow taskWindow = new TaskWindow(new ToDoService(new ToDoRepository(new ToDoListContext())), TeamId);
+            TaskWindow2 taskWindow = new TaskWindow2(TeamId);
             taskWindow.Show();
         }
         private void MemberSearchBox_TextChanged(object sender, TextChangedEventArgs e)

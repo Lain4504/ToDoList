@@ -10,16 +10,16 @@ namespace WPFApp
 {
     public partial class NewTaskWindow : Window
     {
-        private readonly IToDoService _toDoService;
+        private readonly ITaskService _taskService;
         private readonly int _teamId;
         public delegate void TaskAddedEventHandler(object sender, EventArgs e);
         public event TaskAddedEventHandler TaskAdded;
         // Parameterized constructor
-        public NewTaskWindow(IToDoService toDoService, int teamId)
+        public NewTaskWindow(int teamId)
         {
             InitializeComponent();
             this.MouseLeftButtonDown += new MouseButtonEventHandler(Window_MouseLeftButtonDown);
-            _toDoService = toDoService ?? throw new ArgumentNullException(nameof(toDoService));
+            _taskService = new TaskService();
             _teamId = teamId; // Store the team ID
         }
         // Event handler for the Save button
@@ -43,7 +43,7 @@ namespace WPFApp
                     IsCompleted = false
                 };
 
-                _toDoService.AddToDoForTeam(_teamId, newToDo);
+                _taskService.AddToDoForTeam(_teamId, newToDo);
 
                 // Gọi sự kiện TaskAdded, truyền task mới tạo vào
                 TaskAdded?.Invoke(this, new TaskAddedEventArgs(newToDo));
