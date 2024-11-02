@@ -2,7 +2,6 @@
 using DataAccessLayer;
 using Repositories;
 using Services;
-using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows;
 
@@ -11,14 +10,16 @@ namespace WPFApp
     public partial class InsideTeam : Window
     {
         public int TeamId { get; private set; }
+        public int UserId { get; private set; }
         private readonly ITeamService _teamService;
         private TeamWindow _teamWindow;
         // Constructor với tham số cho service và teamId
-        public InsideTeam(ITeamService teamService, int teamId, TeamWindow teamWindow)
+        public InsideTeam(ITeamService teamService, int teamId, TeamWindow teamWindow, int userId)
         {
             InitializeComponent();
             _teamService = teamService ?? throw new ArgumentNullException(nameof(teamService));
             TeamId = teamId; // Lưu teamId
+            UserId = userId;
             LoadTeamUsers(TeamId); // Tải danh sách tác vụ cho teamId đã được truyền vào
             SetTeamName(TeamId);
             _teamWindow = teamWindow;
@@ -143,7 +144,7 @@ namespace WPFApp
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // Mở cửa sổ TaskWindow và truyền teamId
-            TaskWindow taskWindow = new TaskWindow(new ToDoService(new ToDoRepository(new ToDoListContext())), TeamId);
+            TaskWindow2 taskWindow = new TaskWindow2(TeamId, UserId);
             taskWindow.Show();
         }
         private void MemberSearchBox_TextChanged(object sender, TextChangedEventArgs e)

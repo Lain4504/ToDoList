@@ -163,62 +163,62 @@ namespace WPFApp
 
         private void NewTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            NewTaskWindow newTaskWindow = new NewTaskWindow(_toDoService, _currentTeamID);
+            //NewTaskWindow newTaskWindow = new NewTaskWindow(_toDoService, _currentTeamID);
 
-            // Lắng nghe sự kiện TaskAdded để cập nhật giao diện task detail
-            newTaskWindow.TaskAdded += (s, args) =>
-            {
-                var taskArgs = args as TaskAddedEventArgs;
-                if (taskArgs != null)
-                {
-                    var newTask = taskArgs.NewTask;
+            //// Lắng nghe sự kiện TaskAdded để cập nhật giao diện task detail
+            //newTaskWindow.TaskAdded += (s, args) =>
+            //{
+            //    var taskArgs = args as TaskAddedEventArgs;
+            //    if (taskArgs != null)
+            //    {
+            //        var newTask = taskArgs.NewTask;
 
-                    // Cập nhật task detail UI
-                    TaskTitleTextBlock.Text = newTask.Title;
-                    var taskDescriptionTextBlock = TaskDescriptionScrollViewer.Content as TextBlock;
-                    if (taskDescriptionTextBlock != null)
-                    {
-                        taskDescriptionTextBlock.Text = newTask.Description;
-                    }
-                    DueDateTextBlock.Text = $"Due: {newTask.DueDate}";
-                    _currentTaskID = newTask.Id;
-                    _currentTeamID = _currentTeamID; // Giữ teamId hiện tại
-                }
+            //        // Cập nhật task detail UI
+            //        TaskTitleTextBlock.Text = newTask.Title;
+            //        var taskDescriptionTextBlock = TaskDescriptionScrollViewer.Content as TextBlock;
+            //        if (taskDescriptionTextBlock != null)
+            //        {
+            //            taskDescriptionTextBlock.Text = newTask.Description;
+            //        }
+            //        DueDateTextBlock.Text = $"Due: {newTask.DueDate}";
+            //        _currentTaskID = newTask.Id;
+            //        _currentTeamID = _currentTeamID; // Giữ teamId hiện tại
+            //    }
 
-                // Tải lại danh sách tasks
-                LoadTeamTasks(_currentTeamID);
-            };
+            //    // Tải lại danh sách tasks
+            //    LoadTeamTasks(_currentTeamID);
+            //};
 
-            newTaskWindow.ShowDialog();
+            //newTaskWindow.ShowDialog();
         }
 
         private void UpdateTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentTaskID > 0)
-            {
-                UpdateTask updateWindow = new UpdateTask(_toDoService, _currentTeamID, _currentTaskID);
-                updateWindow.TaskUpdated += (s, args) =>
-                {
-                    LoadTeamTasks(_currentTeamID);
-                    var updateTask = _toDoService.GetToDoDetails(_currentTeamID, _currentTaskID);
-                    if (updateTask != null)
-                    {
-                        TaskTitleTextBlock.Text = updateTask.Title;
-                        var taskDescriptionBlock = TaskDescriptionScrollViewer.Content as TextBlock;
-                        if (taskDescriptionBlock != null)
-                        {
-                            taskDescriptionBlock.Text = updateTask.Description;
-                        }
-                        DueDateTextBlock.Text = $"Due: {updateTask.DueDate}";
-                    }
-                };
-                updateWindow.ShowDialog();
-            }
-            else
-            {
-                NotificationWindow notification = new NotificationWindow("Please choose a task before pressing update.");
-                notification.ShowDialog();
-            }
+            //if (_currentTaskID > 0)
+            //{
+            //    UpdateTask updateWindow = new UpdateTask(_toDoService, _currentTeamID, _currentTaskID);
+            //    updateWindow.TaskUpdated += (s, args) =>
+            //    {
+            //        LoadTeamTasks(_currentTeamID);
+            //        var updateTask = _toDoService.GetToDoDetails(_currentTeamID, _currentTaskID);
+            //        if (updateTask != null)
+            //        {
+            //            TaskTitleTextBlock.Text = updateTask.Title;
+            //            var taskDescriptionBlock = TaskDescriptionScrollViewer.Content as TextBlock;
+            //            if (taskDescriptionBlock != null)
+            //            {
+            //                taskDescriptionBlock.Text = updateTask.Description;
+            //            }
+            //            DueDateTextBlock.Text = $"Due: {updateTask.DueDate}";
+            //        }
+            //    };
+            //    updateWindow.ShowDialog();
+            //}
+            //else
+            //{
+            //    NotificationWindow notification = new NotificationWindow("Please choose a task before pressing update.");
+            //    notification.ShowDialog();
+            //}
         }
 
         private void TaskSearchBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -265,23 +265,23 @@ namespace WPFApp
 
         private void CheckStateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentTaskID > 0)
-            {
-                var updateCompletionWindow = new UpdateTaskCompletion(_toDoService, _currentTeamID, _currentTaskID);
+            //if (_currentTaskID > 0)
+            //{
+            //    var updateCompletionWindow = new UpdateTaskCompletion(_toDoService, _currentTeamID, _currentTaskID);
 
-                // Subscribe to the event
-                updateCompletionWindow.TaskCompletionUpdated += (s, args) =>
-                {
-                    LoadTeamTasks(_currentTeamID); // Reload the task list
-                };
+            //    // Subscribe to the event
+            //    updateCompletionWindow.TaskCompletionUpdated += (s, args) =>
+            //    {
+            //        LoadTeamTasks(_currentTeamID); // Reload the task list
+            //    };
 
-                updateCompletionWindow.ShowDialog();
-            }
-            else
-            {
-                NotificationWindow notification = new NotificationWindow("Please select a task before checking the state.");
-                notification.ShowDialog();
-            }
+            //    updateCompletionWindow.ShowDialog();
+            //}
+            //else
+            //{
+            //    NotificationWindow notification = new NotificationWindow("Please select a task before checking the state.");
+            //    notification.ShowDialog();
+            //}
         }
 
     }

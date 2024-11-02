@@ -171,7 +171,7 @@ namespace WPFApp
 
             if (selectedTeam != null)
             {
-                var insideTeamWindow = new InsideTeam(new TeamService(new TeamRepository(new ToDoListContext())), selectedTeam.TeamId, this);
+                var insideTeamWindow = new InsideTeam(new TeamService(new TeamRepository(new ToDoListContext())), selectedTeam.TeamId, this, _loggedInUserID);
                 insideTeamWindow.Show();
                 this.Hide();
             }

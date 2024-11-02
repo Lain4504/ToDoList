@@ -7,16 +7,16 @@ namespace WPFApp
 {
     public partial class UpdateTaskCompletion : Window
     {
-        private readonly IToDoService _toDoService;
+        private readonly ITaskService _taskService;
         private readonly int _teamId;
         private readonly int _todoId;
 
         public event EventHandler TaskCompletionUpdated; // Declare an event
 
-        public UpdateTaskCompletion(IToDoService toDoService, int teamId, int todoId)
+        public UpdateTaskCompletion(int teamId, int todoId)
         {
             InitializeComponent();
-            _toDoService = toDoService ?? throw new ArgumentNullException(nameof(toDoService));
+            _taskService = new TaskService();
             _teamId = teamId;
             _todoId = todoId;
 
@@ -25,7 +25,7 @@ namespace WPFApp
 
         private void LoadTaskDetails()
         {
-            var todo = _toDoService.GetToDoDetails(_teamId, _todoId);
+            var todo = _taskService.GetToDoById(_teamId, _todoId);
             if (todo != null)
             {
                 IsCompletedCheckBox.IsChecked = todo.IsCompleted;
@@ -37,7 +37,7 @@ namespace WPFApp
             try
             {
                 // Update task completion status
-                _toDoService.UpdateTaskCompletionStatus(_teamId, _todoId, IsCompletedCheckBox.IsChecked ?? false);
+                _taskService.UpdateTaskCompletionStatus(_teamId, _todoId, IsCompletedCheckBox.IsChecked ?? false);
 
                 // Raise the event to notify that the task completion status has been updated
                 TaskCompletionUpdated?.Invoke(this, EventArgs.Empty);
