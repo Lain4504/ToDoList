@@ -15,16 +15,38 @@ namespace WPFApp
         private readonly ITaskService _taskService;
         private int _currentTaskID;
         private int _currentTeamID;
+        private int _currentUserID;
+        private bool _isAdmin; // Flag to store admin status
 
-        // Constructor với tham số cho service và teamId
-        public TaskWindow2(int teamId)
+        // Constructor with service and teamId parameters
+        public TaskWindow2(int teamId, int userId)
         {
             InitializeComponent();
-            _currentTeamID = teamId; // Lưu teamId
+            _currentTeamID = teamId; // Store teamId
+            _currentUserID = userId;
             _taskService = new TaskService();
-            LoadTeamTasks(_currentTeamID); // Tải danh sách tác vụ cho teamId đã được truyền vào
+            _isAdmin = CheckIfAdmin();
+
+            // Check if user is admin
+            SetButtonVisibility();
+
+            // Load task list for provided teamId
+            LoadTeamTasks(_currentTeamID);
         }
 
+        private bool CheckIfAdmin()
+        {
+            using var context = new ToDoListContext();
+            Team currentTeam = context.Teams.FirstOrDefault(t => t.TeamId == _currentTeamID);
+            return currentTeam != null && currentTeam.AdminUserId == _currentUserID;
+        }
+        private void SetButtonVisibility()
+        {
+            // Hide or disable buttons if the user is not an admin
+            DeleteButton.Visibility = _isAdmin ? Visibility.Visible : Visibility.Collapsed;
+            UpdateButton.Visibility = _isAdmin ? Visibility.Visible : Visibility.Collapsed;
+            NewTaskButton.Visibility = _isAdmin ? Visibility.Visible : Visibility.Collapsed;
+        }
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
@@ -35,20 +57,17 @@ namespace WPFApp
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
-            this.WindowState = WindowState.Minimized; // Giảm cửa sổ
+            this.WindowState = WindowState.Minimized;
         }
 
         private void MaximizeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (this.WindowState == WindowState.Normal)
-                this.WindowState = WindowState.Maximized; // Max
-            else
-                this.WindowState = WindowState.Normal; // Trở lại trạng thái bình thường
+            this.WindowState = this.WindowState == WindowState.Normal ? WindowState.Maximized : WindowState.Normal;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close(); // Đóng cửa sổ
+            this.Close();
         }
 
         public void LoadTeamTasks(int teamID)
@@ -66,69 +85,57 @@ namespace WPFApp
 
         private void TaskListItem_TaskSelected(object sender, TaskSelectedEventArgs e)
         {
-            // Cập nhật dữ liệu cho Task Viewer
-            TaskTitleTextBlock.Text = e.Title; // TextBlock cho tiêu đề task
+            TaskTitleTextBlock.Text = e.Title;
 
-            // Gán nội dung cho TextBlock bên trong ScrollViewer
             var taskDescriptionTextBlock = TaskDescriptionScrollViewer.Content as TextBlock;
             if (taskDescriptionTextBlock != null)
             {
                 taskDescriptionTextBlock.Text = e.Description;
             }
 
-            DueDateTextBlock.Text = $"Due: {e.DueDate}"; // TextBlock cho ngày hết hạn
+            DueDateTextBlock.Text = $"Due: {e.DueDate}";
             _currentTaskID = e.Id;
             _currentTeamID = e.TeamId;
         }
 
-        // Sự kiện xóa task
         private void DeleteTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentTaskID > 0)
+            if (_isAdmin && _currentTaskID > 0)
             {
-                // Hiển thị cửa sổ xác nhận xóa
+                // Show confirmation window
                 ConfirmationWindow confirmationWindow = new ConfirmationWindow();
-                confirmationWindow.Owner = this; // Thiết lập chủ sở hữu của cửa sổ xác nhận là TaskWindow
-                confirmationWindow.ShowDialog(); // Hiển thị cửa sổ dưới dạng dialog
+                confirmationWindow.Owner = this;
+                confirmationWindow.ShowDialog();
 
-                // Kiểm tra nếu người dùng xác nhận xóa
                 if (confirmationWindow.IsConfirmed)
                 {
                     try
                     {
-                        _taskService.DeleteToDo(_currentTaskID); // Gọi service để xóa task
-
-                        // Hiển thị thông báo thành công qua NotificationWindow
+                        _taskService.DeleteToDo(_currentTaskID);
                         NotificationWindow notification = new NotificationWindow("Task deleted successfully!");
                         notification.ShowDialog();
 
-                        // Xóa dữ liệu hiển thị trên Task Viewer
-                        TaskTitleTextBlock.Text = string.Empty; // Xóa tiêu đề task
+                        TaskTitleTextBlock.Text = string.Empty;
                         var taskDescriptionTextBlock = TaskDescriptionScrollViewer.Content as TextBlock;
                         if (taskDescriptionTextBlock != null)
                         {
-                            taskDescriptionTextBlock.Text = string.Empty; // Xóa nội dung task
+                            taskDescriptionTextBlock.Text = string.Empty;
                         }
-                        DueDateTextBlock.Text = string.Empty; // Xóa ngày hết hạn
-
-                        // Reset ID của task hiện tại về 0
+                        DueDateTextBlock.Text = string.Empty;
                         _currentTaskID = 0;
-                        // Cập nhật danh sách tasks sau khi xóa
+
                         LoadTeamTasks(_currentTeamID);
                     }
                     catch (Exception ex)
                     {
-                        // Hiển thị thông báo lỗi qua NotificationWindow
                         NotificationWindow notification = new NotificationWindow($"Error deleting task: {ex.Message}");
                         notification.ShowDialog();
                     }
                 }
             }
-            else
+            else if (!_isAdmin)
             {
-                // Hiển thị thông báo khi không có task được chọn
-                NotificationWindow notification = new NotificationWindow("No task selected for deletion.");
-                notification.ShowDialog();
+                MessageBox.Show("You do not have permission to delete tasks.", "Unauthorized", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -156,38 +163,42 @@ namespace WPFApp
 
         private void NewTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            NewTaskWindow newTaskWindow = new NewTaskWindow(_currentTeamID);
-
-            // Lắng nghe sự kiện TaskAdded để cập nhật giao diện task detail
-            newTaskWindow.TaskAdded += (s, args) =>
+            if (_isAdmin)
             {
-                var taskArgs = args as TaskAddedEventArgs;
-                if (taskArgs != null)
+                NewTaskWindow newTaskWindow = new NewTaskWindow(_currentTeamID);
+
+                newTaskWindow.TaskAdded += (s, args) =>
                 {
-                    var newTask = taskArgs.NewTask;
-
-                    // Cập nhật task detail UI
-                    TaskTitleTextBlock.Text = newTask.Title;
-                    var taskDescriptionTextBlock = TaskDescriptionScrollViewer.Content as TextBlock;
-                    if (taskDescriptionTextBlock != null)
+                    var taskArgs = args as TaskAddedEventArgs;
+                    if (taskArgs != null)
                     {
-                        taskDescriptionTextBlock.Text = newTask.Description;
+                        var newTask = taskArgs.NewTask;
+
+                        TaskTitleTextBlock.Text = newTask.Title;
+                        var taskDescriptionTextBlock = TaskDescriptionScrollViewer.Content as TextBlock;
+                        if (taskDescriptionTextBlock != null)
+                        {
+                            taskDescriptionTextBlock.Text = newTask.Description;
+                        }
+                        DueDateTextBlock.Text = $"Due: {newTask.DueDate}";
+                        _currentTaskID = newTask.Id;
+                        _currentTeamID = _currentTeamID;
                     }
-                    DueDateTextBlock.Text = $"Due: {newTask.DueDate}";
-                    _currentTaskID = newTask.Id;
-                    _currentTeamID = _currentTeamID; // Giữ teamId hiện tại
-                }
 
-                // Tải lại danh sách tasks
-                LoadTeamTasks(_currentTeamID);
-            };
+                    LoadTeamTasks(_currentTeamID);
+                };
 
-            newTaskWindow.ShowDialog();
+                newTaskWindow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("You do not have permission to add new tasks.", "Unauthorized", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void UpdateTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentTaskID > 0)
+            if (_isAdmin && _currentTaskID > 0)
             {
                 UpdateTask updateWindow = new UpdateTask(_currentTeamID, _currentTaskID);
                 updateWindow.TaskUpdated += (s, args) =>
@@ -207,10 +218,9 @@ namespace WPFApp
                 };
                 updateWindow.ShowDialog();
             }
-            else
+            else if (!_isAdmin)
             {
-                NotificationWindow notification = new NotificationWindow("Please choose a task before pressing update.");
-                notification.ShowDialog();
+                MessageBox.Show("You do not have permission to update tasks.", "Unauthorized", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -222,16 +232,16 @@ namespace WPFApp
                 LoadTeamTasks(_currentTeamID);
             }
         }
+
         private void CheckStateButton_Click(object sender, RoutedEventArgs e)
         {
             if (_currentTaskID > 0)
             {
                 var updateCompletionWindow = new UpdateTaskCompletion(_currentTeamID, _currentTaskID);
 
-                // Subscribe to the event
                 updateCompletionWindow.TaskCompletionUpdated += (s, args) =>
                 {
-                    LoadTeamTasks(_currentTeamID); // Reload the task list
+                    LoadTeamTasks(_currentTeamID);
                 };
 
                 updateCompletionWindow.ShowDialog();
@@ -242,7 +252,5 @@ namespace WPFApp
                 notification.ShowDialog();
             }
         }
-
     }
-
 }

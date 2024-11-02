@@ -100,7 +100,7 @@
                            Foreground="#05396b"/>
 
                     <!-- Add new Task Button -->
-                    <Button Style="{StaticResource CustomAddButtonStyle}"
+                    <Button x:Name="NewTaskButton" Style="{StaticResource CustomAddButtonStyle}"
                     HorizontalAlignment="Left"
                      VerticalAlignment="Center"
                      Height="32"
@@ -210,8 +210,8 @@
 
                     <!-- Buttons for Delete, Update, Edit -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10">
-                        <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Click="DeleteTaskButton_Click"/>
-                        <Button Content="Update" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White" Click="UpdateTaskButton_Click"/>
+                        <Button x:Name="DeleteButton" Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Click="DeleteTaskButton_Click"/>
+                        <Button x:Name="UpdateButton" Content="Update" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White" Click="UpdateTaskButton_Click"/>
                         <Button Content="Check State" Style="{StaticResource CustomButtonStyle}" Background="#44318d" Foreground="White" Click="CheckStateButton_Click"/>
                     </StackPanel>
 
