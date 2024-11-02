@@ -16,5 +16,10 @@ namespace Services
         ToDo GetToDoDetails(int teamId, int todoId);
         Task<IEnumerable<ToDo>> GetToDoByTitleAsync(string title, int teamId);
         Task<bool> IsTaskCompleted(int todoId);
+        void UpdateTaskCompletionStatus(int teamId, int todoId, bool isCompleted);
+        void RestoreToDo(int todoId, int teamId);
+        IEnumerable<ToDo> GetToDosByTeamId(int teamId);
+        IEnumerable<ToDo> GetDeletedTodos(); 
+        void PermanentlyDeleteTodo(int teamId, int todoId);
     }
 }

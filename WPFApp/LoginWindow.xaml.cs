@@ -13,12 +13,18 @@ namespace WPFApp.Views
     public partial class LoginWindow : Window
     {
         private readonly ToDoListContext _dbContext;
+        private readonly ITeamService _teamService;
+        private readonly IUserService _userService; // Assuming you have this service
+        private readonly IToDoService _toDoService; // Add this line
         private bool _hasShownError;
 
         public LoginWindow()
         {
             InitializeComponent();
             _dbContext = new ToDoListContext();
+            _teamService = new TeamService(new TeamRepository(_dbContext)); // Initialize your team service
+            _userService = new UserService(new UserRepository(_dbContext)); // Initialize your user service
+            _toDoService = new ToDoService(new ToDoRepository(_dbContext)); // Initialize your to-do service
 
             // Event handlers for the buttons
             LoginButton.Click += LoginButton_Click;
@@ -32,8 +38,10 @@ namespace WPFApp.Views
             string username = UsernameTextBox.Text.Trim();
             string password = PasswordBox.Password;
 
+            // Kiểm tra thông tin đăng nhập
             if (ValidateLogin(username, password))
             {
+
                 if (!_notificationShown)
                 {
                     _notificationShown = true; // Set flag to true to prevent multiple notifications
@@ -98,9 +106,10 @@ namespace WPFApp.Views
 
         private void OpenTaskWindow(int userID)
         {
-            TeamWindow teamWindow = new TeamWindow(new TeamService(new TeamRepository(new ToDoListContext())), userID);
+            // Pass the IToDoService and IUserService to the TeamWindow
+            TeamWindow teamWindow = new TeamWindow(_teamService, _userService, _toDoService, userID);
             teamWindow.Show();
-            this.Close(); 
+            this.Close();
         }
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
@@ -109,8 +118,8 @@ namespace WPFApp.Views
             {
                 if (window is RegisterWindow)
                 {
-                    window.Activate(); 
-                    return; 
+                    window.Activate();
+                    return;
                 }
             }
 

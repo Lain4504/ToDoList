@@ -1,4 +1,4 @@
-﻿<Window x:Class="WPFApp.TaskWindow"
+﻿<Window x:Class="WPFApp.TaskWindow2"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -58,13 +58,13 @@
                     </Button>
 
                     <!-- Bin Button with Icon -->
-                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0" Click="BinButton_Click">
+                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" >
                             <fa:ImageAwesome Style="{StaticResource TrashIcon}"  Width="32" Height="32" Margin="0,20,10,0"/>
                         </StackPanel>
                     </Button>
                     <!-- ShowTeam Button with Icon -->
-                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0" Click="ShowTeamsButton_Click">
+                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0" >
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <fa:ImageAwesome Style="{StaticResource ShowTeamIcon}" Width="32" Height="32" Margin="0,20,10,0"/>
                         </StackPanel>
@@ -100,7 +100,7 @@
                            Foreground="#05396b"/>
 
                     <!-- Add new Task Button -->
-                    <Button Style="{StaticResource CustomAddButtonStyle}"
+                    <Button x:Name="NewTaskButton" Style="{StaticResource CustomAddButtonStyle}"
                     HorizontalAlignment="Left"
                      VerticalAlignment="Center"
                      Height="32"
@@ -210,8 +210,8 @@
 
                     <!-- Buttons for Delete, Update, Edit -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10">
-                        <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Click="DeleteTaskButton_Click"/>
-                        <Button Content="Update" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White" Click="UpdateTaskButton_Click"/>
+                        <Button x:Name="DeleteButton" Content="Delete" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White" Click="DeleteTaskButton_Click"/>
+                        <Button x:Name="UpdateButton" Content="Update" Style="{StaticResource CustomButtonStyle}" Background="#389583" Foreground="White" Click="UpdateTaskButton_Click"/>
                         <Button Content="Check State" Style="{StaticResource CustomButtonStyle}" Background="#44318d" Foreground="White" Click="CheckStateButton_Click"/>
                     </StackPanel>
 

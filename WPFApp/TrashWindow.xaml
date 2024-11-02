@@ -1,0 +1,97 @@
+<Window x:Class="WPFApp.TrashWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        Title="Trash Window" Height="700" Width="1050"
+        ResizeMode="NoResize" AllowsTransparency="True" WindowStyle="None" 
+        Background="Transparent" WindowStartupLocation="CenterScreen"
+        FontFamily="{StaticResource Comic Sans MS 400}">
+
+    <Border BorderThickness="2" BorderBrush="Transparent" Background="#D1E8E2" CornerRadius="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.3*" />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Sidebar Menu -->
+            <Border Background="#E0E0E0" CornerRadius="10,0,0,10" Padding="5" Grid.Column="0" VerticalAlignment="Stretch">
+                <StackPanel Margin="0,20,0,20">
+                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <fa:ImageAwesome Style="{StaticResource TaskICon}" Width="32" Height="32" Margin="0,0,10,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0" Click="BinButton_Click">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <fa:ImageAwesome Style="{StaticResource TrashIcon}" Width="32" Height="32" Margin="0,20,10,0"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Background="#E0E0E0" Foreground="#8EE4AF" BorderThickness="0" >
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <fa:ImageAwesome Style="{StaticResource ShowTeamIcon}" Width="32" Height="32" Margin="0,20,10,0"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <!-- Main Content -->
+            <Grid Grid.Column="1" Margin="10" Background="#F5F5F5">
+                <Label Content="Deleted To-Do Items" 
+                       HorizontalAlignment="Left" 
+                       Margin="29,20,0,0" 
+                       VerticalAlignment="Top" 
+                       FontSize="30" 
+                       Foreground="#2c3532" 
+                       FontWeight="Bold"/>
+
+                <StackPanel Margin="29,77,59,113">
+                    <!-- Header Row -->
+                    <Grid Background="#D1E8E2" Margin="0,0,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="200"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Title" FontWeight="Bold" Padding="5" Grid.Column="0" />
+                        <TextBlock Text="Deleted At" FontWeight="Bold" Padding="5" Grid.Column="1"/>
+                        <TextBlock Text="Actions" FontWeight="Bold" Padding="5" Grid.Column="2"/>
+                    </Grid>
+
+                    <!-- Items -->
+                    <ItemsControl Name="DeletedTodosItemsControl" ItemsSource="{Binding DeletedTodos}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Background="#F5F5F5" Margin="0,0,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="300"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Background="LightBlue" Margin="0,0,5,0" Padding="5" Grid.Column="0">
+                                        <TextBlock Text="{Binding Title}"/>
+                                    </Border>
+
+                                    <Border Background="LightCoral" Margin="0,0,5,0" Padding="5" Grid.Column="1">
+                                        <TextBlock Text="{Binding DeletedAt}"/>
+                                    </Border>
+
+                                    <StackPanel Orientation="Horizontal" Grid.Column="2">
+                                        <Button Content="Restore" Tag="{Binding Id}" Click="RestoreButton_Click" Margin="5" Style="{StaticResource CustomButtonStyle}"/>
+                                        <Button Content="Delete" Tag="{Binding Id}" Click="DeleteButton_Click" Margin="5" Style="{StaticResource CustomButtonStyle}" Background="Red" Foreground="White"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
+                <Button Content="Refresh" Click="RefreshButton_Click" HorizontalAlignment="Right" Margin="0,600,59,46" Width="75" Style="{StaticResource CustomButtonStyle}"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
