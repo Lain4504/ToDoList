@@ -107,7 +107,7 @@ namespace WPFApp.Views
         private void OpenTaskWindow(int userID)
         {
             // Pass the IToDoService and IUserService to the TeamWindow
-            TeamWindow teamWindow = new TeamWindow(_teamService, _userService, _toDoService, userID);
+            TeamWindow teamWindow = new TeamWindow(userID);
             teamWindow.Show();
             this.Close();
         }
