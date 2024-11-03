@@ -193,30 +193,17 @@ namespace WPFApp
         // Show teams button click
         private void ShowTeamsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_userService == null)
-                MessageBox.Show("UserService is not initialized.");
-            if (_toDoService == null)
-                MessageBox.Show("ToDoService is not initialized.");
-            if (_currentUser == null)
-                MessageBox.Show("CurrentUser is not initialized.");
-            if (_userService == null || _toDoService == null || _currentUser == null)
+            if (_currentUser != null) 
             {
-                MessageBox.Show("One or more required services are not initialized.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            try
-            {
-                // Tạo và hiển thị cửa sổ mới cho các đội của người dùng
-                ShowTeamBelongForUser showTeamWindow = new ShowTeamBelongForUser(_userService, _toDoService, _loggedInUserID, _currentUser);
+                ShowTeamBelongForUser showTeamWindow = new ShowTeamBelongForUser(_userService, _toDoService, _currentUser.UserId, _currentUser);
                 showTeamWindow.Show();
-                this.Close(); // Đóng cửa sổ hiện tại nếu cần
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Error showing teams: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("You need login to see information of your team", "Notification", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
 
 
 

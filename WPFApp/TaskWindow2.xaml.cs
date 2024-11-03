@@ -12,6 +12,7 @@ namespace WPFApp
 {
     public partial class TaskWindow2 : Window
     {
+
         private readonly ITaskService _taskService;
         private int _currentTaskID;
         private int _currentTeamID;
@@ -26,6 +27,7 @@ namespace WPFApp
             _currentUserID = userId;
             _taskService = new TaskService();
             _isAdmin = CheckIfAdmin();
+           
 
             // Check if user is admin
             SetButtonVisibility();
@@ -252,5 +254,31 @@ namespace WPFApp
                 notification.ShowDialog();
             }
         }
+
+        private void BinButton_Click(object sender, RoutedEventArgs e)
+        {
+            using var context = new ToDoListContext(); // Khởi tạo context
+            IToDoRepository todoRepository = new ToDoRepository(context); // Khởi tạo repository
+
+            // Khởi tạo TaskService với repository
+            IToDoService todoService = new ToDoService(todoRepository); // Sử dụng IToDoService
+
+            // Mở TrashWindow với IToDoService
+            TrashWindow trashWindow = new TrashWindow(todoService, _currentTeamID);
+            trashWindow.Show(); // Sử dụng ShowDialog nếu bạn muốn chờ cửa sổ này đóng lại
+        }
+        //private void BinButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    using var context = new ToDoListContext(); // Khởi tạo context
+        //    IToDoRepository todoRepository = new ToDoRepository(context); // Khởi tạo repository
+
+        //    // Khởi tạo TaskService với repository
+        //    IToDoService todoService = new ToDoService(todoRepository); // Sử dụng IToDoService
+
+        //    // Mở TrashWindow với IToDoService
+        //    TrashWindow trashWindow = new TrashWindow(todoService, _currentTeamID);
+        //    trashWindow.Show(); // Sử dụng ShowDialog nếu bạn muốn chờ cửa sổ này đóng lại
+        //}
+
     }
 }
