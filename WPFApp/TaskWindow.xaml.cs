@@ -253,7 +253,7 @@ namespace WPFApp
 
             int currentTeamId = _currentTeamID;
 
-            var teamsWindow = new TeamWindow(teamService, userService, todoService, currentTeamId);
+            var teamsWindow = new TeamWindow(currentTeamId);
             teamsWindow.Show();
         }
 

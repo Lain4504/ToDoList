@@ -184,7 +184,7 @@
                                         <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" 
                                                     Background="Red" Foreground="White" 
                                                     Command="{Binding DataContext.DeleteTeamCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                    CommandParameter="{Binding UserId}" Click="DeleteMemberButton_Click"/>
+                                                    CommandParameter="{Binding UserId}" Click="DeleteMemberButton_Click" Margin="0,-5,0,0"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>

@@ -175,19 +175,19 @@
                                                     <TextBlock Text="{Binding TeamId}" TextWrapping="Wrap" Width="50" Margin="40,0,50,0" />
                                                     <TextBlock Text="{Binding Name}" TextWrapping="Wrap" Width="150"  Margin="0,0,30,0"/>
                                                     <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Width="250"  Margin="0,0,30,0"/>
-                                                    <TextBlock Text="{Binding Status}" TextWrapping="Wrap" Width="50"  Margin="0,0,30,0"/>
+                                                    <TextBlock Text="{Binding Status}" TextWrapping="Wrap" Width="70"  Margin="0,0,10,0"/>
                                                 </StackPanel>
                                             </Border>
                                             <!-- Delete and Update Buttons for each team -->
                                             <Button Content="Delete" Style="{StaticResource CustomButtonStyle}" 
                                                     Background="Red" Foreground="White" 
                                                     Command="{Binding DataContext.DeleteTeamCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                    CommandParameter="{Binding}" Margin="5,0"  Click="DeleteTeamButton_Click"/>
+                                                    CommandParameter="{Binding}" Click="DeleteTeamButton_Click" Margin="0,-7,5,0"/>
                                             <Button Content="Update" Style="{StaticResource CustomButtonStyle}" 
                                                     Background="#389583" Foreground="White" 
                                                     Click="UpdateTeamButton_Click"
                                                     Command="{Binding DataContext.UpdateTeamCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                    CommandParameter="{Binding}" Margin="5,0"/>
+                                                    CommandParameter="{Binding}" Margin="0,-7,0,0"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>

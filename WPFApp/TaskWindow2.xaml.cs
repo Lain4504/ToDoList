@@ -67,6 +67,8 @@ namespace WPFApp
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            var insideTeamWindow = new InsideTeam(_currentTeamID, _currentUserID);
+            insideTeamWindow.Show();
             this.Close();
         }
 
