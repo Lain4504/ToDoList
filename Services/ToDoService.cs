@@ -25,14 +25,14 @@ namespace Services
             return _toDoRepository.GetToDosByTeam(teamId);
         }
 
-        public IEnumerable<ToDo> GetDeletedTodos()
+        public IEnumerable<ToDo> GetDeletedTodos(int teamId)
         {
-            return _toDoRepository.GetDeletedTodos();
+            return _toDoRepository.GetDeletedTodos(teamId);
         }
 
         public void RestoreToDo(int todoId, int teamId)
         {
-            var todo = _toDoRepository.GetToDoById(teamId, todoId);
+            var todo = _toDoRepository.GetToDoDeletedById(teamId, todoId);
             if (todo == null)
             {
                 throw new Exception("ToDo not found");

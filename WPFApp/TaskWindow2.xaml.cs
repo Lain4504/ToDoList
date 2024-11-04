@@ -254,5 +254,12 @@ namespace WPFApp
                 notification.ShowDialog();
             }
         }
+
+        private void BinButton_Click(object sender, RoutedEventArgs e)
+        {
+            var trash = new TrashWindow(_currentUserID,  _currentTeamID);
+            trash.Show();
+            this.Close();
+        }
     }
 }

@@ -186,17 +186,9 @@ namespace WPFApp
         // Show teams button click
         private void ShowTeamsButton_Click(object sender, RoutedEventArgs e)
         {
-            //    try
-            //    {
-            //        // Tạo và hiển thị cửa sổ mới cho các đội của người dùng
-            //        ShowTeamBelongForUser showTeamWindow = new ShowTeamBelongForUser(_loggedInUserID);
-            //        showTeamWindow.Show();
-            //        this.Close(); // Đóng cửa sổ hiện tại nếu cần
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        MessageBox.Show($"Error showing teams: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //    }
+            var teamBelongForUser = new TeamBelongForUser(_loggedInUserID);
+            teamBelongForUser.Show();
+            this.Close();
         }
     }
 }
