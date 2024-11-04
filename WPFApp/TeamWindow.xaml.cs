@@ -186,6 +186,16 @@ namespace WPFApp
         // Show teams button click
         private void ShowTeamsButton_Click(object sender, RoutedEventArgs e)
         {
+            if (_currentUser != null) 
+            {
+                ShowTeamBelongForUser showTeamWindow = new ShowTeamBelongForUser(_userService, _toDoService, _currentUser.UserId, _currentUser);
+                showTeamWindow.Show();
+            }
+            else
+            {
+                MessageBox.Show("You need login to see information of your team", "Notification", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
             //    try
             //    {
             //        // Tạo và hiển thị cửa sổ mới cho các đội của người dùng

@@ -17,6 +17,7 @@ namespace WPFApp
         private readonly IToDoService _toDoService;
         private int _currentTaskID;
         private int _currentTeamID;
+        private List<Task> deletedTasks;
 
         // Constructor không tham số, khởi tạo với teamId mặc định là -1
         public TaskWindow() : this(new ToDoService(new ToDoRepository(new ToDoListContext())), -1)
@@ -27,9 +28,11 @@ namespace WPFApp
         public TaskWindow(IToDoService toDoService, int teamId)
         {
             InitializeComponent();
+            
             _toDoService = toDoService ?? throw new ArgumentNullException(nameof(toDoService));
             _currentTeamID = teamId; // Lưu teamId
             LoadTeamTasks(_currentTeamID); // Tải danh sách tác vụ cho teamId đã được truyền vào
+            deletedTasks = new List<Task>();
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -232,10 +235,21 @@ namespace WPFApp
 
         private void BinButton_Click(object sender, RoutedEventArgs e)
         {
-           
-            var trashWindow = new TrashWindow(_toDoService, _currentTeamID); 
-            trashWindow.Show(); 
+
+            try
+            {
+                var trashWindow = new TrashWindow(_toDoService, _currentTeamID);
+                trashWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error opening TrashWindow: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
+
+
+
 
         private void ShowTeamsButton_Click(object sender, RoutedEventArgs e)
         {
