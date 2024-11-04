@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace WPFApp
 {
@@ -24,6 +25,7 @@ namespace WPFApp
             LoadTeams();
         }
 
+      
         private void LoadTeams()
         {
             if (_currentUser != null)
@@ -37,27 +39,23 @@ namespace WPFApp
             }
         }
 
-
         private int GetSelectedUserId()
         {
-    
             return _currentUser?.UserId ?? throw new InvalidOperationException("No user is selected.");
         }
 
-        private void TeamsListBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            ViewTasksButton.IsEnabled = TeamsListBox.SelectedItem != null;
-        }
 
-        private void ViewTasksButton_Click(object sender, RoutedEventArgs e)
+        private void ViewTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            if (TeamsListBox.SelectedItem is Team selectedTeam)
+            if (sender is System.Windows.Controls.Button button && button.Tag is Team selectedTeam)
             {
                 var todos = _toDoService.GetToDosByTeamId(selectedTeam.TeamId);
+
                 if (todos != null && todos.Any())
                 {
-                    string todoList = string.Join("\n", todos.Select(t => t.Title));
-                    MessageBox.Show($"ToDos for Team {selectedTeam.Name}:\n{todoList}", "ToDo List", MessageBoxButton.OK, MessageBoxImage.Information);
+                    var taskTitles = todos.Select(t => t.Title).ToList();
+                    TeamTasksWindow tasksWindow = new TeamTasksWindow(taskTitles);
+                    tasksWindow.ShowDialog(); 
                 }
                 else
                 {
@@ -75,7 +73,7 @@ namespace WPFApp
         {
             return _currentUser;
         }
-
+        
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

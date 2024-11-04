@@ -1,7 +1,7 @@
-<Window x:Class="WPFApp.ShowTeamBelongForUser"
+﻿<Window x:Class="WPFApp.TeamTasksWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="User Teams" Height="490" Width="830"
+        Title="Team Tasks" Height="400" Width="600"
         AllowsTransparency="True" 
         Background="Transparent" 
         ResizeMode="NoResize"  
@@ -10,57 +10,51 @@
 
     <Border BorderThickness="2" BorderBrush="Transparent" Background="#D1E8E2" CornerRadius="10">
         <Grid>
-            <Label Content="Teams Belonging to User" 
+            <Label Content="Tasks for Selected Team" 
                    HorizontalAlignment="Left" 
-                   Margin="29,20,0,0" 
+                   Margin="20,20,0,0" 
                    VerticalAlignment="Top" 
-                   FontSize="30" 
+                   FontSize="25" 
                    Foreground="#2c3532" 
                    FontWeight="Bold"/>
 
             <Rectangle HorizontalAlignment="Left" 
-                       Height="369" 
-                       Width="578" 
-                       Margin="20,95,0,0" 
+                       Height="260" 
+                       Width="540" 
+                       Margin="20,70,0,0" 
                        Stroke="Black" 
                        VerticalAlignment="Top" 
                        Fill="#E0E0E0" 
                        RadiusX="20" 
                        RadiusY="20"/>
 
-            <ListBox x:Name="TeamsListBox" 
+            <ListBox x:Name="TasksListBox" 
                      HorizontalAlignment="Left" 
-                     Margin="42,110,0,0" 
+                     Margin="40,90,0,0" 
                      VerticalAlignment="Top" 
-                     Width="452" 
-                     Height="339" 
+                     Width="500" 
+                     Height="223" 
                      BorderBrush="#2c3532" 
                      Background="#ffffff" 
                      FontSize="16">
-
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal" Margin="5">
-                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Width="250"/>
-                            <Button Content="View Task" 
-                                    Background="#3b5998" 
-                                    Foreground="White" 
-                                    Width="100" 
-                                    Click="ViewTaskButton_Click" 
-                                    Tag="{Binding}" Margin="10,0,0,0"/>
+                            <TextBlock Text="{Binding}" VerticalAlignment="Center" Width="400" Foreground="#2c3532"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <Button x:Name="BackButton" 
-                    Content="Back" 
+            <Button x:Name="CloseButton" 
+                    Content="Close" 
                     HorizontalAlignment="Left" 
-                    Margin="696,428,0,0" 
+                    Margin="510,340,0,0" 
                     VerticalAlignment="Top" 
                     Background="#ab3b61" 
                     Foreground="White" 
-                    Click="BackButton_Click" Width="72"/>
+                    Width="60"
+                    Click="CloseButton_Click"/>
         </Grid>
     </Border>
 </Window>
