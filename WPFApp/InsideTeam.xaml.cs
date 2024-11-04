@@ -2,27 +2,27 @@
 using DataAccessLayer;
 using Repositories;
 using Services;
+using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace WPFApp
 {
     public partial class InsideTeam : Window
     {
         public int TeamId { get; private set; }
-        public int UserId { get; private set; }
+        public int _loggedInUserID { get; private set; }
         private readonly ITeamService _teamService;
-        private TeamWindow _teamWindow;
         // Constructor với tham số cho service và teamId
-        public InsideTeam(ITeamService teamService, int teamId, TeamWindow teamWindow, int userId)
+        public InsideTeam(int teamId, int userId)
         {
             InitializeComponent();
-            _teamService = teamService ?? throw new ArgumentNullException(nameof(teamService));
+            _teamService = new TeamService(new TeamRepository(new ToDoListContext()));
             TeamId = teamId; // Lưu teamId
-            UserId = userId;
+            _loggedInUserID = userId;
             LoadTeamUsers(TeamId); // Tải danh sách tác vụ cho teamId đã được truyền vào
             SetTeamName(TeamId);
-            _teamWindow = teamWindow;
         }
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
@@ -38,8 +38,9 @@ namespace WPFApp
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            var teamsWindow = new TeamWindow(_loggedInUserID);
+            teamsWindow.Show();
             this.Close(); // Đóng cửa sổ
-            _teamWindow.Show();
         }
         public void SetTeamName(int teamID)
         {
@@ -50,7 +51,7 @@ namespace WPFApp
         {
             try
             {
-                IEnumerable<User> members = _teamService.GetUsersInTeam(teamID);
+                IEnumerable<BusinessObjects.User> members = _teamService.GetUsersInTeam(teamID);
                 MemberListView.ItemsSource = members;
                 MemberListView.Items.Refresh();
             }
@@ -98,7 +99,7 @@ namespace WPFApp
                 NotificationWindow notification = new NotificationWindow("No member selected for deletion.");
                 notification.ShowDialog();
             }
-           
+
         }
         private void NewMemberButton_Click(object sender, RoutedEventArgs e)
         {
@@ -128,7 +129,7 @@ namespace WPFApp
             {
                 try
                 {
-                    IEnumerable<User> member = await _teamService.GetUserByNameAsync(TeamId,searchTitle);
+                    IEnumerable<BusinessObjects.User> member = await _teamService.GetUserByNameAsync(TeamId, searchTitle);
                     MemberListView.ItemsSource = member;
                 }
                 catch (Exception ex)
@@ -144,8 +145,10 @@ namespace WPFApp
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // Mở cửa sổ TaskWindow và truyền teamId
-            TaskWindow2 taskWindow = new TaskWindow2(TeamId, UserId);
+            TaskWindow2 taskWindow = new TaskWindow2(TeamId, _loggedInUserID);
             taskWindow.Show();
+            this.Close();
+
         }
         private void MemberSearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
