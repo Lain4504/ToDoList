@@ -51,7 +51,7 @@ namespace WPFApp
         {
             try
             {
-                IEnumerable<BusinessObjects.User> members = _teamService.GetUsersInTeam(teamID);
+                IEnumerable<BusinessObjects.User> members = _teamService.GetTeamById(teamID).Members;
                 MemberListView.ItemsSource = members;
                 MemberListView.Items.Refresh();
             }

@@ -16,15 +16,6 @@ namespace Services
         {
             _teamRepository = teamRepository;
         }
-        public IEnumerable<User> GetUsersInTeam(int teamId)
-        {
-            var team = _teamRepository.GetTeamById(teamId);
-            if (team == null)
-            {
-                throw new Exception("Team not found");
-            }
-            return _teamRepository.GetUsersInTeam(teamId);
-        }
         public IEnumerable<User> GetUsersOutTeam(int teamId)
         {
             return _teamRepository.GetUsersOutTeam(teamId);
@@ -113,9 +104,9 @@ namespace Services
                 throw new Exception("Team not found");
             return await _teamRepository.GetMembersByNameAsync(teamId,name);
         }
-        public async Task<IEnumerable<Team>> GetTeamByNameAsync(string name)
+        public async Task<IEnumerable<Team>> GetTeamByNameAsync(string name, int adminUserId)
         {
-            return await _teamRepository.GetTeamByNameAsync(name);
+            return await _teamRepository.GetTeamByNameAsync(name, adminUserId);
         }
     }
 }

@@ -4,7 +4,6 @@ namespace Repositories
 {
     public interface ITeamRepository
     {
-        IEnumerable<User> GetUsersInTeam(int teamId);
         User GetUserById(int userId);
         Team GetTeamById(int teamId);
         IEnumerable<User> GetUsersOutTeam(int teamId);
@@ -15,6 +14,6 @@ namespace Repositories
         Task<bool> IsAdminUser(int userId);
         Task UpdateTeamStatusAsync(int teamId, TeamStatus newStatus);
         Task<IEnumerable<User>> GetMembersByNameAsync(int teamId, string name);
-        Task<IEnumerable<Team>> GetTeamByNameAsync(string name);
+        Task<IEnumerable<Team>> GetTeamByNameAsync(string name, int userIdadminUserId);
     }
 }

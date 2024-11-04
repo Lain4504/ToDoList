@@ -9,7 +9,6 @@ namespace Services
 {
     public interface ITeamService
     {
-        IEnumerable<User> GetUsersInTeam(int teamId);
         IEnumerable<User> GetUsersOutTeam(int teamId);
         User GetUserById(int teamId);
         Team GetTeamById(int teamId);
@@ -22,6 +21,6 @@ namespace Services
         Task UpdateTeamStatusAsync(int teamId, TeamStatus newStatus);
         Task<bool> IsAdminUserAsync(int userId);
         Task<IEnumerable<User>> GetUserByNameAsync(int teamId, string name);
-        Task<IEnumerable<Team>> GetTeamByNameAsync(string name);
+        Task<IEnumerable<Team>> GetTeamByNameAsync(string name, int adminUserId);
     }
 }

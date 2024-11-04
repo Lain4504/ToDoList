@@ -87,7 +87,7 @@ namespace WPFApp
             {
                 try
                 {
-                    IEnumerable<BusinessObjects.Team> teams = await _teamService.GetTeamByNameAsync(searchTitle);
+                    IEnumerable<BusinessObjects.Team> teams = await _teamService.GetTeamByNameAsync(searchTitle, _loggedInUserID);
                     TeamListView.ItemsSource = teams;
                 }
                 catch (Exception ex)
@@ -134,8 +134,10 @@ namespace WPFApp
         private void DeleteTeamButton_Click(object sender, RoutedEventArgs e)
         {
             var selectedTeam = (sender as Button)?.DataContext as BusinessObjects.Team;
-
-            if (selectedTeam != null)
+            ConfirmationWindow confirmationWindow = new ConfirmationWindow();
+            confirmationWindow.Owner = this;
+            confirmationWindow.ShowDialog();
+            if (confirmationWindow.IsConfirmed)
             {
                 try
                 {
