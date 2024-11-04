@@ -126,7 +126,7 @@
                     <Label 
                            x:Name="SearchPlaceholderLabel"
                            IsHitTestVisible="False"
-                           Content="Search Teams..."
+                           Content="Search Team Name..."
                            Grid.Row="1"
                            VerticalAlignment="Center"
                            Margin="594,0,84,0"

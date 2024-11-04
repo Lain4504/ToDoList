@@ -13,13 +13,6 @@ namespace Repositories
         {
             _context = context;
         }
-        public IEnumerable<User> GetUsersInTeam(int teamId)
-        {
-            var team = _context.Teams
-            .Include(t => t.Members)
-            .FirstOrDefault(t => t.TeamId == teamId);
-            return team.Members;
-        }
      
         public User GetUserById(int userId)
         {
@@ -91,10 +84,10 @@ namespace Repositories
             var team = await _context.Teams.Include(t => t.Members).FirstOrDefaultAsync(t => t.TeamId == teamId);
             return team.Members.Where(u => u.FullName.Contains(name, StringComparison.OrdinalIgnoreCase));
         }
-        public async Task<IEnumerable<Team>> GetTeamByNameAsync(string name)
+        public async Task<IEnumerable<Team>> GetTeamByNameAsync(string name, int adminUserId)
         {
             return await _context.Teams
-                .Where(t => t.Name.Contains(name) && t.DeletedAt == null)
+                .Where(t => t.Name.Contains(name) && t.DeletedAt == null && t.AdminUserId == adminUserId)
                 .ToListAsync();
         }
     }
