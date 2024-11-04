@@ -27,11 +27,11 @@ namespace Repositories
         }
         public Team GetTeamById(int teamId)
         {
-           return _context.Teams.FirstOrDefault(t => t.TeamId == teamId);
+           return _context.Teams.Include(t => t.Members).FirstOrDefault(t => t.TeamId == teamId);
         }
         public IEnumerable<Team> GetAll()
         {
-            return _context.Teams.ToList();
+            return _context.Teams.Include(t => t.Members).ToList();
         }
 
         public IEnumerable<User> GetUsersOutTeam(int teamId)

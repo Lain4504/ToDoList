@@ -19,7 +19,7 @@ namespace Services
         void UpdateTaskCompletionStatus(int teamId, int todoId, bool isCompleted);
         void RestoreToDo(int todoId, int teamId);
         IEnumerable<ToDo> GetToDosByTeamId(int teamId);
-        IEnumerable<ToDo> GetDeletedTodos(); 
+        IEnumerable<ToDo> GetDeletedTodos(int teamId); 
         void PermanentlyDeleteTodo(int teamId, int todoId);
     }
 }

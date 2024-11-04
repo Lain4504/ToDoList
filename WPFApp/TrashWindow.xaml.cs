@@ -1,95 +1,80 @@
-﻿using System;
-using BusinessObjects;
+﻿using BusinessObjects;
+using DataAccessLayer;
 using Repositories;
 using Services;
-using System.Collections.ObjectModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using MessageBox = System.Windows.MessageBox;
 
 namespace WPFApp
 {
+    /// <summary>
+    /// Interaction logic for TrashWindow.xaml
+    /// </summary>
     public partial class TrashWindow : Window
     {
-        private readonly IToDoService _todoService; 
-        private int _currentTeamId;
+        private readonly IToDoService _todoService;
+        private readonly int _loggedInUserID;
+        private int _currentTeamID;
 
-        public ObservableCollection<ToDo> DeletedTodos { get; set; }
-
-        public TrashWindow(IToDoService todoService, int teamId)
+        public TrashWindow(int loggedInUserID, int currentTeamID)
         {
             InitializeComponent();
-            _todoService = todoService ?? throw new ArgumentNullException(nameof(todoService));
-            _currentTeamId = teamId;
-            DeletedTodos = new ObservableCollection<ToDo>(_todoService.GetDeletedTodos());
-            DeletedTodosItemsControl.DataContext = this;
+            _todoService = new ToDoService(new ToDoRepository(new ToDoListContext()));
+            _loggedInUserID = loggedInUserID;
+            _currentTeamID = currentTeamID;
+            LoadToDoBins(_currentTeamID);
         }
 
-
-
-        private void RestoreToDo(int todoId, int teamId)
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
-            _todoService.RestoreToDo(todoId, teamId);
-            ReloadDeletedTodos();
+            this.WindowState = WindowState.Minimized; // Giảm cửa sổ
         }
 
-        private void PermanentlyDeleteTodo(int teamId, int todoId)
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
         {
-            _todoService.PermanentlyDeleteTodo(teamId, todoId);
-            ReloadDeletedTodos();
+            if (this.WindowState == WindowState.Normal)
+                this.WindowState = WindowState.Maximized; // Max
+            else
+                this.WindowState = WindowState.Normal; // Trở lại trạng thái bình thường
         }
 
-        private void ReloadDeletedTodos()
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            DeletedTodos.Clear();
-            foreach (var todo in _todoService.GetDeletedTodos())
-            {
-                DeletedTodos.Add(todo);
-            }
+            TaskWindow2 taskWindow = new TaskWindow2(_currentTeamID, _loggedInUserID);
+            taskWindow.Show();
+            this.Close(); // Đóng cửa sổ
+        }
+
+        public void LoadToDoBins(int currentTeamID)
+        {
+            var todos = _todoService.GetDeletedTodos(currentTeamID);
+            TrashDataGrid.ItemsSource = todos;
         }
 
         private void RestoreButton_Click(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            if (button != null && int.TryParse(button.Tag.ToString(), out int todoId))
+            if (TrashDataGrid.SelectedItem is ToDo selectedToDo)
             {
-                RestoreToDo(todoId, _currentTeamId); 
-                ReloadDeletedTodos();
+                if (System.Windows.MessageBox.Show("Are you sure?", "Confirm Restore", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    _todoService.RestoreToDo(selectedToDo.Id, _currentTeamID);
+                    LoadToDoBins(_loggedInUserID);
+                }
             }
-        }
-
-
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            if (button != null && int.TryParse(button.Tag.ToString(), out int todoId))
-            {
-                
-                _todoService.PermanentlyDeleteTodo(_currentTeamId, todoId);
-                ReloadDeletedTodos();
-            }
-        }
-
-
-        private void RefreshButton_Click(object sender, RoutedEventArgs e)
-        {
-            ReloadDeletedTodos();
-        }
-
-        private void DeletedTodosListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
            
         }
-
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            this.DragMove();
-        }
-        private void BinButton_Click(object sender, RoutedEventArgs e)
-        {
-            var TrashWindow = new TrashWindow(_todoService, _currentTeamId);
-            TrashWindow.Show(); 
-        }
-
     }
 }

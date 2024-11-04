@@ -232,9 +232,9 @@ namespace WPFApp
 
         private void BinButton_Click(object sender, RoutedEventArgs e)
         {
-           
-            var trashWindow = new TrashWindow(_toDoService, _currentTeamID); 
-            trashWindow.Show(); 
+
+            //    var trashWindow = new TrashWindow(_toDoService, _currentTeamID); 
+            //    trashWindow.Show(); 
         }
 
         private void ShowTeamsButton_Click(object sender, RoutedEventArgs e)
