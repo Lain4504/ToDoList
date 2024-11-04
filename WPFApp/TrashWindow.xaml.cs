@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DataAccessLayer;
 
 namespace WPFApp
 {
@@ -13,6 +14,8 @@ namespace WPFApp
     {
         private readonly IToDoService _todoService; 
         private int _currentTeamId;
+        private int _teamId;
+        private readonly ToDoListContext dbContext = new ToDoListContext();
 
         public ObservableCollection<ToDo> DeletedTodos { get; set; }
 
@@ -26,8 +29,7 @@ namespace WPFApp
         }
 
 
-
-        private void RestoreToDo(int todoId, int teamId)
+        private void RestoreToDoCobehind(int todoId, int teamId)
         {
             _todoService.RestoreToDo(todoId, teamId);
             ReloadDeletedTodos();
@@ -50,11 +52,38 @@ namespace WPFApp
 
         private void RestoreButton_Click(object sender, RoutedEventArgs e)
         {
-            var button = sender as Button;
-            if (button != null && int.TryParse(button.Tag.ToString(), out int todoId))
+            // Bước 1: Kiểm tra kiểu của sender và Tag
+    if (sender is Button button && button.Tag is int itemId)
             {
-                RestoreToDo(todoId, _currentTeamId); 
-                ReloadDeletedTodos();
+                // Kiểm tra xem itemId có giá trị không
+                if (itemId > 0)
+                {
+                    // Bước 2: Tìm item trong cơ sở dữ liệu
+                    var itemToRestore = dbContext.ToDos.FirstOrDefault(t => t.Id == itemId);
+
+                    if (itemToRestore != null)
+                    {
+                        // Bước 3: Gọi phương thức RestoreToDo nếu itemToRestore không null
+                        RestoreToDoCobehind(itemToRestore.Id, itemToRestore.TeamId);
+
+                        // Bước 4: Gọi phương thức ReloadDeletedTodos
+                        //ReloadDeletedTodos();
+
+                        MessageBox.Show("Mục đã được khôi phục thành công!");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không tìm thấy mục trong cơ sở dữ liệu với ID: " + itemId);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Giá trị của itemId không hợp lệ: " + itemId);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Sender không phải là Button hoặc Tag không phải kiểu int.");
             }
         }
 
