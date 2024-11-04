@@ -67,8 +67,18 @@ namespace WPFApp
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            var insideTeamWindow = new InsideTeam(_currentTeamID, _currentUserID);
-            insideTeamWindow.Show();
+            if (CheckIfAdmin())
+            {
+                // Người dùng là admin, mở InsideTeam window
+                var insideTeamWindow = new InsideTeam(_currentTeamID, _currentUserID);
+                insideTeamWindow.Show();
+            }
+            else
+            {
+                // Người dùng không phải admin, chuyển hướng về TeamBelongForUser window
+                var teamBelongForUserWindow = new TeamBelongForUser(_currentUserID);
+                teamBelongForUserWindow.Show();
+            }
             this.Close();
         }
 

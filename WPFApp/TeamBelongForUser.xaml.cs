@@ -47,7 +47,7 @@ namespace WPFApp
         public void LoadTeams(int userID)
         {
             var teams = _teamService.GetAllTeams()
-                  .Where(t => t.Members.Any(m => m.UserId == userID) && t.DeletedAt != null)
+                  .Where(t => t.Members.Any(m => m.UserId == userID) && t.DeletedAt == null)
                   .ToList();
             TeamsDataGrid.ItemsSource = teams;
 
