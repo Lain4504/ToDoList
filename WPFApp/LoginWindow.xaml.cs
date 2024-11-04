@@ -25,10 +25,7 @@ namespace WPFApp.Views
             _teamService = new TeamService(new TeamRepository(_dbContext)); // Initialize your team service
             _userService = new UserService(new UserRepository(_dbContext)); // Initialize your user service
             _toDoService = new ToDoService(new ToDoRepository(_dbContext)); // Initialize your to-do service
-            var userRepository = new UserRepository(_dbContext);
 
-            // Sử dụng constructor có 2 tham số để khởi tạo UserService
-            _userService = new UserService(userRepository, _dbContext);
             // Event handlers for the buttons
             LoginButton.Click += LoginButton_Click;
             RegisterButton.Click += RegisterButton_Click;
@@ -36,65 +33,26 @@ namespace WPFApp.Views
         }
         private bool _notificationShown = false; // Add a flag to track notification status
 
-        //private void LoginButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    string username = UsernameTextBox.Text.Trim();
-        //    string password = PasswordBox.Password;
-
-        //    // Kiểm tra thông tin đăng nhập
-        //    if (ValidateLogin(username, password))
-        //    {
-
-        //        if (!_notificationShown)
-        //        {
-        //            _notificationShown = true; // Set flag to true to prevent multiple notifications
-        //            NotificationWindow successNotification = new NotificationWindow("Login successful!");
-
-        //            successNotification.Closed += (s, args) =>
-        //            {
-        //                var user = _dbContext.Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == HashPassword(password));
-        //                if (user != null)
-        //                {
-        //                    OpenTaskWindow(user.UserId);
-        //                    this.Close();
-        //                }
-        //            };
-
-        //            this.Hide();
-        //            successNotification.ShowDialog();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        if (!_notificationShown)
-        //        {
-        //            _notificationShown = true;
-
-        //            NotificationWindow errorNotification = new NotificationWindow("Invalid username or password. Please try again.");
-
-        //            errorNotification.ShowDialog();
-        //        }
-        //    }
-        //}
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             string username = UsernameTextBox.Text.Trim();
             string password = PasswordBox.Password;
 
-            // Gọi phương thức Login từ UserService
-            if (_userService.Login(username, password))
+            // Kiểm tra thông tin đăng nhập
+            if (ValidateLogin(username, password))
             {
+
                 if (!_notificationShown)
                 {
-                    _notificationShown = true; // Ngăn thông báo nhiều lần
+                    _notificationShown = true; // Set flag to true to prevent multiple notifications
                     NotificationWindow successNotification = new NotificationWindow("Login successful!");
 
                     successNotification.Closed += (s, args) =>
                     {
-                        User currentUser = _userService.GetCurrentUser();
-                        if (currentUser != null)
+                        var user = _dbContext.Users.FirstOrDefault(u => u.Username == username && u.PasswordHash == HashPassword(password));
+                        if (user != null)
                         {
-                            OpenTaskWindow(currentUser.UserId);
+                            OpenTaskWindow(user.UserId);
                             this.Close();
                         }
                     };
@@ -108,12 +66,13 @@ namespace WPFApp.Views
                 if (!_notificationShown)
                 {
                     _notificationShown = true;
+
                     NotificationWindow errorNotification = new NotificationWindow("Invalid username or password. Please try again.");
+
                     errorNotification.ShowDialog();
                 }
             }
         }
-
 
         #region Helper Methods
 

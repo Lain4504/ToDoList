@@ -29,6 +29,7 @@
                        RadiusY="20"/>
 
             <ListBox x:Name="TeamsListBox" 
+                     DisplayMemberPath="Name" 
                      HorizontalAlignment="Left" 
                      Margin="42,110,0,0" 
                      VerticalAlignment="Top" 
@@ -36,22 +37,18 @@
                      Height="339" 
                      BorderBrush="#2c3532" 
                      Background="#ffffff" 
-                     FontSize="16">
+                     FontSize="16"
+                     SelectionChanged="TeamsListBox_SelectionChanged"/>
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="5">
-                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Width="250"/>
-                            <Button Content="View Task" 
-                                    Background="#3b5998" 
-                                    Foreground="White" 
-                                    Width="100" 
-                                    Click="ViewTaskButton_Click" 
-                                    Tag="{Binding}" Margin="10,0,0,0"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <Button x:Name="ViewTasksButton" 
+                    Content="View Tasks" 
+                    HorizontalAlignment="Left" 
+                    Margin="515,428,0,0" 
+                    VerticalAlignment="Top" 
+                    Background="White" 
+                    Foreground="#389583"
+                    IsEnabled="False" 
+                    Click="ViewTasksButton_Click" RenderTransformOrigin="0.29,15.074"/>
 
             <Button x:Name="BackButton" 
                     Content="Back" 
