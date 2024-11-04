@@ -74,7 +74,6 @@
 
 
 
-
                 </StackPanel>
             </Border>
 
@@ -212,8 +211,6 @@
                         <Button Style="{StaticResource RoundButtonStyle}" Width="30" Height="30" Click="CloseButton_Click">
                             <fa:ImageAwesome Style="{StaticResource CloseIcon}" HorizontalAlignment="Center" VerticalAlignment="Center" Width="16" Height="16"/>
                         </Button>
-                        
-
                     </StackPanel>
                 </StackPanel>
             </Grid>

@@ -32,13 +32,12 @@ namespace Services
 
         public void RestoreToDo(int todoId, int teamId)
         {
-            var todo = _toDoRepository.GetToDoById(todoId, teamId);
-            if (todo != null)
+            var todo = _toDoRepository.GetToDoById(teamId, todoId);
+            if (todo == null)
             {
-                _toDoRepository.RestoreToDo(todoId, teamId);
-                
+                throw new Exception("ToDo not found");
             }
-            throw new Exception("ToDo not found");
+            _toDoRepository.RestoreToDo(todoId, teamId);
         }
 
         public void PermanentlyDeleteTodo(int teamId, int todoId)

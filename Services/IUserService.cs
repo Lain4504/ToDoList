@@ -13,6 +13,6 @@ namespace Services
         User GetUser(int userId);
         IEnumerable<Team> GetTeamsByUserId(int userId);
         User GetCurrentUser();
-        public bool Login(string username, string password);
+      
     }
 }

@@ -28,35 +28,18 @@ namespace Repositories
         {
             return _context.ToDos.Find(id);
         }
-        public ToDo GetToDoById(int teamId, int todoId)
-        {
-            using (var context = new ToDoListContext())
-            {
-                return context.ToDos
-                    .FirstOrDefault(t => t.TeamId == teamId && t.Id == todoId );
-            }
-        }
 
         public void RestoreToDo(int todoId, int teamId)
         {
-            if (_context == null)
-            {
-                throw new InvalidOperationException("Database context is not initialized or has been disposed.");
-            }
+            var todo = GetToDoById(teamId, todoId);
 
-            var todo = GetToDoById(todoId, teamId);
             if (todo != null)
             {
                 todo.IsDeleted = false;
-                todo.DeletedAt = DateTime.MinValue;
+                todo.DeletedAt = DateTime.MinValue; 
                 _context.SaveChanges();
             }
-            else
-            {
-                throw new Exception("ToDo not found");
-            }
         }
-
 
         public void PermanentlyDeleteToDo(int todoId)
         {
@@ -106,8 +89,11 @@ namespace Repositories
             }
         }
 
-        
-
+        public ToDo GetToDoById(int teamId, int todoId)
+        {
+            return _context.ToDos
+                .FirstOrDefault(t => t.TeamId == teamId && t.Id == todoId && t.DeletedAt == null);
+        }
 
         public async Task<IEnumerable<ToDo>> GetToDoByTitleAsync(string title, int teamId)
         {
