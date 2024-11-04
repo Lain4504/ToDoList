@@ -11,11 +11,6 @@ namespace Services
     public class TaskService : ITaskService
     {
         private readonly ITaskRepository _taskRepository;
-        private readonly IToDoRepository _toDoRepository;
-        public TaskService(IToDoRepository toDoRepository)
-        {
-            _toDoRepository = toDoRepository;
-        }
         public TaskService()
         {
             _taskRepository = new TaskRepository();
