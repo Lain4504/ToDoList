@@ -37,11 +37,6 @@ namespace DataAccessLayer
                 .WithMany(t => t.Members)
                 .UsingEntity(j => j.ToTable("TeamMembers"));
 
-            modelBuilder.Entity<ToDo>()
-                .HasMany(t => t.AssignedUsers)
-                .WithMany(u => u.ToDos)
-                .UsingEntity(j => j.ToTable("TaskAssignments"));
-
             modelBuilder.Entity<Team>()
                 .HasOne(t => t.AdminUser)
                 .WithMany()

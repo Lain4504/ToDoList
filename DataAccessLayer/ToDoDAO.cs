@@ -51,7 +51,7 @@ namespace DataAccessLayer
             try
             {
                 using var context = new ToDoListContext();
-                todo.TeamId = teamId; // Set the TeamId property of the todo object
+                todo.TeamId = teamId; 
                 context.ToDos.Add(todo);
                 context.SaveChanges();
             }
